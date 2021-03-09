@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.3.5"
+      "version": "7.4.2"
     },
     {
       "type": "panel",
@@ -51,8 +51,18 @@
   "gnetId": 13792,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1612878566049,
-  "links": [],
+  "iteration": 1615305821294,
+  "links": [
+    {
+      "icon": "external link",
+      "tags": [],
+      "targetBlank": true,
+      "title": "Logs",
+      "tooltip": "Open logs in kibana",
+      "type": "link",
+      "url": "https://kibana.wiremind.io/app/discover#/?_g=(filters:!(),time:(from:'${__from:date}',to:'${__to:date}'))&_a=(columns:!(wiremind.message),filters:!(('$state':(store:appState),query:(match_phrase:(kubernetes.pod_name:$pod)))))"
+    }
+  ],
   "panels": [
     {
       "aliasColors": {},
@@ -95,7 +105,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -220,7 +230,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -337,7 +347,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -446,7 +456,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.2",
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
@@ -558,7 +568,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.2",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -619,7 +629,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 26,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -630,6 +640,7 @@
           "text": "Prometheus",
           "value": "Prometheus"
         },
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -648,6 +659,7 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "definition": "",
+        "description": null,
         "error": null,
         "hide": 2,
         "includeAll": false,
@@ -655,7 +667,10 @@
         "multi": false,
         "name": "cluster",
         "options": [],
-        "query": "label_values(kube_pod_info, cluster)",
+        "query": {
+          "query": "label_values(kube_pod_info, cluster)",
+          "refId": "Prometheus-cluster-Variable-Query"
+        },
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -671,6 +686,7 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "definition": "",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -678,7 +694,10 @@
         "multi": false,
         "name": "namespace",
         "options": [],
-        "query": "label_values(kube_pod_info{cluster=\"$cluster\"}, namespace)",
+        "query": {
+          "query": "label_values(kube_pod_info{cluster=\"$cluster\"}, namespace)",
+          "refId": "Prometheus-namespace-Variable-Query"
+        },
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -694,6 +713,7 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "definition": "",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -701,7 +721,10 @@
         "multi": false,
         "name": "pod",
         "options": [],
-        "query": "label_values(kube_pod_info{cluster=\"$cluster\", namespace=~\"$namespace\"}, pod)",
+        "query": {
+          "query": "label_values(kube_pod_info{cluster=\"$cluster\", namespace=~\"$namespace\"}, pod)",
+          "refId": "Prometheus-pod-Variable-Query"
+        },
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -717,6 +740,7 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "definition": "",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": true,
@@ -724,7 +748,10 @@
         "multi": false,
         "name": "container",
         "options": [],
-        "query": "label_values(kube_pod_container_info{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}, container)",
+        "query": {
+          "query": "label_values(kube_pod_container_info{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}, container)",
+          "refId": "Prometheus-container-Variable-Query"
+        },
         "refresh": 2,
         "regex": "",
         "skipUrlSync": false,
@@ -769,5 +796,5 @@
   "timezone": "",
   "title": "Kubernetes / Pods (Wiremind Flavor)",
   "uid": "Wu80guaMz",
-  "version": 8
+  "version": 15
 }
