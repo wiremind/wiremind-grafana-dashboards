@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.4.2"
+      "version": "7.4.5"
     },
     {
       "type": "panel",
@@ -51,7 +51,7 @@
   "gnetId": 13792,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1615305821294,
+  "iteration": 1617702252799,
   "links": [
     {
       "icon": "external link",
@@ -105,7 +105,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -230,7 +230,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -347,7 +347,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -456,7 +456,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.4.5",
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
@@ -466,7 +466,7 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(container_cpu_cfs_throttled_periods_total{pod=\"$pod\", namespace=\"$namespace\", pod=\"$pod\", container=~\"$container\"}[5m])/rate(container_cpu_cfs_periods_total{pod=\"$pod\", namespace=\"$namespace\", pod=\"$pod\", container=~\"$container\"}[5m])",
+          "expr": "irate(container_cpu_cfs_throttled_periods_total{pod=\"$pod\", namespace=\"$namespace\", pod=\"$pod\", container=~\"$container\"}[5m])/irate(container_cpu_cfs_periods_total{pod=\"$pod\", namespace=\"$namespace\", pod=\"$pod\", container=~\"$container\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -479,6 +479,7 @@
       ],
       "thresholds": [
         {
+          "$$hashKey": "object:109",
           "colorMode": "critical",
           "fill": true,
           "line": true,
@@ -506,6 +507,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:79",
           "format": "percentunit",
           "label": null,
           "logBase": 1,
@@ -514,6 +516,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:80",
           "format": "s",
           "label": "",
           "logBase": 1,
@@ -568,7 +571,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.2",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -795,6 +798,6 @@
   },
   "timezone": "",
   "title": "Kubernetes / Pods (Wiremind Flavor)",
-  "uid": "Wu80guaMz",
-  "version": 15
+  "uid": "kubernetes-pods-wiremind-flavor",
+  "version": 19
 }
