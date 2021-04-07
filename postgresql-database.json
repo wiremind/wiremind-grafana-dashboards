@@ -20,7 +20,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.3.5"
+      "version": "7.4.5"
     },
     {
       "type": "panel",
@@ -65,7 +65,7 @@
   "gnetId": 9628,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1612172217727,
+  "iteration": 1617786375993,
   "links": [],
   "panels": [
     {
@@ -276,7 +276,7 @@
         },
         "overrides": []
       },
-      "format": "decbytes",
+      "format": "short",
       "gauge": {
         "maxValue": 100,
         "minValue": 0,
@@ -328,7 +328,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "SUM(pg_stat_database_tup_fetched{datname=\"$datname\", pod=\"$pod\"})",
+          "expr": "SUM(increase(pg_stat_database_tup_fetched{namespace=\"$namespace\", datname=\"$datname\", pod=\"$pod\"}[24h]))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -338,7 +338,7 @@
         }
       ],
       "thresholds": "",
-      "title": "Current fetch data",
+      "title": "Tuple fetched last 24h",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -366,7 +366,7 @@
         },
         "overrides": []
       },
-      "format": "decbytes",
+      "format": "short",
       "gauge": {
         "maxValue": 100,
         "minValue": 0,
@@ -418,7 +418,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "SUM(pg_stat_database_tup_inserted{namespace=\"$namespace\", datname=\"$datname\", pod=\"$pod\"})",
+          "expr": "SUM(increase(pg_stat_database_tup_inserted{namespace=\"$namespace\", datname=\"$datname\", pod=\"$pod\"}[24h]))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -428,7 +428,7 @@
         }
       ],
       "thresholds": "",
-      "title": "Current insert data",
+      "title": "Tuple inserted last 24h",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -456,7 +456,7 @@
         },
         "overrides": []
       },
-      "format": "decbytes",
+      "format": "short",
       "gauge": {
         "maxValue": 100,
         "minValue": 0,
@@ -508,15 +508,17 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "SUM(pg_stat_database_tup_updated{datname=\"$datname\", pod=\"$pod\"})",
+          "expr": "SUM(increase(pg_stat_database_tup_updated{datname=\"$datname\", pod=\"$pod\"}[24h]))",
           "format": "time_series",
+          "interval": "",
           "intervalFactor": 2,
+          "legendFormat": "",
           "refId": "A",
           "step": 4
         }
       ],
       "thresholds": "",
-      "title": "Current update data",
+      "title": "Tuple updated last 24h",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -658,7 +660,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -771,7 +773,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -855,10 +857,7 @@
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": null,
-            "filterable": false
-          },
+          "custom": {},
           "decimals": 0,
           "mappings": [],
           "max": 1,
@@ -901,9 +900,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": true
+        "showThresholdMarkers": true,
+        "text": {}
       },
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "targets": [
         {
           "aggregation": "Last",
@@ -1703,7 +1703,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
@@ -1787,6 +1787,7 @@
       },
       "hiddenSeries": false,
       "id": 60,
+      "interval": "30s",
       "legend": {
         "alignAsTable": true,
         "avg": true,
@@ -1806,7 +1807,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1912,9 +1913,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "targets": [
         {
           "expr": "max(pg_stat_activity_max_tx_duration{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"})",
@@ -1953,6 +1955,7 @@
       },
       "hiddenSeries": false,
       "id": 72,
+      "interval": "30s",
       "legend": {
         "avg": false,
         "current": false,
@@ -1970,7 +1973,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2061,6 +2064,7 @@
       },
       "hiddenSeries": false,
       "id": 74,
+      "interval": "30s",
       "legend": {
         "avg": false,
         "current": false,
@@ -2078,7 +2082,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2204,9 +2208,10 @@
           "fields": "",
           "values": false
         },
+        "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "repeat": null,
       "repeatDirection": "h",
       "targets": [
@@ -2248,6 +2253,7 @@
       },
       "hiddenSeries": false,
       "id": 3,
+      "interval": "30s",
       "legend": {
         "alignAsTable": true,
         "avg": false,
@@ -2270,7 +2276,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2353,6 +2359,7 @@
       },
       "hiddenSeries": false,
       "id": 64,
+      "interval": "30s",
       "legend": {
         "alignAsTable": true,
         "avg": false,
@@ -2372,7 +2379,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2505,7 +2512,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2587,6 +2594,7 @@
       },
       "hiddenSeries": false,
       "id": 70,
+      "interval": "30s",
       "legend": {
         "alignAsTable": true,
         "avg": true,
@@ -2605,7 +2613,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2695,6 +2703,7 @@
       },
       "hiddenSeries": false,
       "id": 68,
+      "interval": "30s",
       "legend": {
         "alignAsTable": true,
         "avg": true,
@@ -2714,7 +2723,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2796,6 +2805,7 @@
       },
       "hiddenSeries": false,
       "id": 66,
+      "interval": "30s",
       "legend": {
         "alignAsTable": false,
         "avg": false,
@@ -2815,7 +2825,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2921,7 +2931,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.3.5",
+      "pluginVersion": "7.4.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2986,7 +2996,7 @@
     }
   ],
   "refresh": false,
-  "schemaVersion": 26,
+  "schemaVersion": 27,
   "style": "dark",
   "tags": [
     "postgresql",
@@ -2999,6 +3009,7 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "definition": "query_result(pg_up)",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -3006,7 +3017,10 @@
         "multi": false,
         "name": "namespace",
         "options": [],
-        "query": "query_result(pg_up)",
+        "query": {
+          "query": "query_result(pg_up)",
+          "refId": "Prometheus-namespace-Variable-Query"
+        },
         "refresh": 2,
         "regex": "/.*namespace=\"([^\"]+).*/",
         "skipUrlSync": false,
@@ -3022,6 +3036,7 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "definition": "query_result(pg_up{namespace=\"$namespace\"})",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -3029,7 +3044,10 @@
         "multi": false,
         "name": "pod",
         "options": [],
-        "query": "query_result(pg_up{namespace=\"$namespace\"})",
+        "query": {
+          "query": "query_result(pg_up{namespace=\"$namespace\"})",
+          "refId": "Prometheus-pod-Variable-Query"
+        },
         "refresh": 1,
         "regex": "/.*pod=\"([^\"]+).*/",
         "skipUrlSync": false,
@@ -3045,6 +3063,7 @@
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
         "definition": "label_values(pg_stat_activity_count{namespace=\"$namespace\", pod=\"$pod\"}, datname)",
+        "description": null,
         "error": null,
         "hide": 0,
         "includeAll": false,
@@ -3052,7 +3071,10 @@
         "multi": false,
         "name": "datname",
         "options": [],
-        "query": "label_values(pg_stat_activity_count{namespace=\"$namespace\", pod=\"$pod\"}, datname)",
+        "query": {
+          "query": "label_values(pg_stat_activity_count{namespace=\"$namespace\", pod=\"$pod\"}, datname)",
+          "refId": "Prometheus-datname-Variable-Query"
+        },
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -3097,5 +3119,5 @@
   "timezone": "",
   "title": "PostgreSQL Database",
   "uid": "postgresql-database",
-  "version": 10
+  "version": 11
 }
