@@ -65,7 +65,7 @@
   "gnetId": 9628,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1617786375993,
+  "iteration": 1617894629033,
   "links": [],
   "panels": [
     {
@@ -328,7 +328,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "SUM(increase(pg_stat_database_tup_fetched{namespace=\"$namespace\", datname=\"$datname\", pod=\"$pod\"}[24h]))",
+          "expr": "SUM(increase(pg_stat_database_tup_fetched{namespace=\"$namespace\", datname=\"$datname\", pod=\"$pod\"}[$__interval]))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -338,7 +338,7 @@
         }
       ],
       "thresholds": "",
-      "title": "Tuple fetched last 24h",
+      "title": "Tuple fetched during the period",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -418,7 +418,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "SUM(increase(pg_stat_database_tup_inserted{namespace=\"$namespace\", datname=\"$datname\", pod=\"$pod\"}[24h]))",
+          "expr": "SUM(increase(pg_stat_database_tup_inserted{namespace=\"$namespace\", datname=\"$datname\", pod=\"$pod\"}[$__interval]))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -428,7 +428,7 @@
         }
       ],
       "thresholds": "",
-      "title": "Tuple inserted last 24h",
+      "title": "Tuple inserted during the period",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -508,7 +508,7 @@
       "tableColumn": "",
       "targets": [
         {
-          "expr": "SUM(increase(pg_stat_database_tup_updated{datname=\"$datname\", pod=\"$pod\"}[24h]))",
+          "expr": "SUM(increase(pg_stat_database_tup_updated{datname=\"$datname\", pod=\"$pod\"}[$__interval]))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -518,7 +518,7 @@
         }
       ],
       "thresholds": "",
-      "title": "Tuple updated last 24h",
+      "title": "Tuple updated during the period",
       "type": "singlestat",
       "valueFontSize": "80%",
       "valueMaps": [
@@ -2995,7 +2995,7 @@
       }
     }
   ],
-  "refresh": false,
+  "refresh": "30s",
   "schemaVersion": 27,
   "style": "dark",
   "tags": [
@@ -3088,7 +3088,7 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {
@@ -3119,5 +3119,5 @@
   "timezone": "",
   "title": "PostgreSQL Database",
   "uid": "postgresql-database",
-  "version": 11
+  "version": 12
 }
