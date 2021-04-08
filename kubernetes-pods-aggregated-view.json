@@ -209,12 +209,12 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "avg(rate(container_cpu_usage_seconds_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}[5m])) by (pod,container)",
+            "expr": "rate(container_cpu_usage_seconds_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}[5m])",
             "format": "time_series",
             "hide": false,
             "interval": "",
             "intervalFactor": 4,
-            "legendFormat": "",
+            "legendFormat": "{{ pod }} - {{ container }}",
             "refId": "A"
           }
         ],
@@ -325,11 +325,11 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "avg(rate(container_network_receive_bytes_total{pod=~\"[[pod_name]].*\", namespace=~\"[[namespace]].*\"}[5m])) by (pod, container)",
+            "expr": "rate(container_network_receive_bytes_total{pod=~\"[[pod_name]].*\", namespace=~\"[[namespace]].*\"}[5m])",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 4,
-            "legendFormat": "",
+            "legendFormat": "{{ pod }}",
             "refId": "A"
           }
         ],
@@ -426,11 +426,11 @@
         "steppedLine": false,
         "targets": [
           {
-            "expr": "avg(rate(container_network_transmit_bytes_total{pod=~\"[[pod_name]].*\", namespace=~\"[[namespace]].*\"}[5m])) by (pod, container)",
+            "expr": "rate(container_network_transmit_bytes_total{pod=~\"[[pod_name]].*\", namespace=~\"[[namespace]].*\"}[5m])",
             "format": "time_series",
             "interval": "",
             "intervalFactor": 4,
-            "legendFormat": "",
+            "legendFormat": "{{ pod }}",
             "refId": "A"
           }
         ],
