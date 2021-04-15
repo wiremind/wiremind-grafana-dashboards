@@ -20,7 +20,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.4.5"
+      "version": "7.5.3"
     },
     {
       "type": "panel",
@@ -65,7 +65,7 @@
   "gnetId": 9628,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1617894629033,
+  "iteration": 1618486819370,
   "links": [],
   "panels": [
     {
@@ -93,9 +93,7 @@
       ],
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -183,9 +181,7 @@
       "datasource": "${DS_PROMETHEUS}",
       "description": "start time of the process",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "dateTimeFromNow",
@@ -271,9 +267,7 @@
       ],
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "short",
@@ -361,9 +355,7 @@
       ],
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "short",
@@ -451,9 +443,7 @@
       ],
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "short",
@@ -541,9 +531,7 @@
       ],
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -627,7 +615,6 @@
       "description": "Average user and system CPU time spent in seconds.",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -660,7 +647,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -740,7 +727,6 @@
       "description": "Virtual and Resident memory size in bytes, averages over 5 min interval",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -773,7 +759,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -857,7 +843,6 @@
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "decimals": 0,
           "mappings": [],
           "max": 1,
@@ -903,7 +888,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "targets": [
         {
           "aggregation": "Last",
@@ -949,9 +934,7 @@
       ],
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "bytes",
@@ -1037,9 +1020,7 @@
       ],
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "bytes",
@@ -1125,9 +1106,7 @@
       ],
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "bytes",
@@ -1214,9 +1193,7 @@
       "datasource": "${DS_PROMETHEUS}",
       "decimals": 0,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "bytes",
@@ -1302,9 +1279,7 @@
       ],
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -1390,9 +1365,7 @@
       ],
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -1478,9 +1451,7 @@
       ],
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -1566,9 +1537,7 @@
       ],
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "format": "none",
@@ -1665,7 +1634,6 @@
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1703,7 +1671,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
@@ -1742,6 +1710,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:1090",
           "decimals": 0,
           "format": "none",
           "label": null,
@@ -1751,6 +1720,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1091",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1772,7 +1742,6 @@
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -1807,7 +1776,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1817,7 +1786,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(pg_stat_database_xact_commit{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_database_xact_commit{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -1825,7 +1795,8 @@
           "refId": "A"
         },
         {
-          "expr": "irate(pg_stat_database_xact_rollback{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_database_xact_rollback{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -1853,6 +1824,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:572",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1861,6 +1833,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:573",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -1878,7 +1851,6 @@
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -1908,7 +1880,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "max"
           ],
           "fields": "",
           "values": false
@@ -1916,9 +1888,10 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "targets": [
         {
+          "exemplar": true,
           "expr": "max(pg_stat_activity_max_tx_duration{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"})",
           "interval": "",
           "intervalFactor": 2,
@@ -1940,9 +1913,7 @@
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -1973,7 +1944,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -1983,7 +1954,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "sum(rate(pg_stat_database_tup_returned{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[1m]))",
+          "exemplar": true,
+          "expr": "sum(irate(pg_stat_database_tup_returned{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m]))",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
@@ -1992,7 +1964,8 @@
           "step": 2
         },
         {
-          "expr": "sum(rate(pg_stat_database_tup_fetched{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[1m]))",
+          "exemplar": true,
+          "expr": "sum(irate(pg_stat_database_tup_fetched{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m]))",
           "hide": false,
           "interval": "",
           "intervalFactor": 2,
@@ -2021,6 +1994,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:1260",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2029,6 +2003,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1261",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2049,9 +2024,7 @@
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -2064,7 +2037,7 @@
       },
       "hiddenSeries": false,
       "id": 74,
-      "interval": "30s",
+      "interval": "30",
       "legend": {
         "avg": false,
         "current": false,
@@ -2082,7 +2055,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2092,7 +2065,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(pg_stat_database_tup_inserted{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_database_tup_inserted{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -2102,7 +2076,8 @@
           "step": 2
         },
         {
-          "expr": "rate(pg_stat_database_tup_updated{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_database_tup_updated{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -2112,7 +2087,8 @@
           "step": 2
         },
         {
-          "expr": "rate(pg_stat_database_tup_deleted{datname=\"$datname\", pod=\"$pod\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_database_tup_deleted{datname=\"$datname\", pod=\"$pod\"}[$__rate_interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -2142,6 +2118,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:920",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2150,6 +2127,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:921",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2167,7 +2145,6 @@
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "mappings": [],
           "max": 1,
           "min": 0,
@@ -2203,7 +2180,7 @@
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "last"
           ],
           "fields": "",
           "values": false
@@ -2211,7 +2188,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "repeat": null,
       "repeatDirection": "h",
       "targets": [
@@ -2238,7 +2215,6 @@
       "decimals": 0,
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -2276,7 +2252,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2286,7 +2262,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(pg_locks_count{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_locks_count{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -2315,6 +2292,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:412",
           "decimals": 0,
           "format": "short",
           "label": null,
@@ -2324,6 +2302,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:413",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2344,9 +2323,7 @@
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -2379,7 +2356,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2389,7 +2366,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(pg_stat_bgwriter_buffers_backend{namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_bgwriter_buffers_backend{namespace=\"$namespace\", pod=\"$pod\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -2397,7 +2375,8 @@
           "refId": "A"
         },
         {
-          "expr": "irate(pg_stat_bgwriter_buffers_alloc{namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_bgwriter_buffers_alloc{namespace=\"$namespace\", pod=\"$pod\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -2405,7 +2384,8 @@
           "refId": "B"
         },
         {
-          "expr": "irate(pg_stat_bgwriter_buffers_backend_fsync{pod=\"$pod\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_bgwriter_buffers_backend_fsync{pod=\"$pod\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -2413,7 +2393,8 @@
           "refId": "C"
         },
         {
-          "expr": "irate(pg_stat_bgwriter_buffers_checkpoint{pod=\"$pod\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_bgwriter_buffers_checkpoint{pod=\"$pod\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -2421,7 +2402,8 @@
           "refId": "D"
         },
         {
-          "expr": "irate(pg_stat_bgwriter_buffers_clean{pod=\"$pod\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_bgwriter_buffers_clean{pod=\"$pod\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -2449,6 +2431,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:325",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2457,6 +2440,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:326",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2479,7 +2463,6 @@
       "description": "Number of open file descriptors",
       "fieldConfig": {
         "defaults": {
-          "custom": {},
           "links": []
         },
         "overrides": []
@@ -2512,7 +2495,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2550,6 +2533,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:1934",
           "decimals": null,
           "format": "short",
           "label": null,
@@ -2559,6 +2543,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:1935",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2579,9 +2564,7 @@
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -2613,7 +2596,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2623,7 +2606,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(pg_stat_bgwriter_checkpoint_write_time{namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_bgwriter_checkpoint_write_time{namespace=\"$namespace\", pod=\"$pod\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -2631,7 +2615,8 @@
           "refId": "B"
         },
         {
-          "expr": "irate(pg_stat_bgwriter_checkpoint_sync_time{namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_bgwriter_checkpoint_sync_time{namespace=\"$namespace\", pod=\"$pod\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -2659,6 +2644,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:499",
           "format": "ms",
           "label": null,
           "logBase": 1,
@@ -2667,6 +2653,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:500",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2688,9 +2675,7 @@
       "datasource": "${DS_PROMETHEUS}",
       "description": "Total amount of data written to temporary files by queries in this database. All temporary files are counted, regardless of why the temporary file was created, and regardless of the log_temp_files setting.",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -2723,7 +2708,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2733,7 +2718,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(pg_stat_database_temp_bytes{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_database_temp_bytes{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -2761,6 +2747,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:584",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2769,6 +2756,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:585",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2790,9 +2778,7 @@
       "datasource": "${DS_PROMETHEUS}",
       "decimals": 0,
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -2825,7 +2811,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2835,7 +2821,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(pg_stat_database_conflicts{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_database_conflicts{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -2843,7 +2830,8 @@
           "refId": "B"
         },
         {
-          "expr": "irate(pg_stat_database_deadlocks{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[$__rate_interval])",
+          "exemplar": true,
+          "expr": "irate(pg_stat_database_deadlocks{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -2871,6 +2859,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:756",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2879,6 +2868,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:757",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -2899,9 +2889,7 @@
       "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -2931,7 +2919,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.3",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -2941,6 +2929,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "exemplar": true,
           "expr": "pg_replication_lag{namespace=\"$namespace\", pod=\"$pod\"}",
           "format": "time_series",
           "interval": "",
@@ -3005,10 +2994,31 @@
   "templating": {
     "list": [
       {
+        "current": {
+          "selected": true,
+          "text": "default",
+          "value": "default"
+        },
+        "description": null,
+        "error": null,
+        "hide": 0,
+        "includeAll": false,
+        "label": null,
+        "multi": false,
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "query_result(pg_up)",
+        "definition": "label_values(pg_up, namespace)\t",
         "description": null,
         "error": null,
         "hide": 0,
@@ -3018,11 +3028,11 @@
         "name": "namespace",
         "options": [],
         "query": {
-          "query": "query_result(pg_up)",
-          "refId": "Prometheus-namespace-Variable-Query"
+          "query": "label_values(pg_up, namespace)\t",
+          "refId": "StandardVariableQuery"
         },
         "refresh": 2,
-        "regex": "/.*namespace=\"([^\"]+).*/",
+        "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
@@ -3035,7 +3045,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "query_result(pg_up{namespace=\"$namespace\"})",
+        "definition": "label_values(pg_stat_activity_count{namespace=\"$namespace\"}, pod)\t",
         "description": null,
         "error": null,
         "hide": 0,
@@ -3045,11 +3055,11 @@
         "name": "pod",
         "options": [],
         "query": {
-          "query": "query_result(pg_up{namespace=\"$namespace\"})",
-          "refId": "Prometheus-pod-Variable-Query"
+          "query": "label_values(pg_stat_activity_count{namespace=\"$namespace\"}, pod)\t",
+          "refId": "StandardVariableQuery"
         },
         "refresh": 1,
-        "regex": "/.*pod=\"([^\"]+).*/",
+        "regex": "",
         "skipUrlSync": false,
         "sort": 1,
         "tagValuesQuery": "",
@@ -3062,7 +3072,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "label_values(pg_stat_activity_count{namespace=\"$namespace\", pod=\"$pod\"}, datname)",
+        "definition": "label_values(pg_stat_activity_count{namespace=\"$namespace\", pod=\"$pod\"}, datname)\t",
         "description": null,
         "error": null,
         "hide": 0,
@@ -3072,8 +3082,8 @@
         "name": "datname",
         "options": [],
         "query": {
-          "query": "label_values(pg_stat_activity_count{namespace=\"$namespace\", pod=\"$pod\"}, datname)",
-          "refId": "Prometheus-datname-Variable-Query"
+          "query": "label_values(pg_stat_activity_count{namespace=\"$namespace\", pod=\"$pod\"}, datname)\t",
+          "refId": "StandardVariableQuery"
         },
         "refresh": 1,
         "regex": "",
@@ -3119,5 +3129,5 @@
   "timezone": "",
   "title": "PostgreSQL Database",
   "uid": "postgresql-database",
-  "version": 12
+  "version": 19
 }
