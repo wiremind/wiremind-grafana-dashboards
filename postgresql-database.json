@@ -65,7 +65,7 @@
   "gnetId": 9628,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1618486819370,
+  "iteration": 1619598815267,
   "links": [],
   "panels": [
     {
@@ -299,7 +299,7 @@
           "value": 2
         }
       ],
-      "maxDataPoints": 100,
+      "maxDataPoints": 1,
       "nullPointMode": "connected",
       "nullText": null,
       "postfix": "",
@@ -322,10 +322,12 @@
       "tableColumn": "",
       "targets": [
         {
+          "exemplar": true,
           "expr": "SUM(increase(pg_stat_database_tup_fetched{namespace=\"$namespace\", datname=\"$datname\", pod=\"$pod\"}[$__interval]))",
           "format": "time_series",
+          "instant": true,
           "interval": "",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "",
           "refId": "A",
           "step": 4
@@ -387,7 +389,7 @@
           "value": 2
         }
       ],
-      "maxDataPoints": 100,
+      "maxDataPoints": 1,
       "nullPointMode": "connected",
       "nullText": null,
       "postfix": "",
@@ -410,10 +412,12 @@
       "tableColumn": "",
       "targets": [
         {
+          "exemplar": true,
           "expr": "SUM(increase(pg_stat_database_tup_inserted{namespace=\"$namespace\", datname=\"$datname\", pod=\"$pod\"}[$__interval]))",
           "format": "time_series",
+          "instant": true,
           "interval": "",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "",
           "refId": "A",
           "step": 4
@@ -475,7 +479,7 @@
           "value": 2
         }
       ],
-      "maxDataPoints": 100,
+      "maxDataPoints": 1,
       "nullPointMode": "connected",
       "nullText": null,
       "postfix": "",
@@ -498,8 +502,10 @@
       "tableColumn": "",
       "targets": [
         {
+          "exemplar": true,
           "expr": "SUM(increase(pg_stat_database_tup_updated{datname=\"$datname\", pod=\"$pod\"}[$__interval]))",
           "format": "time_series",
+          "instant": true,
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "",
@@ -657,7 +663,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "irate(container_cpu_usage_seconds_total{namespace=\"$namespace\", pod=\"$pod\", container=~\".*-postgresql\"}[4m])",
+          "exemplar": true,
+          "expr": "irate(container_cpu_usage_seconds_total{namespace=\"$namespace\", pod=\"$pod\", container!=\"metrics-exporter\", container!=\"POD\", container!=\"\"}[4m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -665,13 +672,15 @@
           "refId": "A"
         },
         {
-          "expr": "kube_pod_container_resource_requests{namespace=\"$namespace\", pod=\"$pod\", container=~\".*-postgresql\", resource=\"cpu\"}",
+          "exemplar": true,
+          "expr": "kube_pod_container_resource_requests{namespace=\"$namespace\", pod=\"$pod\", container!=\"metrics-exporter\", resource=\"cpu\"}",
           "interval": "",
           "legendFormat": "Resource",
           "refId": "B"
         },
         {
-          "expr": "kube_pod_container_resource_limits{job=\"kube-state-metrics\", namespace=\"$namespace\", container=\"$namespace-postgresql\", resource=\"cpu\"}",
+          "exemplar": true,
+          "expr": "kube_pod_container_resource_limits{job=\"kube-state-metrics\", namespace=\"$namespace\", pod=\"$pod\", container!=\"metrics-exporter\", resource=\"cpu\"}",
           "interval": "",
           "legendFormat": "Limit",
           "refId": "C"
@@ -697,6 +706,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:163",
           "format": "none",
           "label": null,
           "logBase": 1,
@@ -705,6 +715,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:164",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -769,7 +780,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "container_memory_usage_bytes{namespace=\"$namespace\", pod=\"$pod\", container=~\".*-postgresql\"}",
+          "exemplar": true,
+          "expr": "container_memory_usage_bytes{namespace=\"$namespace\", pod=\"$pod\", container!=\"metrics-exporter\", container!=\"POD\", container!=\"\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -777,7 +789,8 @@
           "refId": "A"
         },
         {
-          "expr": "kube_pod_container_resource_requests{namespace=\"$namespace\", pod=\"$pod\", container=~\".*-postgresql\", resource=\"memory\"}",
+          "exemplar": true,
+          "expr": "kube_pod_container_resource_requests{namespace=\"$namespace\", pod=\"$pod\", container!=\"metrics-exporter\", resource=\"memory\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -785,13 +798,15 @@
           "refId": "B"
         },
         {
-          "expr": "kube_pod_container_resource_limits{namespace=\"$namespace\", pod=\"$pod\", container=~\".*-postgresql\", resource=\"memory\"}",
+          "exemplar": true,
+          "expr": "kube_pod_container_resource_limits{namespace=\"$namespace\", pod=\"$pod\", container!=\"metrics-exporter\", resource=\"memory\"}",
           "interval": "",
           "legendFormat": "Limit",
           "refId": "C"
         },
         {
-          "expr": "container_memory_cache{namespace=\"$namespace\", pod=\"$pod\", container=~\".*-postgresql\"}",
+          "exemplar": true,
+          "expr": "container_memory_cache{namespace=\"$namespace\", pod=\"$pod\", container!=\"metrics-exporter\", container!=\"POD\", container!=\"\"}",
           "interval": "",
           "legendFormat": "Cache",
           "refId": "D"
@@ -817,6 +832,7 @@
       },
       "yaxes": [
         {
+          "$$hashKey": "object:517",
           "decimals": null,
           "format": "decbytes",
           "label": null,
@@ -826,6 +842,7 @@
           "show": true
         },
         {
+          "$$hashKey": "object:518",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -896,7 +913,8 @@
           "displayAliasType": "Warning / Critical",
           "displayType": "Regular",
           "displayValueWithAlias": "Never",
-          "expr": "(\n  kubelet_volume_stats_capacity_bytes{namespace=\"$namespace\", persistentvolumeclaim=\"data-$pod\"}\n  -\n  kubelet_volume_stats_available_bytes{namespace=\"$namespace\", persistentvolumeclaim=\"data-$pod\"}\n)\n/\nkubelet_volume_stats_capacity_bytes{namespace=\"$namespace\", persistentvolumeclaim=\"data-$pod\"}\n\r\n",
+          "exemplar": true,
+          "expr": "(\n  kubelet_volume_stats_capacity_bytes{namespace=\"$namespace\", persistentvolumeclaim=~\".*data-$pod\"}\n  -\n  kubelet_volume_stats_available_bytes{namespace=\"$namespace\", persistentvolumeclaim=~\".*data-$pod\"}\n)\n/\nkubelet_volume_stats_capacity_bytes{namespace=\"$namespace\", persistentvolumeclaim=~\".*data-$pod\"}\n\r\n",
           "interval": "",
           "legendFormat": "",
           "refId": "A",
@@ -1681,6 +1699,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "exemplar": true,
           "expr": "pg_stat_activity_count{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}",
           "format": "time_series",
           "interval": "",
@@ -1873,6 +1892,7 @@
       },
       "id": 76,
       "links": [],
+      "maxDataPoints": null,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -1893,9 +1913,10 @@
         {
           "exemplar": true,
           "expr": "max(pg_stat_activity_max_tx_duration{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"})",
+          "instant": false,
           "interval": "",
           "intervalFactor": 2,
-          "legendFormat": "max_tx_duration",
+          "legendFormat": "",
           "metric": "pg_stat_activity_max_tx_duration",
           "refId": "A",
           "step": 2
@@ -1958,7 +1979,7 @@
           "expr": "sum(irate(pg_stat_database_tup_returned{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m]))",
           "hide": false,
           "interval": "",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "tup_returned (seq scan)",
           "refId": "A",
           "step": 2
@@ -1968,7 +1989,7 @@
           "expr": "sum(irate(pg_stat_database_tup_fetched{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m]))",
           "hide": false,
           "interval": "",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "tup_fetched (idx access)",
           "refId": "B",
           "step": 2
@@ -1978,7 +1999,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Read tuple activity",
+      "title": "Read tuple activity per second",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2069,7 +2090,7 @@
           "expr": "irate(pg_stat_database_tup_inserted{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
           "format": "time_series",
           "interval": "",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "tup_inserted",
           "metric": "pg_stat_database_tup",
           "refId": "C",
@@ -2080,7 +2101,7 @@
           "expr": "irate(pg_stat_database_tup_updated{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
           "format": "time_series",
           "interval": "",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "tup_updated",
           "metric": "pg_stat_database_tup",
           "refId": "D",
@@ -2091,7 +2112,7 @@
           "expr": "irate(pg_stat_database_tup_deleted{datname=\"$datname\", pod=\"$pod\"}[$__rate_interval])",
           "format": "time_series",
           "interval": "",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "tup_deleted",
           "metric": "pg_stat_database_tup",
           "refId": "E",
@@ -2102,7 +2123,7 @@
       "timeFrom": null,
       "timeRegions": [],
       "timeShift": null,
-      "title": "Tuples changed",
+      "title": "Changed tuples activity per second",
       "tooltip": {
         "shared": true,
         "sort": 0,
@@ -2995,7 +3016,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "default",
           "value": "default"
         },
@@ -3045,7 +3066,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "label_values(pg_stat_activity_count{namespace=\"$namespace\"}, pod)\t",
+        "definition": "label_values(pg_up{namespace=\"$namespace\"}, pod)\t",
         "description": null,
         "error": null,
         "hide": 0,
@@ -3055,7 +3076,7 @@
         "name": "pod",
         "options": [],
         "query": {
-          "query": "label_values(pg_stat_activity_count{namespace=\"$namespace\"}, pod)\t",
+          "query": "label_values(pg_up{namespace=\"$namespace\"}, pod)\t",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -3072,7 +3093,7 @@
         "allValue": null,
         "current": {},
         "datasource": "${DS_PROMETHEUS}",
-        "definition": "label_values(pg_stat_activity_count{namespace=\"$namespace\", pod=\"$pod\"}, datname)\t",
+        "definition": "label_values(pg_database_size_bytes{namespace=\"$namespace\", pod=\"$pod\"}, datname)\t",
         "description": null,
         "error": null,
         "hide": 0,
@@ -3082,7 +3103,7 @@
         "name": "datname",
         "options": [],
         "query": {
-          "query": "label_values(pg_stat_activity_count{namespace=\"$namespace\", pod=\"$pod\"}, datname)\t",
+          "query": "label_values(pg_database_size_bytes{namespace=\"$namespace\", pod=\"$pod\"}, datname)\t",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -3098,7 +3119,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -3129,5 +3150,5 @@
   "timezone": "",
   "title": "PostgreSQL Database",
   "uid": "postgresql-database",
-  "version": 19
+  "version": 26
 }
