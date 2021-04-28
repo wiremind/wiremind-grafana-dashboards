@@ -47,7 +47,7 @@
   "gnetId": 8860,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1618414203592,
+  "iteration": 1619639785085,
   "links": [],
   "panels": [
     {
@@ -418,7 +418,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(container_network_receive_bytes_total{pod=~\"[[pod_name]].*\", namespace=~\"[[namespace]].*\"}[5m])",
+          "exemplar": true,
+          "expr": "rate(container_network_receive_bytes_total{pod=~\"[[pod_name]].*\", namespace=~\"[[namespace]].*\", interface!=\"tunl0\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 4,
@@ -518,7 +519,8 @@
       "steppedLine": false,
       "targets": [
         {
-          "expr": "rate(container_network_transmit_bytes_total{pod=~\"[[pod_name]].*\", namespace=~\"[[namespace]].*\"}[5m])",
+          "exemplar": true,
+          "expr": "rate(container_network_transmit_bytes_total{pod=~\"[[pod_name]].*\", namespace=~\"[[namespace]].*\", interface!=\"tunl0\"}[5m])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 4,
@@ -570,7 +572,7 @@
       }
     }
   ],
-  "refresh": "1m",
+  "refresh": "10s",
   "schemaVersion": 27,
   "style": "dark",
   "tags": [],
@@ -578,7 +580,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "default",
           "value": "default"
         },
@@ -637,7 +639,7 @@
         "name": "pod_name",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": ".*",
             "value": ".*"
           }
@@ -650,7 +652,7 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -680,5 +682,5 @@
   "timezone": "",
   "title": "Pods (Aggregated view)",
   "uid": "pods-aggregated-view",
-  "version": 36
+  "version": 40
 }
