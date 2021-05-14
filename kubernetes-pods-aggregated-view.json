@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.5.3"
+      "version": "7.5.5"
     },
     {
       "type": "panel",
@@ -47,7 +47,7 @@
   "gnetId": 8860,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1619639785085,
+  "iteration": 1620981068781,
   "links": [],
   "panels": [
     {
@@ -91,7 +91,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.3",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -130,7 +130,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:378",
           "format": "cpu",
           "label": null,
           "logBase": 1,
@@ -139,7 +138,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:379",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -197,7 +195,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.3",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -207,6 +205,7 @@
       "steppedLine": false,
       "targets": [
         {
+          "exemplar": true,
           "expr": "rate(container_cpu_usage_seconds_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}[5m])",
           "format": "time_series",
           "hide": false,
@@ -236,7 +235,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:457",
           "format": "cpu",
           "label": null,
           "logBase": 1,
@@ -245,7 +243,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:458",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -295,7 +292,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.3",
+      "pluginVersion": "7.5.5",
       "pointradius": 2,
       "points": false,
       "renderer": "flot",
@@ -332,7 +329,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:279",
           "format": "percentunit",
           "label": null,
           "logBase": 1,
@@ -341,7 +337,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:280",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -374,6 +369,101 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
+      "datasource": null,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "fill": 1,
+      "fillGradient": 0,
+      "gridPos": {
+        "h": 8,
+        "w": 24,
+        "x": 0,
+        "y": 27
+      },
+      "hiddenSeries": false,
+      "id": 14,
+      "legend": {
+        "alignAsTable": true,
+        "avg": true,
+        "current": true,
+        "max": true,
+        "min": true,
+        "show": true,
+        "total": false,
+        "values": true
+      },
+      "lines": true,
+      "linewidth": 1,
+      "nullPointMode": "null",
+      "options": {
+        "alertThreshold": true
+      },
+      "percentage": false,
+      "pluginVersion": "7.5.5",
+      "pointradius": 2,
+      "points": false,
+      "renderer": "flot",
+      "seriesOverrides": [],
+      "spaceLength": 10,
+      "stack": false,
+      "steppedLine": false,
+      "targets": [
+        {
+          "exemplar": true,
+          "expr": "sum by (pod) (container_memory_usage_bytes{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"})",
+          "interval": "",
+          "legendFormat": "{{ pod }}",
+          "refId": "A"
+        }
+      ],
+      "thresholds": [],
+      "timeFrom": null,
+      "timeRegions": [],
+      "timeShift": null,
+      "title": "Memory Usage",
+      "tooltip": {
+        "shared": true,
+        "sort": 2,
+        "value_type": "individual"
+      },
+      "type": "graph",
+      "xaxis": {
+        "buckets": null,
+        "mode": "time",
+        "name": null,
+        "show": true,
+        "values": []
+      },
+      "yaxes": [
+        {
+          "format": "decbytes",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        },
+        {
+          "format": "short",
+          "label": null,
+          "logBase": 1,
+          "max": null,
+          "min": null,
+          "show": true
+        }
+      ],
+      "yaxis": {
+        "align": false,
+        "alignLevel": null
+      }
+    },
+    {
+      "aliasColors": {},
+      "bars": false,
+      "dashLength": 10,
+      "dashes": false,
       "datasource": "${DS_PROMETHEUS}",
       "fieldConfig": {
         "defaults": {
@@ -387,7 +477,7 @@
         "h": 9,
         "w": 12,
         "x": 0,
-        "y": 27
+        "y": 35
       },
       "hiddenSeries": false,
       "id": 6,
@@ -408,7 +498,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.3",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -447,7 +537,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:692",
           "format": "decbytes",
           "label": null,
           "logBase": 1,
@@ -456,7 +545,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:693",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -488,7 +576,7 @@
         "h": 9,
         "w": 12,
         "x": 12,
-        "y": 27
+        "y": 35
       },
       "hiddenSeries": false,
       "id": 7,
@@ -509,7 +597,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.3",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -548,7 +636,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:769",
           "format": "decbytes",
           "label": null,
           "logBase": 1,
@@ -557,7 +644,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:770",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -682,5 +768,5 @@
   "timezone": "",
   "title": "Pods (Aggregated view)",
   "uid": "pods-aggregated-view",
-  "version": 40
+  "version": 45
 }
