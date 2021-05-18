@@ -842,8 +842,8 @@
       {
         "current": {
           "selected": false,
-          "text": "Prometheus",
-          "value": "Prometheus"
+          "text": "default",
+          "value": "default"
         },
         "description": null,
         "error": null,
@@ -920,5 +920,5 @@
   "timezone": "browser",
   "title": "RabbitMQ Monitoring",
   "uid": "XcmAVv0iz",
-  "version": 2
+  "version": 3
 }

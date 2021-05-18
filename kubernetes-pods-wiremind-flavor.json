@@ -640,8 +640,8 @@
       {
         "current": {
           "selected": false,
-          "text": "Prometheus",
-          "value": "Prometheus"
+          "text": "default",
+          "value": "default"
         },
         "description": null,
         "error": null,
@@ -799,5 +799,5 @@
   "timezone": "",
   "title": "Kubernetes / Pods (Wiremind Flavor)",
   "uid": "kubernetes-pods-wiremind-flavor",
-  "version": 19
+  "version": 20
 }

@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_PROMETHEUS",
-      "label": "Prometheus",
+      "name": "DS_THANOS",
+      "label": "Thanos",
       "description": "",
       "type": "datasource",
       "pluginId": "prometheus",
@@ -33,7 +33,7 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": "${DS_THANOS}",
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -47,7 +47,7 @@
   "gnetId": 8860,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1621256779012,
+  "iteration": 1621322969702,
   "links": [],
   "panels": [
     {
@@ -55,7 +55,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_THANOS}",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -156,7 +156,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_THANOS}",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -261,7 +261,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_THANOS}",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -352,7 +352,7 @@
     },
     {
       "collapsed": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_THANOS}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -369,7 +369,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_THANOS}",
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -464,7 +464,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_THANOS}",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -563,7 +563,7 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_THANOS}",
       "fieldConfig": {
         "defaults": {
           "links": []
@@ -666,7 +666,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "default",
           "value": "default"
         },
@@ -688,7 +688,7 @@
       {
         "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": "${DS_THANOS}",
         "definition": "",
         "description": null,
         "error": null,
@@ -768,5 +768,5 @@
   "timezone": "",
   "title": "Pods (Aggregated view)",
   "uid": "pods-aggregated-view",
-  "version": 48
+  "version": 53
 }
