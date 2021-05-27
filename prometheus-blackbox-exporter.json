@@ -14,7 +14,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.5.3"
+      "version": "7.5.5"
     },
     {
       "type": "panel",
@@ -48,12 +48,12 @@
       }
     ]
   },
-  "description": "",
+  "description": "Prometheus Blackbox Exporter",
   "editable": true,
   "gnetId": 10408,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1619093623352,
+  "iteration": 1622138296373,
   "links": [],
   "panels": [
     {
@@ -148,18 +148,15 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.3",
+      "pluginVersion": "7.5.5",
       "repeat": null,
       "repeatDirection": "h",
       "targets": [
         {
-          "exemplar": true,
           "expr": "probe_success{target=~\"$targets\"}",
           "format": "time_series",
-          "instant": true,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "",
           "refId": "A"
         }
       ],
@@ -227,7 +224,7 @@
       "id": 18,
       "interval": null,
       "links": [],
-      "maxDataPoints": null,
+      "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -235,7 +232,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "last"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
@@ -243,17 +240,14 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.3",
+      "pluginVersion": "7.5.5",
       "repeatDirection": "h",
       "targets": [
         {
-          "exemplar": true,
           "expr": "probe_http_ssl{target=~\"$targets\"}",
           "format": "time_series",
-          "instant": true,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "",
           "refId": "A"
         }
       ],
@@ -297,7 +291,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.3",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -335,7 +329,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:778",
           "format": "s",
           "label": null,
           "logBase": 1,
@@ -344,7 +337,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:779",
           "format": "short",
           "label": null,
           "logBase": 1,
@@ -395,7 +387,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.5.3",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -516,7 +508,7 @@
       "id": 19,
       "interval": null,
       "links": [],
-      "maxDataPoints": null,
+      "maxDataPoints": 100,
       "options": {
         "colorMode": "background",
         "graphMode": "none",
@@ -532,17 +524,14 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.3",
+      "pluginVersion": "7.5.5",
       "repeatDirection": "h",
       "targets": [
         {
-          "exemplar": true,
           "expr": "probe_ssl_earliest_cert_expiry{target=~\"$targets\"}-time()",
           "format": "time_series",
-          "instant": true,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "",
           "refId": "A"
         }
       ],
@@ -555,32 +544,11 @@
       "fieldConfig": {
         "defaults": {
           "color": {
+            "fixedColor": "green",
             "mode": "thresholds"
           },
           "decimals": 0,
-          "mappings": [
-            {
-              "id": 0,
-              "op": "=",
-              "text": "N/A",
-              "type": 1,
-              "value": "null"
-            },
-            {
-              "id": 1,
-              "op": "=",
-              "text": "YES",
-              "type": 1,
-              "value": "1"
-            },
-            {
-              "id": 2,
-              "op": "=",
-              "text": "NO",
-              "type": 1,
-              "value": "0"
-            }
-          ],
+          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -589,12 +557,16 @@
                 "value": null
               },
               {
-                "color": "rgba(237, 129, 40, 0.89)",
+                "color": "green",
                 "value": 200
               },
               {
-                "color": "#d44a3a",
-                "value": 299
+                "color": "#EAB839",
+                "value": 300
+              },
+              {
+                "color": "red",
+                "value": 400
               }
             ]
           },
@@ -611,7 +583,7 @@
       "id": 20,
       "interval": null,
       "links": [],
-      "maxDataPoints": null,
+      "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -619,7 +591,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "last"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
@@ -627,17 +599,14 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.3",
+      "pluginVersion": "7.5.5",
       "repeatDirection": "h",
       "targets": [
         {
-          "exemplar": true,
           "expr": "probe_http_status_code{target=~\"$targets\"}",
           "format": "time_series",
-          "instant": true,
           "interval": "$interval",
           "intervalFactor": 1,
-          "legendFormat": "",
           "refId": "A"
         }
       ],
@@ -688,7 +657,7 @@
       "id": 26,
       "interval": null,
       "links": [],
-      "maxDataPoints": 10000,
+      "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -699,19 +668,18 @@
             "mean"
           ],
           "fields": "",
-          "limit": 1,
           "values": false
         },
         "text": {},
-        "textMode": "value"
+        "textMode": "auto"
       },
-      "pluginVersion": "7.5.3",
+      "pluginVersion": "7.5.5",
       "targets": [
         {
-          "exemplar": false,
-          "expr": "avg(probe_success{target=~\"$targets\"})",
+          "exemplar": true,
+          "expr": "avg_over_time(probe_success{target=~\"$targets\"}[30d])",
           "format": "time_series",
-          "instant": false,
+          "instant": true,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "",
@@ -766,7 +734,7 @@
       "id": 23,
       "interval": null,
       "links": [],
-      "maxDataPoints": 1000,
+      "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -782,7 +750,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.3",
+      "pluginVersion": "7.5.5",
       "targets": [
         {
           "expr": "avg(probe_duration_seconds{target=~\"$targets\"})",
@@ -838,7 +806,7 @@
       "id": 24,
       "interval": null,
       "links": [],
-      "maxDataPoints": 1000,
+      "maxDataPoints": 100,
       "options": {
         "colorMode": "value",
         "graphMode": "none",
@@ -854,7 +822,7 @@
         "text": {},
         "textMode": "auto"
       },
-      "pluginVersion": "7.5.3",
+      "pluginVersion": "7.5.5",
       "targets": [
         {
           "expr": "avg(probe_dns_lookup_time_seconds{target=~\"$targets\"})",
@@ -871,7 +839,10 @@
   "refresh": "1m",
   "schemaVersion": 27,
   "style": "dark",
-  "tags": [],
+  "tags": [
+    "blackbox",
+    "prometheus"
+  ],
   "templating": {
     "list": [
       {
@@ -961,7 +932,6 @@
           }
         ],
         "query": "5s,10s,30s,1m,10m,30m,1h,6h,12h,1d,7d,14d,30d",
-        "queryValue": "",
         "refresh": 2,
         "skipUrlSync": false,
         "type": "interval"
@@ -983,7 +953,7 @@
           "query": "label_values(probe_success, target)",
           "refId": "Prometheus-targets-Variable-Query"
         },
-        "refresh": 2,
+        "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "sort": 0,
@@ -1027,5 +997,5 @@
   "timezone": "",
   "title": "Prometheus Blackbox Exporter",
   "uid": "xtkCtBkiz",
-  "version": 20
+  "version": 210030
 }
