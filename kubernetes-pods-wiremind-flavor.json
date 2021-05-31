@@ -1,6 +1,14 @@
 {
   "__inputs": [
     {
+      "name": "DS_THANOS",
+      "label": "Thanos",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    },
+    {
       "name": "DS_PROMETHEUS",
       "label": "Prometheus",
       "description": "",
@@ -14,7 +22,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "7.4.5"
+      "version": "7.5.5"
     },
     {
       "type": "panel",
@@ -51,7 +59,7 @@
   "gnetId": 13792,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1617702252799,
+  "iteration": 1622461483268,
   "links": [
     {
       "icon": "external link",
@@ -69,11 +77,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_THANOS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -86,6 +92,7 @@
       },
       "hiddenSeries": false,
       "id": 2,
+      "interval": "15",
       "legend": {
         "alignAsTable": true,
         "avg": true,
@@ -105,7 +112,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -116,34 +123,38 @@
       "steppedLine": false,
       "targets": [
         {
+          "exemplar": true,
           "expr": "container_memory_usage_bytes{job=\"kubelet\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container=~\"$container\", container!=\"POD\"}",
           "format": "time_series",
           "interval": "",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "Current: {{ container }}",
           "refId": "A"
         },
         {
+          "exemplar": true,
           "expr": "kube_pod_container_resource_requests{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", resource=\"memory\", pod=\"$pod\", container=~\"$container\"}",
           "format": "time_series",
           "interval": "",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "Requested: {{ container }}",
           "refId": "B"
         },
         {
+          "exemplar": true,
           "expr": "kube_pod_container_resource_limits{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", resource=\"memory\", pod=\"$pod\", container=~\"$container\"}",
           "format": "time_series",
           "interval": "",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "Limit: {{ container }}",
           "refId": "C"
         },
         {
+          "exemplar": true,
           "expr": "container_memory_cache{job=\"kubelet\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\", container=~\"$container\", container!=\"POD\"}",
           "format": "time_series",
           "interval": "",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "Cache: {{ container }}",
           "refId": "D"
         }
@@ -194,11 +205,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_THANOS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -230,7 +239,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -311,11 +320,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_THANOS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -347,7 +354,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -420,11 +427,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_THANOS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 0,
@@ -456,7 +461,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.5",
       "pointradius": 1,
       "points": false,
       "renderer": "flot",
@@ -479,7 +484,6 @@
       ],
       "thresholds": [
         {
-          "$$hashKey": "object:109",
           "colorMode": "critical",
           "fill": true,
           "line": true,
@@ -507,7 +511,6 @@
       },
       "yaxes": [
         {
-          "$$hashKey": "object:79",
           "format": "percentunit",
           "label": null,
           "logBase": 1,
@@ -516,7 +519,6 @@
           "show": true
         },
         {
-          "$$hashKey": "object:80",
           "format": "s",
           "label": "",
           "logBase": 1,
@@ -535,11 +537,9 @@
       "bars": false,
       "dashLength": 10,
       "dashes": false,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": "${DS_THANOS}",
       "fieldConfig": {
-        "defaults": {
-          "custom": {}
-        },
+        "defaults": {},
         "overrides": []
       },
       "fill": 1,
@@ -571,7 +571,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "7.4.5",
+      "pluginVersion": "7.5.5",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -639,7 +639,7 @@
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "default",
           "value": "default"
         },
@@ -652,6 +652,7 @@
         "name": "datasource",
         "options": [],
         "query": "prometheus",
+        "queryValue": "",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -799,5 +800,5 @@
   "timezone": "",
   "title": "Kubernetes / Pods (Wiremind Flavor)",
   "uid": "kubernetes-pods-wiremind-flavor",
-  "version": 20
+  "version": 30
 }
