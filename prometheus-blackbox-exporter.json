@@ -53,7 +53,7 @@
   "gnetId": 10408,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1623675125026,
+  "iteration": 1623676802903,
   "links": [],
   "panels": [
     {
@@ -230,7 +230,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "avg_over_time(min by (target) (probe_success{target=~\"$targets\"})[30d:1m])",
+          "expr": "avg_over_time(min by (target) (probe_success{target=~\"$targets\"} and on() hour() > $start and on() hour() < $end)[30d:1m])",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -859,7 +859,7 @@
         "auto_count": 10,
         "auto_min": "10s",
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "auto",
           "value": "$__auto_interval_interval"
         },
@@ -972,6 +972,50 @@
         "tagsQuery": "",
         "type": "query",
         "useTags": false
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "0",
+          "value": "0"
+        },
+        "description": "Start time for each day. Uptime will be calculated with this restriction for each day. Useful to query uptime for business hours only",
+        "error": null,
+        "hide": 0,
+        "label": "Start time for each day (UTC)",
+        "name": "start",
+        "options": [
+          {
+            "selected": true,
+            "text": "0",
+            "value": "0"
+          }
+        ],
+        "query": "0",
+        "skipUrlSync": false,
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "24",
+          "value": "24"
+        },
+        "description": "End time for each day. Uptime will be calculated with this restriction for each day. Useful to query uptime for business hours only",
+        "error": null,
+        "hide": 0,
+        "label": "End time for each day (UTC)",
+        "name": "end",
+        "options": [
+          {
+            "selected": true,
+            "text": "24",
+            "value": "24"
+          }
+        ],
+        "query": "24",
+        "skipUrlSync": false,
+        "type": "textbox"
       }
     ]
   },
@@ -1007,5 +1051,5 @@
   "timezone": "",
   "title": "Prometheus Blackbox Exporter",
   "uid": "prometheus-blackbox-exporter",
-  "version": 8
+  "version": 12
 }
