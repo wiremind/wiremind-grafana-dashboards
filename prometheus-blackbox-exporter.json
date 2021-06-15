@@ -53,7 +53,7 @@
   "gnetId": 10408,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1623676802903,
+  "iteration": 1623762233179,
   "links": [],
   "panels": [
     {
@@ -230,7 +230,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "avg_over_time(min by (target) (probe_success{target=~\"$targets\"} and on() hour() > $start and on() hour() < $end)[30d:1m])",
+          "expr": "avg_over_time(min by (target) (probe_success{target=~\"$targets\"} and on() hour() > $start and on() hour() < $end)[$__range:1m])",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -241,7 +241,7 @@
       ],
       "timeFrom": null,
       "timeShift": null,
-      "title": "Uptime 30d",
+      "title": "Uptime",
       "type": "stat"
     },
     {
@@ -859,7 +859,7 @@
         "auto_count": 10,
         "auto_min": "10s",
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "auto",
           "value": "$__auto_interval_interval"
         },
@@ -975,7 +975,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "0",
           "value": "0"
         },
@@ -997,7 +997,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "24",
           "value": "24"
         },
@@ -1051,5 +1051,5 @@
   "timezone": "",
   "title": "Prometheus Blackbox Exporter",
   "uid": "prometheus-blackbox-exporter",
-  "version": 12
+  "version": 4
 }
