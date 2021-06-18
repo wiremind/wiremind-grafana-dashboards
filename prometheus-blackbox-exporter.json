@@ -53,7 +53,7 @@
   "gnetId": 10408,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1623762233179,
+  "iteration": 1624011345654,
   "links": [],
   "panels": [
     {
@@ -863,10 +863,10 @@
           "text": "auto",
           "value": "$__auto_interval_interval"
         },
-        "description": null,
+        "description": "Minimum interval between each data point (a.k.a min step)",
         "error": null,
         "hide": 0,
-        "label": "Interval",
+        "label": "Interval (a.k.a min step)",
         "name": "interval",
         "options": [
           {
@@ -1051,5 +1051,5 @@
   "timezone": "",
   "title": "Prometheus Blackbox Exporter",
   "uid": "prometheus-blackbox-exporter",
-  "version": 4
+  "version": 7
 }
