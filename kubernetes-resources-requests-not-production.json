@@ -20,7 +20,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.0.3"
+      "version": "8.1.0"
     },
     {
       "type": "panel",
@@ -112,7 +112,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -249,11 +249,11 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.1.0",
       "targets": [
         {
           "exemplar": true,
-          "expr": "max(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n  kube_pod_container_resource_requests{resource=\"cpu\"}\n) by (instance))\n\n/ \n\nmin(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n  kube_node_status_allocatable{resource=\"cpu\"}\n) by (instance))\n\n\n* 100",
+          "expr": "min(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n    kube_pod_container_resource_requests{resource=\"cpu\"}\n    * on (namespace, pod) group_left\n    kube_pod_status_phase{phase=~\"Running\"}\n) by (instance))\n\n/ \n\nmin(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n  kube_node_status_allocatable{resource=\"cpu\"}\n) by (instance))\n\n\n* 100",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -317,7 +317,7 @@
         "alertThreshold": true
       },
       "percentage": false,
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.1.0",
       "pointradius": 5,
       "points": false,
       "renderer": "flot",
@@ -454,11 +454,11 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.0.3",
+      "pluginVersion": "8.1.0",
       "targets": [
         {
           "exemplar": true,
-          "expr": "max(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n  kube_pod_container_resource_requests{resource=\"memory\"}\n) by (instance))\n\n/ \n\nmin(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n  kube_node_status_allocatable{resource=\"memory\"}\n) by (instance))\n\n\n* 100",
+          "expr": "min(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n    kube_pod_container_resource_requests{resource=\"memory\"}\n    * on (namespace, pod) group_left\n    kube_pod_status_phase{phase=~\"Running\"}\n) by (instance))\n/ \n\nmin(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n  kube_node_status_allocatable{resource=\"memory\"}\n) by (instance))\n\n\n* 100",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -647,5 +647,5 @@
   "timezone": "browser",
   "title": "Kubernetes Resource Requests (Not production)",
   "uid": "XZ-kM6KMk",
-  "version": 21
+  "version": 24
 }
