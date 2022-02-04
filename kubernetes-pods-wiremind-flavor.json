@@ -9,12 +9,13 @@
       "pluginName": "Prometheus"
     }
   ],
+  "__elements": [],
   "__requires": [
     {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.2.1"
+      "version": "8.3.4"
     },
     {
       "type": "datasource",
@@ -35,7 +36,7 @@
         "builtIn": 1,
         "datasource": "${DS_THANOS}",
         "enable": true,
-        "expr": "time() == BOOL timestamp(rate(kube_pod_container_status_restarts_total{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[2m]) > 0)",
+        "expr": "time() == BOOL timestamp(rate(kube_pod_container_status_restarts_total{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container=~\"$container\"}[2m]) > 0)",
         "hide": false,
         "iconColor": "rgba(215, 44, 44, 1)",
         "name": "Restarts",
@@ -52,7 +53,7 @@
   "gnetId": 13792,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1636024794557,
+  "iteration": 1643985325346,
   "links": [
     {
       "icon": "external link",
@@ -67,7 +68,9 @@
   "liveNow": false,
   "panels": [
     {
-      "datasource": "${DS_THANOS}",
+      "datasource": {
+        "uid": "${DS_THANOS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -143,7 +146,6 @@
         }
       },
       "pluginVersion": "8.2.1",
-      "repeat": null,
       "targets": [
         {
           "exemplar": true,
@@ -182,13 +184,13 @@
           "refId": "D"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Memory Usage",
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_THANOS}",
+      "datasource": {
+        "uid": "${DS_THANOS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -263,7 +265,6 @@
         }
       },
       "pluginVersion": "8.2.1",
-      "repeat": null,
       "targets": [
         {
           "expr": "irate(container_cpu_usage_seconds_total{job=\"kubelet\", cluster=\"$cluster\", namespace=\"$namespace\", image!=\"\", pod=\"$pod\", container=~\"$container\", container!=\"POD\"}[2m])",
@@ -290,13 +291,13 @@
           "refId": "C"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "CPU Usage",
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_THANOS}",
+      "datasource": {
+        "uid": "${DS_THANOS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -371,7 +372,6 @@
         }
       },
       "pluginVersion": "8.2.1",
-      "repeat": null,
       "targets": [
         {
           "expr": "sort_desc(sum by (pod) (irate(container_network_receive_bytes_total{job=\"kubelet\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[2m])))",
@@ -390,13 +390,13 @@
           "refId": "B"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Network I/O",
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_THANOS}",
+      "datasource": {
+        "uid": "${DS_THANOS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -480,18 +480,17 @@
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "Throttling: {{container}}",
-          "legendLink": null,
           "refId": "A",
           "step": 10
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "CPU Throttling",
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_THANOS}",
+      "datasource": {
+        "uid": "${DS_THANOS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -566,7 +565,6 @@
         }
       },
       "pluginVersion": "8.2.1",
-      "repeat": null,
       "targets": [
         {
           "expr": "max by (container) (kube_pod_container_status_restarts_total{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container=~\"$container\"})",
@@ -576,29 +574,24 @@
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Total Restarts Per Container",
       "type": "timeseries"
     }
   ],
   "refresh": false,
-  "schemaVersion": 31,
+  "schemaVersion": 34,
   "style": "dark",
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "default",
           "value": "default"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": null,
         "multi": false,
         "name": "datasource",
         "options": [],
@@ -610,12 +603,12 @@
         "type": "datasource"
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_THANOS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_THANOS}"
+        },
         "definition": "",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "cluster",
@@ -636,12 +629,12 @@
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_THANOS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_THANOS}"
+        },
         "definition": "",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Namespace",
@@ -662,12 +655,12 @@
         "useTags": false
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_THANOS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_THANOS}"
+        },
         "definition": "",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Pod",
@@ -688,12 +681,13 @@
         "useTags": false
       },
       {
-        "allValue": null,
+        "allValue": ".*",
         "current": {},
-        "datasource": "${DS_THANOS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_THANOS}"
+        },
         "definition": "",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": true,
         "label": "Container",
@@ -716,7 +710,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -747,5 +741,6 @@
   "timezone": "",
   "title": "Kubernetes / Pods (Wiremind Flavor)",
   "uid": "kubernetes-pods-wiremind-flavor",
-  "version": 39
+  "version": 44,
+  "weekStart": ""
 }
