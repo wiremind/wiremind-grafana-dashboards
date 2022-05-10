@@ -9,12 +9,13 @@
       "pluginName": "Prometheus"
     }
   ],
+  "__elements": [],
   "__requires": [
     {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.2.1"
+      "version": "8.4.5"
     },
     {
       "type": "datasource",
@@ -48,12 +49,28 @@
   "gnetId": 8860,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1636366233250,
+  "iteration": 1652195824043,
   "links": [],
   "liveNow": false,
   "panels": [
     {
-      "datasource": "${DS_THANOS}",
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 18,
+      "panels": [],
+      "title": "CPU",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_THANOS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -110,7 +127,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 1
       },
       "id": 8,
       "links": [],
@@ -125,14 +142,19 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.3",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_THANOS}"
+          },
           "exemplar": true,
-          "expr": "sum(rate(container_cpu_usage_seconds_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}[5m]))",
+          "expr": "sum(rate(container_cpu_usage_seconds_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}[5m]))",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -141,6 +163,10 @@
           "refId": "A"
         },
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_THANOS}"
+          },
           "exemplar": true,
           "expr": "",
           "hide": false,
@@ -149,13 +175,14 @@
           "refId": "B"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "CPU sum (instant rate)",
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_THANOS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_THANOS}"
+      },
       "description": "Click on a specific point to open dedicated Pod dashboard",
       "fieldConfig": {
         "defaults": {
@@ -219,7 +246,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 9
+        "y": 10
       },
       "id": 2,
       "links": [],
@@ -235,14 +262,19 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.3",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_THANOS}"
+          },
           "exemplar": true,
-          "expr": "rate(container_cpu_usage_seconds_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}[5m])",
+          "expr": "rate(container_cpu_usage_seconds_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}[5m])",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -251,13 +283,14 @@
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "CPU per container (5 minutes average)",
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_THANOS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_THANOS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -316,7 +349,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 18
+        "y": 19
       },
       "id": 12,
       "options": {
@@ -329,324 +362,360 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.0.3",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_THANOS}"
+          },
           "exemplar": true,
-          "expr": "sum (irate(container_cpu_cfs_throttled_periods_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\"}[5m]))\n/\nsum (irate(container_cpu_cfs_periods_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\"}[5m]))",
+          "expr": "sum (irate(container_cpu_cfs_throttled_periods_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\"}[5m]))\n/\nsum (irate(container_cpu_cfs_periods_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\"}[5m]))",
           "interval": "",
           "legendFormat": "Sum",
           "refId": "A"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "CPU Throttling (aggregated, instant)",
       "type": "timeseries"
     },
     {
-      "collapsed": false,
-      "datasource": "${DS_THANOS}",
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 27
       },
-      "id": 10,
-      "panels": [],
-      "title": "Network",
+      "id": 16,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_THANOS}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [
+                {
+                  "targetBlank": true,
+                  "title": "",
+                  "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/kubernetes-compute-resources-pod?orgId=1&var-datasource=${datasource}&var-cluster=${cluster}&var-namespace=${namespace}&var-pod=${__field.labels.pod}&${__url_time_range}"
+                }
+              ],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 24,
+            "x": 0,
+            "y": 28
+          },
+          "id": 14,
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "lastNotNull",
+                "max",
+                "min"
+              ],
+              "displayMode": "table",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.0.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_THANOS}"
+              },
+              "exemplar": true,
+              "expr": "container_memory_usage_bytes{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}\n",
+              "interval": "",
+              "legendFormat": "{{ pod }}",
+              "refId": "A"
+            }
+          ],
+          "title": "Memory Usage",
+          "type": "timeseries"
+        }
+      ],
+      "title": "Memory",
       "type": "row"
     },
     {
-      "datasource": "${DS_THANOS}",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [
-            {
-              "targetBlank": true,
-              "title": "",
-              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/kubernetes-compute-resources-pod?orgId=1&var-datasource=${datasource}&var-cluster=${cluster}&var-namespace=${namespace}&var-pod=${__field.labels.pod}&${__url_time_range}"
-            }
-          ],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
+      "collapsed": true,
+      "datasource": {
+        "uid": "${DS_THANOS}"
       },
       "gridPos": {
-        "h": 8,
+        "h": 1,
         "w": 24,
         "x": 0,
-        "y": 27
+        "y": 28
       },
-      "id": 14,
-      "options": {
-        "legend": {
-          "calcs": [
-            "mean",
-            "lastNotNull",
-            "max",
-            "min"
-          ],
-          "displayMode": "table",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.0.3",
-      "targets": [
+      "id": 10,
+      "panels": [
         {
-          "exemplar": true,
-          "expr": "container_memory_usage_bytes{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}",
-          "interval": "",
-          "legendFormat": "{{ pod }}",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Memory Usage",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "${DS_THANOS}",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_THANOS}"
           },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "links": [
-            {
-              "targetBlank": true,
-              "title": "",
-              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/kubernetes-compute-resources-pod?orgId=1&var-datasource=${datasource}&var-cluster=${cluster}&var-namespace=${namespace}&var-pod=${__field.labels.pod}&${__url_time_range}"
-            }
-          ],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
               },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [
+                {
+                  "targetBlank": true,
+                  "title": "",
+                  "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/kubernetes-compute-resources-pod?orgId=1&var-datasource=${datasource}&var-cluster=${cluster}&var-namespace=${namespace}&var-pod=${__field.labels.pod}&${__url_time_range}"
+                }
+              ],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": []
           },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 0,
-        "y": 35
-      },
-      "id": 6,
-      "links": [],
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.0.3",
-      "targets": [
-        {
-          "exemplar": true,
-          "expr": "rate(container_network_receive_bytes_total{pod=~\"[[pod_name]].*\", namespace=~\"[[namespace]].*\", interface!=\"tunl0\"}[5m])",
-          "format": "time_series",
-          "interval": "",
-          "intervalFactor": 4,
-          "legendFormat": "{{ pod }}",
-          "refId": "A"
-        }
-      ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Network RX (5 minutes average)",
-      "type": "timeseries"
-    },
-    {
-      "datasource": "${DS_THANOS}",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 0,
+            "y": 37
           },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
+          "id": 6,
+          "links": [],
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
             },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": true,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
             }
           },
-          "links": [
+          "pluginVersion": "8.0.3",
+          "targets": [
             {
-              "targetBlank": true,
-              "title": "",
-              "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/kubernetes-compute-resources-pod?orgId=1&var-datasource=${datasource}&var-cluster=${cluster}&var-namespace=${namespace}&var-pod=${__field.labels.pod}&${__url_time_range}"
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_THANOS}"
+              },
+              "exemplar": true,
+              "expr": "rate(container_network_receive_bytes_total{pod=~\"[[pod_name]].*\", namespace=~\"[[namespace]].*\", cluster=~\"$cluster.*\", interface!=\"tunl0\"}[5m])",
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 4,
+              "legendFormat": "{{ pod }}",
+              "refId": "A"
             }
           ],
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "decbytes"
+          "title": "Network RX (5 minutes average)",
+          "type": "timeseries"
         },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 9,
-        "w": 12,
-        "x": 12,
-        "y": 35
-      },
-      "id": 7,
-      "links": [],
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single"
-        }
-      },
-      "pluginVersion": "8.0.3",
-      "targets": [
         {
-          "exemplar": true,
-          "expr": "rate(container_network_transmit_bytes_total{pod=~\"[[pod_name]].*\", namespace=~\"[[namespace]].*\", interface!=\"tunl0\"}[5m])",
-          "format": "time_series",
-          "interval": "",
-          "intervalFactor": 4,
-          "legendFormat": "{{ pod }}",
-          "refId": "A"
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_THANOS}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "spanNulls": true,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "links": [
+                {
+                  "targetBlank": true,
+                  "title": "",
+                  "url": "/d/6581e46e4e5c7ba40a07646395ef7b23/kubernetes-compute-resources-pod?orgId=1&var-datasource=${datasource}&var-cluster=${cluster}&var-namespace=${namespace}&var-pod=${__field.labels.pod}&${__url_time_range}"
+                }
+              ],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green"
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 9,
+            "w": 12,
+            "x": 12,
+            "y": 37
+          },
+          "id": 7,
+          "links": [],
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom"
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.0.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_THANOS}"
+              },
+              "exemplar": true,
+              "expr": "rate(container_network_transmit_bytes_total{pod=~\"[[pod_name]].*\", namespace=~\"[[namespace]].*\", cluster=~\"$cluster.*\", interface!=\"tunl0\"}[5m])",
+              "format": "time_series",
+              "interval": "",
+              "intervalFactor": 4,
+              "legendFormat": "{{ pod }}",
+              "refId": "A"
+            }
+          ],
+          "title": "Network TX (5 minutes average)",
+          "type": "timeseries"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
-      "title": "Network TX (5 minutes average)",
-      "type": "timeseries"
+      "title": "Network",
+      "type": "row"
     }
   ],
   "refresh": "1m",
-  "schemaVersion": 31,
+  "schemaVersion": 35,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -657,11 +726,8 @@
           "text": "default",
           "value": "default"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": null,
         "multi": false,
         "name": "datasource",
         "options": [],
@@ -673,12 +739,12 @@
         "type": "datasource"
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_THANOS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_THANOS}"
+        },
         "definition": "label_values(kube_pod_info, cluster)",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
         "label": "Cluster",
@@ -696,15 +762,14 @@
         "type": "query"
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_THANOS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_THANOS}"
+        },
         "definition": "label_values(kube_pod_info{cluster=\"$cluster\"}, namespace)",
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": null,
         "multi": false,
         "name": "namespace",
         "options": [],
@@ -723,23 +788,20 @@
       },
       {
         "current": {
-          "selected": true,
-          "text": ".*",
-          "value": ".*"
+          "selected": false,
+          "text": "calico-node.*",
+          "value": "calico-node.*"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
-        "label": null,
         "name": "pod_name",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": ".*",
             "value": ".*"
           }
         ],
-        "query": ".*",
+        "query": "calico-node.*",
         "queryValue": ".*",
         "skipUrlSync": false,
         "type": "textbox"
@@ -747,7 +809,7 @@
     ]
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -777,5 +839,6 @@
   "timezone": "",
   "title": "Pods (Aggregated view)",
   "uid": "pods-aggregated-view",
-  "version": 69
+  "version": 80,
+  "weekStart": ""
 }
