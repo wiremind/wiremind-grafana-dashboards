@@ -1,14 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_THANOS",
-      "label": "Thanos",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
   "__elements": [],
   "__requires": [
     {
@@ -34,7 +24,7 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "${DS_THANOS}",
+        "datasource": "-- Grafana --",
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -67,10 +57,7 @@
       "type": "row"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_THANOS}"
-      },
+      "datasource": "${datasource}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -149,10 +136,7 @@
       "pluginVersion": "8.0.3",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_THANOS}"
-          },
+          "datasource": "${datasource}",
           "exemplar": true,
           "expr": "sum(rate(container_cpu_usage_seconds_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}[5m]))",
           "format": "time_series",
@@ -163,10 +147,7 @@
           "refId": "A"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_THANOS}"
-          },
+          "datasource": "${datasource}",
           "exemplar": true,
           "expr": "",
           "hide": false,
@@ -179,10 +160,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_THANOS}"
-      },
+      "datasource": "${datasource}",
       "description": "Click on a specific point to open dedicated Pod dashboard",
       "fieldConfig": {
         "defaults": {
@@ -269,10 +247,7 @@
       "pluginVersion": "8.0.3",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_THANOS}"
-          },
+          "datasource": "${datasource}",
           "exemplar": true,
           "expr": "rate(container_cpu_usage_seconds_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}[5m])",
           "format": "time_series",
@@ -287,10 +262,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${DS_THANOS}"
-      },
+      "datasource": "${datasource}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -369,10 +341,7 @@
       "pluginVersion": "8.0.3",
       "targets": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_THANOS}"
-          },
+          "datasource": "${datasource}",
           "exemplar": true,
           "expr": "sum (irate(container_cpu_cfs_throttled_periods_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\"}[5m]))\n/\nsum (irate(container_cpu_cfs_periods_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\"}[5m]))",
           "interval": "",
@@ -394,10 +363,7 @@
       "id": 16,
       "panels": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_THANOS}"
-          },
+          "datasource": "${datasource}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -478,10 +444,7 @@
           "pluginVersion": "8.0.3",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_THANOS}"
-              },
+              "datasource": "${datasource}",
               "exemplar": true,
               "expr": "container_memory_usage_bytes{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}\n",
               "interval": "",
@@ -498,9 +461,7 @@
     },
     {
       "collapsed": true,
-      "datasource": {
-        "uid": "${DS_THANOS}"
-      },
+      "datasource": "${datasource}",
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -510,10 +471,7 @@
       "id": 10,
       "panels": [
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_THANOS}"
-          },
+          "datasource": "${datasource}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -593,10 +551,7 @@
           "pluginVersion": "8.0.3",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_THANOS}"
-              },
+              "datasource": "${datasource}",
               "exemplar": true,
               "expr": "rate(container_network_receive_bytes_total{pod=~\"[[pod_name]].*\", namespace=~\"[[namespace]].*\", cluster=~\"$cluster.*\", interface!=\"tunl0\"}[5m])",
               "format": "time_series",
@@ -610,10 +565,7 @@
           "type": "timeseries"
         },
         {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${DS_THANOS}"
-          },
+          "datasource": "${datasource}",
           "fieldConfig": {
             "defaults": {
               "color": {
@@ -693,10 +645,7 @@
           "pluginVersion": "8.0.3",
           "targets": [
             {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${DS_THANOS}"
-              },
+              "datasource": "${datasource}",
               "exemplar": true,
               "expr": "rate(container_network_transmit_bytes_total{pod=~\"[[pod_name]].*\", namespace=~\"[[namespace]].*\", cluster=~\"$cluster.*\", interface!=\"tunl0\"}[5m])",
               "format": "time_series",
@@ -740,10 +689,7 @@
       },
       {
         "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${DS_THANOS}"
-        },
+        "datasource": "${datasource}",
         "definition": "label_values(kube_pod_info, cluster)",
         "hide": 0,
         "includeAll": false,
@@ -763,10 +709,7 @@
       },
       {
         "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${DS_THANOS}"
-        },
+        "datasource": "${datasource}",
         "definition": "label_values(kube_pod_info{cluster=\"$cluster\"}, namespace)",
         "hide": 0,
         "includeAll": false,

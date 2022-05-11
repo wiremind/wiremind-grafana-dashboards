@@ -1,14 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_THANOS",
-      "label": "Thanos",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
   "__elements": [],
   "__requires": [
     {
@@ -34,7 +24,16 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "${DS_THANOS}",
+        "datasource": "-- Grafana --",
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      },
+      {
+        "builtIn": 2,
+        "datasource": "${datasource}",
         "enable": true,
         "expr": "time() == BOOL timestamp(rate(kube_pod_container_status_restarts_total{job=\"kube-state-metrics\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container=~\"$container\"}[2m]) > 0)",
         "hide": false,
@@ -68,9 +67,7 @@
   "liveNow": false,
   "panels": [
     {
-      "datasource": {
-        "uid": "${DS_THANOS}"
-      },
+      "datasource": "${datasource}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -188,9 +185,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "uid": "${DS_THANOS}"
-      },
+      "datasource": "${datasource}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -295,9 +290,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "uid": "${DS_THANOS}"
-      },
+      "datasource": "${datasource}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -394,9 +387,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "uid": "${DS_THANOS}"
-      },
+      "datasource": "${datasource}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -488,9 +479,7 @@
       "type": "timeseries"
     },
     {
-      "datasource": {
-        "uid": "${DS_THANOS}"
-      },
+      "datasource": "${datasource}",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -604,10 +593,7 @@
       },
       {
         "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${DS_THANOS}"
-        },
+        "datasource": "${datasource}",
         "definition": "",
         "hide": 0,
         "includeAll": false,
@@ -630,10 +616,7 @@
       },
       {
         "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${DS_THANOS}"
-        },
+        "datasource": "${datasource}",
         "definition": "",
         "hide": 0,
         "includeAll": false,
@@ -656,10 +639,7 @@
       },
       {
         "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${DS_THANOS}"
-        },
+        "datasource": "${datasource}",
         "definition": "",
         "hide": 0,
         "includeAll": false,
@@ -683,10 +663,7 @@
       {
         "allValue": ".*",
         "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${DS_THANOS}"
-        },
+        "datasource": "${datasource}",
         "definition": "",
         "hide": 0,
         "includeAll": true,
