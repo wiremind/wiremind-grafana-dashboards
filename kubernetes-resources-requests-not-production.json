@@ -21,7 +21,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.3.3"
+      "version": "8.5.0"
     },
     {
       "type": "datasource",
@@ -31,8 +31,8 @@
     },
     {
       "type": "panel",
-      "id": "table-old",
-      "name": "Table (old)",
+      "id": "table",
+      "name": "Table",
       "version": ""
     },
     {
@@ -46,7 +46,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "${DS_PROMETHEUS}",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -78,6 +81,7 @@
           "custom": {
             "axisLabel": "CPU Cores",
             "axisPlacement": "auto",
+            "axisSoftMin": 0,
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 10,
@@ -129,8 +133,9 @@
         "y": 0
       },
       "id": 1,
-      "interval": "180s",
+      "interval": "30s",
       "links": [],
+      "maxDataPoints": 500,
       "options": {
         "legend": {
           "calcs": [],
@@ -138,7 +143,8 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.2",
@@ -164,7 +170,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "min(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n    kube_pod_container_resource_requests{resource=\"cpu\"}\n    * on (namespace, pod) group_left\n    kube_pod_status_phase{phase=~\"Running\"}\n) by (instance))",
+          "expr": "min(sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n  * on (namespace, pod) group_right\n    kube_pod_info{priority_class!~\".*-prod.*\"}\n  * on (namespace, pod) group_right\n    kube_pod_container_resource_requests{resource=\"cpu\"}\n) by (instance))",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -229,8 +235,9 @@
       },
       "hideTimeOverride": false,
       "id": 2,
+      "interval": "30s",
       "links": [],
-      "maxDataPoints": 100,
+      "maxDataPoints": 1,
       "options": {
         "orientation": "horizontal",
         "reduceOptions": {
@@ -244,7 +251,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.5.0",
       "targets": [
         {
           "datasource": {
@@ -252,7 +259,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": false,
-          "expr": "min(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n    kube_pod_container_resource_requests{resource=\"cpu\"}\n    * on (namespace, pod) group_left\n    kube_pod_status_phase{phase=~\"Running\"}\n) by (instance))\n\n/ \n\nmin(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n  kube_node_status_allocatable{resource=\"cpu\"}\n) by (instance))\n\n\n* 100",
+          "expr": "min(sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n  * on (namespace, pod) group_right\n    kube_pod_info{priority_class!~\".*-prod.*\"}\n  * on (namespace, pod) group_right\n    kube_pod_container_resource_requests{resource=\"cpu\"}\n) by (instance))\n\n/ \n\nmin(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n  kube_node_status_allocatable{resource=\"cpu\"}\n) by (instance))\n\n\n* 100",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -279,6 +286,7 @@
           "custom": {
             "axisLabel": "Memory",
             "axisPlacement": "auto",
+            "axisSoftMin": 0,
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 10,
@@ -330,8 +338,9 @@
         "y": 8
       },
       "id": 3,
-      "interval": "180",
+      "interval": "30s",
       "links": [],
+      "maxDataPoints": 500,
       "options": {
         "legend": {
           "calcs": [],
@@ -339,7 +348,8 @@
           "placement": "bottom"
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.2",
@@ -365,7 +375,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "min(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n    kube_pod_container_resource_requests{resource=\"memory\"}\n    * on (namespace, pod) group_left\n    kube_pod_status_phase{phase=~\"Running\"}\n) by (instance))",
+          "expr": "min(sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n  * on (namespace, pod) group_right\n    kube_pod_info{priority_class!~\".*-prod.*\"}\n  * on (namespace, pod) group_right\n    kube_pod_container_resource_requests{resource=\"memory\"}\n) by (instance))",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -430,8 +440,9 @@
       },
       "hideTimeOverride": false,
       "id": 4,
+      "interval": "30s",
       "links": [],
-      "maxDataPoints": 100,
+      "maxDataPoints": 1,
       "options": {
         "orientation": "horizontal",
         "reduceOptions": {
@@ -445,7 +456,7 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.3.3",
+      "pluginVersion": "8.5.0",
       "targets": [
         {
           "datasource": {
@@ -453,7 +464,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": false,
-          "expr": "min(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n    kube_pod_container_resource_requests{resource=\"memory\"}\n    * on (namespace, pod) group_left\n    kube_pod_status_phase{phase=~\"Running\"}\n) by (instance))\n/ \n\nmin(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n  kube_node_status_allocatable{resource=\"memory\"}\n) by (instance))\n\n\n* 100",
+          "expr": "min(sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n  * on (namespace, pod) group_right\n    kube_pod_info{priority_class!~\".*-prod.*\"}\n  * on (namespace, pod) group_right\n    kube_pod_container_resource_requests{resource=\"memory\"}\n) by (instance))\n/ \n\nmin(sum(\n  kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n  * on (node) group_right\n  kube_node_status_allocatable{resource=\"memory\"}\n) by (instance))\n\n\n* 100",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -467,114 +478,208 @@
       "type": "gauge"
     },
     {
-      "columns": [
-        {
-          "$$hashKey": "object:71",
-          "text": "Avg",
-          "value": "avg"
-        }
-      ],
       "datasource": {
         "type": "prometheus",
         "uid": "${DS_PROMETHEUS}"
       },
       "description": "This table shows the comparison of CPU and RAM requests by applications, vs the capacity of the node",
-      "fontSize": "100%",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "displayMode": "auto",
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #A"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "RAM Requests"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "custom.align"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "rgba(245, 54, 54, 0.9)",
+                      "value": null
+                    },
+                    {
+                      "color": "rgba(50, 172, 45, 0.97)",
+                      "value": 30
+                    },
+                    {
+                      "color": "#ef843c",
+                      "value": 80
+                    }
+                  ]
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "node"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Node"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Time"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.align"
+              },
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #B"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "CPU Requests"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 2
+              },
+              {
+                "id": "custom.displayMode",
+                "value": "color-text"
+              },
+              {
+                "id": "custom.align"
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "rgba(245, 54, 54, 0.9)",
+                      "value": null
+                    },
+                    {
+                      "color": "rgba(50, 172, 45, 0.97)",
+                      "value": 30
+                    },
+                    {
+                      "color": "#ef843c",
+                      "value": 80
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
       "gridPos": {
         "h": 8,
-        "w": 10,
+        "w": 12,
         "x": 6,
         "y": 16
       },
       "hideTimeOverride": true,
       "id": 6,
+      "interval": "30",
       "links": [],
-      "pageSize": 7,
-      "repeatDirection": "v",
-      "scroll": true,
-      "showHeader": true,
-      "sort": {
-        "col": 2,
-        "desc": false
+      "maxDataPoints": 1,
+      "options": {
+        "footer": {
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "CPU Requests"
+          }
+        ]
       },
-      "styles": [
-        {
-          "$$hashKey": "object:75",
-          "alias": "RAM Requests",
-          "align": "auto",
-          "colorMode": "value",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(50, 172, 45, 0.97)",
-            "#ef843c"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Value #A",
-          "thresholds": [
-            "30",
-            " 80"
-          ],
-          "type": "number",
-          "unit": "percent"
-        },
-        {
-          "$$hashKey": "object:76",
-          "alias": "Node",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "node",
-          "thresholds": [],
-          "type": "string",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:77",
-          "alias": "",
-          "align": "auto",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(237, 129, 40, 0.89)",
-            "rgba(50, 172, 45, 0.97)"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Time",
-          "thresholds": [],
-          "type": "hidden",
-          "unit": "short"
-        },
-        {
-          "$$hashKey": "object:78",
-          "alias": "CPU Requests",
-          "align": "auto",
-          "colorMode": "value",
-          "colors": [
-            "rgba(245, 54, 54, 0.9)",
-            "rgba(50, 172, 45, 0.97)",
-            "#ef843c"
-          ],
-          "dateFormat": "YYYY-MM-DD HH:mm:ss",
-          "decimals": 2,
-          "mappingType": 1,
-          "pattern": "Value #B",
-          "thresholds": [
-            "30",
-            " 80"
-          ],
-          "type": "number",
-          "unit": "percent"
-        }
-      ],
+      "pluginVersion": "8.5.0",
+      "repeatDirection": "v",
       "targets": [
         {
           "datasource": {
@@ -582,7 +687,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": false,
-          "expr": "kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n* on (node)\n( \n  sum(kube_pod_container_resource_requests{resource=\"cpu\"}) by (node) \n  /\n  sum(kube_node_status_allocatable{resource=\"cpu\"}) by (node)\n) * 100",
+          "expr": "kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n* on (node)\n( \n  sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n    * on (namespace, pod) group_right\n    kube_pod_container_resource_requests{resource=\"cpu\"}\n  ) by (node)\n  /\n  sum(kube_node_status_allocatable{resource=\"cpu\"} > 8) by (node)\n) * 100",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -596,7 +701,7 @@
             "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": false,
-          "expr": "kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n* on (node)\n( \n  sum(kube_pod_container_resource_requests_memory_bytes) by (node) \n  /\n  sum(kube_node_status_allocatable_memory_bytes) by (node)\n) * 100",
+          "expr": "kube_node_labels{label_node_role_kubernetes_io_production!=\"true\"}\n* on (node)\n( \n  sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n    * on (namespace, pod) group_right\n    kube_pod_container_resource_requests{resource=\"memory\"}\n  ) by (node)\n  /\n  sum(kube_node_status_allocatable{resource=\"memory\"}) by (node)\n) * 100",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -607,12 +712,19 @@
         }
       ],
       "title": "Cluster Node Utilisation by CPU and RAM requests",
-      "transform": "table",
-      "type": "table-old"
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        }
+      ],
+      "type": "table"
     }
   ],
   "refresh": false,
-  "schemaVersion": 34,
+  "schemaVersion": 36,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -649,6 +761,6 @@
   "timezone": "browser",
   "title": "Kubernetes Resource Requests (Not production)",
   "uid": "XZ-kM6KMk",
-  "version": 36,
+  "version": 54,
   "weekStart": ""
 }
