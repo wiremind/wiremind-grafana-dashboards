@@ -116,10 +116,6 @@
                         },
                         "properties": [
                             {
-                                "id": "displayName",
-                                "value": "Requested CPU"
-                            },
-                            {
                                 "id": "unit",
                                 "value": "short"
                             },
@@ -136,10 +132,6 @@
                         },
                         "properties": [
                             {
-                                "id": "displayName",
-                                "value": "Requested RAM"
-                            },
-                            {
                                 "id": "unit",
                                 "value": "decgbytes"
                             },
@@ -155,10 +147,6 @@
                             "options": "Value #storage_requested"
                         },
                         "properties": [
-                            {
-                                "id": "displayName",
-                                "value": "Requested Storage"
-                            },
                             {
                                 "id": "unit",
                                 "value": "decgbytes"
@@ -241,10 +229,18 @@
                             {
                                 "id": "unit",
                                 "value": "decgbytes"
-                            },
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Value #memory_requested_bare_metal"
+                        },
+                        "properties": [
                             {
-                                "id": "displayName",
-                                "value": "Requested storage, bare metal"
+                                "id": "unit",
+                                "value": "decgbytes"
                             }
                         ]
                     }
@@ -286,7 +282,7 @@
                     },
                     "editorMode": "code",
                     "exemplar": false,
-                    "expr": "# CPU Requested\navg_over_time(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}[$__range:$__interval])\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\"} * 0)",
+                    "expr": "# CPU Requested (we consider price for cpu equal between bare metal and public cloud)\navg_over_time(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}[$__range:$__interval])\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\"} * 0)",
                     "format": "table",
                     "hide": false,
                     "instant": true,
@@ -302,7 +298,7 @@
                     },
                     "editorMode": "code",
                     "exemplar": true,
-                    "expr": "# RAM Requested\navg_over_time(namespace_memory:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\"} * 0)",
+                    "expr": "# RAM Requested, public cloud\navg_over_time(namespace_memory:kube_pod_container_resource_requests_not_bare_metal:sum{cluster=\"$cluster\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\"} * 0)",
                     "format": "table",
                     "hide": false,
                     "instant": true,
@@ -310,6 +306,21 @@
                     "intervalFactor": 1,
                     "legendFormat": "__auto",
                     "refId": "memory_requested"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${DS_THANOS}"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "# RAM Requested, bare metal\navg_over_time(namespace_memory:kube_pod_container_resource_requests_bare_metal:sum{cluster=\"$cluster\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\"} * 0)",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "legendFormat": "__auto",
+                    "range": false,
+                    "refId": "memory_requested_bare_metal"
                 },
                 {
                     "datasource": {
@@ -403,12 +414,42 @@
                 {
                     "id": "calculateField",
                     "options": {
-                        "alias": "Memory Cost",
+                        "alias": "Memory Cost Public Cloud",
                         "binary": {
                             "left": "Value #memory_requested",
                             "operator": "*",
                             "reducer": "sum",
                             "right": "2.2"
+                        },
+                        "mode": "binary",
+                        "reduce": {
+                            "reducer": "sum"
+                        }
+                    }
+                },
+                {
+                    "id": "calculateField",
+                    "options": {
+                        "alias": "Memory Cost Bare Metal",
+                        "binary": {
+                            "left": "Value #memory_requested_bare_metal",
+                            "reducer": "sum",
+                            "right": "0.3"
+                        },
+                        "mode": "binary",
+                        "reduce": {
+                            "reducer": "sum"
+                        }
+                    }
+                },
+                {
+                    "id": "calculateField",
+                    "options": {
+                        "alias": "Memory Cost",
+                        "binary": {
+                            "left": "Value #memory_requested",
+                            "reducer": "sum",
+                            "right": "Value #memory_requested_bare_metal"
                         },
                         "mode": "binary",
                         "reduce": {
@@ -500,6 +541,8 @@
                     "options": {
                         "excludeByName": {
                             "CPU Cost + Memory Cost": true,
+                            "Memory Cost Bare Metal": true,
+                            "Memory Cost Public Cloud": true,
                             "Storage Cost, Public Cloud": true,
                             "Storage Cost, bare metal": true,
                             "Time": true,
@@ -508,18 +551,21 @@
                             "prometheus_replica": true
                         },
                         "indexByName": {
-                            "CPU Cost": 10,
-                            "CPU Cost + Memory Cost": 12,
-                            "Memory Cost": 11,
-                            "Storage Cost": 15,
-                            "Storage Cost, Public Cloud": 13,
-                            "Storage Cost, bare metal": 14,
+                            "CPU Cost": 11,
+                            "CPU Cost + Memory Cost": 15,
+                            "Memory Cost": 14,
+                            "Memory Cost Bare Metal": 12,
+                            "Memory Cost Public Cloud": 13,
+                            "Storage Cost": 18,
+                            "Storage Cost, Public Cloud": 16,
+                            "Storage Cost, bare metal": 17,
                             "Time": 0,
                             "Total Cost": 3,
                             "Value #cpu_requested": 6,
                             "Value #memory_requested": 7,
-                            "Value #storage_requested": 8,
-                            "Value #storage_requested_baremetal": 9,
+                            "Value #memory_requested_bare_metal": 8,
+                            "Value #storage_requested": 9,
+                            "Value #storage_requested_baremetal": 10,
                             "cluster": 1,
                             "namespace": 2,
                             "prometheus": 4,
@@ -527,7 +573,13 @@
                         },
                         "renameByName": {
                             "CPU Cost + Memory Cost": "",
-                            "cluster": ""
+                            "Value #cpu_requested": "Requested CPU",
+                            "Value #memory_requested": "Requested RAM",
+                            "Value #memory_requested_bare_metal": "Request RAM, bare metal",
+                            "Value #storage_requested": "Requested Storage",
+                            "Value #storage_requested_baremetal": "Requested storage, bare metal",
+                            "cluster": "",
+                            "namespace": "Namespace"
                         }
                     }
                 },
@@ -606,6 +658,6 @@
     "timezone": "browser",
     "title": "Cost Analysis by Cluster",
     "uid": "cost-analysis-by-cluster",
-    "version": 42,
+    "version": 44,
     "weekStart": ""
 }
