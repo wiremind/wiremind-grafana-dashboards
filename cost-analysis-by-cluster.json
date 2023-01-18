@@ -282,7 +282,7 @@
                     },
                     "editorMode": "code",
                     "exemplar": false,
-                    "expr": "# CPU Requested (we consider price for cpu equal between bare metal and public cloud)\navg_over_time(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}[$__range:$__interval])\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\"} * 0)",
+                    "expr": "# CPU Requested (we consider price for cpu equal between bare metal and public cloud)\navg_over_time(namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval])\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)",
                     "format": "table",
                     "hide": false,
                     "instant": true,
@@ -298,7 +298,7 @@
                     },
                     "editorMode": "code",
                     "exemplar": true,
-                    "expr": "# RAM Requested, public cloud\navg_over_time(namespace_memory:kube_pod_container_resource_requests_not_bare_metal:sum{cluster=\"$cluster\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\"} * 0)",
+                    "expr": "# RAM Requested, public cloud\navg_over_time(namespace_memory:kube_pod_container_resource_requests_not_bare_metal:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)",
                     "format": "table",
                     "hide": false,
                     "instant": true,
@@ -314,7 +314,7 @@
                     },
                     "editorMode": "code",
                     "exemplar": false,
-                    "expr": "# RAM Requested, bare metal\navg_over_time(namespace_memory:kube_pod_container_resource_requests_bare_metal:sum{cluster=\"$cluster\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\"} * 0)",
+                    "expr": "# RAM Requested, bare metal\navg_over_time(namespace_memory:kube_pod_container_resource_requests_bare_metal:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)",
                     "format": "table",
                     "hide": false,
                     "instant": true,
@@ -329,7 +329,7 @@
                     },
                     "editorMode": "code",
                     "exemplar": true,
-                    "expr": "# Storage Requested\navg_over_time(\n  sum without (storageclass) (\n    namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", storageclass!=\"topolvm-provisioner\", torageclass!=\"localstorage\"}\n  )[$__range:$__interval]\n) / 1024^3\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\"} * 0) # Allow to list even namespaces without PVC\n",
+                    "expr": "# Storage Requested\navg_over_time(\n  sum without (storageclass) (\n    namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", namespace=~\"$namespace\", storageclass!=\"topolvm-provisioner\", storageclass!=\"localstorage\"}\n  )[$__range:$__interval]\n) / 1024^3\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0) # Allow to list even namespaces without PVC\n",
                     "format": "table",
                     "hide": false,
                     "instant": true,
@@ -345,44 +345,13 @@
                     },
                     "editorMode": "code",
                     "exemplar": false,
-                    "expr": "# Storage Requested, bare metal\navg_over_time(\n  sum without (storageclass) (\n    namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", storageclass=~\"topolvm-provisioner|localstorage\"}\n  )[$__range:$__interval]\n) / 1024^3\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\"} * 0) # Allow to list even namespaces without PVC\n",
+                    "expr": "# Storage Requested, bare metal\navg_over_time(\n  sum without (storageclass) (\n    namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", namespace=~\"$namespace\", storageclass=~\"topolvm-provisioner|localstorage\"}\n  )[$__range:$__interval]\n) / 1024^3\nor sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0) # Allow to list even namespaces without PVC\n",
                     "format": "table",
                     "hide": false,
                     "instant": true,
                     "legendFormat": "__auto",
                     "range": false,
                     "refId": "storage_requested_baremetal"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "${DS_THANOS}"
-                    },
-                    "editorMode": "code",
-                    "exemplar": true,
-                    "expr": "# CPU Usage (including past and disappeared Pods) / cpu requested (including past and disappeared Pods)\navg_over_time (node_namespace_pod_container:container_cpu_usage_seconds_total:sum_irate{cluster=\"$cluster\"}[$__range:$__interval])\n/ on (namespace)\n(avg_over_time(namespace:kube_pod_container_resource_requests_cpu_cores:sum{cluster=\"$cluster\"}[$__range:$__interval]))\n* 100",
-                    "format": "table",
-                    "hide": true,
-                    "instant": true,
-                    "interval": "",
-                    "intervalFactor": 1,
-                    "legendFormat": "__auto",
-                    "refId": "H"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "${DS_THANOS}"
-                    },
-                    "editorMode": "code",
-                    "expr": "# RAM usage (including past and disappeared Pods) / RAM requested (including past and disappeared Pods)\navg_over_time (namespace:container_memory_usage_bytes:sum{cluster=\"$cluster\"}[$__range:$__interval])\n/ on (namespace)\n(avg_over_time(namespace:kube_pod_container_resource_requests_memory_bytes:sum{cluster=\"$cluster\"}[$__range:$__interval]))\n* 100",
-                    "format": "table",
-                    "hide": true,
-                    "instant": true,
-                    "interval": "",
-                    "intervalFactor": 1,
-                    "legendFormat": "__auto",
-                    "refId": "I"
                 }
             ],
             "timeFrom": "",
@@ -402,7 +371,7 @@
                             "left": "Value #cpu_requested",
                             "operator": "*",
                             "reducer": "sum",
-                            "right": "6"
+                            "right": "7"
                         },
                         "mode": "binary",
                         "reduce": {
@@ -419,7 +388,7 @@
                             "left": "Value #memory_requested",
                             "operator": "*",
                             "reducer": "sum",
-                            "right": "2.2"
+                            "right": "2.5"
                         },
                         "mode": "binary",
                         "reduce": {
@@ -434,7 +403,7 @@
                         "binary": {
                             "left": "Value #memory_requested_bare_metal",
                             "reducer": "sum",
-                            "right": "0.3"
+                            "right": "0.4"
                         },
                         "mode": "binary",
                         "reduce": {
@@ -465,7 +434,7 @@
                             "left": "Value #storage_requested",
                             "operator": "*",
                             "reducer": "sum",
-                            "right": "0.104"
+                            "right": "0.12"
                         },
                         "mode": "binary",
                         "reduce": {
@@ -481,7 +450,7 @@
                             "left": "Value #storage_requested_baremetal",
                             "operator": "*",
                             "reducer": "sum",
-                            "right": "0.02"
+                            "right": "0.025"
                         },
                         "mode": "binary",
                         "reduce": {
@@ -633,6 +602,27 @@
                 "skipUrlSync": false,
                 "sort": 0,
                 "type": "query"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "rvm.*",
+                    "value": "rvm.*"
+                },
+                "description": "Namespace",
+                "hide": 0,
+                "label": "Namespace",
+                "name": "namespace",
+                "options": [
+                    {
+                        "selected": false,
+                        "text": ".*",
+                        "value": ".*"
+                    }
+                ],
+                "query": "rvm.*",
+                "skipUrlSync": false,
+                "type": "textbox"
             }
         ]
     },
@@ -658,6 +648,6 @@
     "timezone": "browser",
     "title": "Cost Analysis by Cluster",
     "uid": "cost-analysis-by-cluster",
-    "version": 44,
+    "version": 47,
     "weekStart": ""
 }
