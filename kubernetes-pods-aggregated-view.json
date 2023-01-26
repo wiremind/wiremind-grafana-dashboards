@@ -446,7 +446,7 @@
             {
               "datasource": "${datasource}",
               "exemplar": true,
-              "expr": "container_memory_usage_bytes{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}\n",
+              "expr": "container_memory_working_set_bytes{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}\n",
               "interval": "",
               "legendFormat": "{{ pod }}",
               "refId": "A"
