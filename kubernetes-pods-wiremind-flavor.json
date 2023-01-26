@@ -146,7 +146,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "container_memory_usage_bytes{job=\"kubelet\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container=~\"$container\", container!=\"POD\"}",
+          "expr": "container_memory_working_set_bytes{job=\"kubelet\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\", container=~\"$container\", container!=\"POD\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
