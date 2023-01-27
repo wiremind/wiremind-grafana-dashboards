@@ -606,8 +606,8 @@
             {
                 "current": {
                     "selected": false,
-                    "text": "rvm.*",
-                    "value": "rvm.*"
+                    "text": ".*",
+                    "value": ".*"
                 },
                 "description": "Namespace",
                 "hide": 0,
@@ -615,12 +615,12 @@
                 "name": "namespace",
                 "options": [
                     {
-                        "selected": false,
+                        "selected": true,
                         "text": ".*",
                         "value": ".*"
                     }
                 ],
-                "query": "rvm.*",
+                "query": ".*",
                 "skipUrlSync": false,
                 "type": "textbox"
             }
@@ -648,6 +648,6 @@
     "timezone": "browser",
     "title": "Cost Analysis by Cluster",
     "uid": "cost-analysis-by-cluster",
-    "version": 47,
+    "version": 48,
     "weekStart": ""
 }
