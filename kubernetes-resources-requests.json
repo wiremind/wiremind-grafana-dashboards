@@ -142,7 +142,7 @@
       "id": 1,
       "interval": "30s",
       "links": [],
-      "maxDataPoints": 500,
+      "maxDataPoints": 200,
       "options": {
         "legend": {
           "calcs": [],
@@ -351,7 +351,7 @@
       "id": 3,
       "interval": "30s",
       "links": [],
-      "maxDataPoints": 500,
+      "maxDataPoints": 200,
       "options": {
         "legend": {
           "calcs": [],
@@ -860,6 +860,6 @@
   "timezone": "browser",
   "title": "Kubernetes Resource Requests",
   "uid": "XZ-kM6KMk",
-  "version": 99,
+  "version": 100,
   "weekStart": ""
 }
