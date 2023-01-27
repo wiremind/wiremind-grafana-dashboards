@@ -9,7 +9,7 @@
       "pluginName": "Prometheus"
     }
   ],
-  "__elements": [],
+  "__elements": {},
   "__requires": [
     {
       "type": "panel",
@@ -21,7 +21,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.5.0"
+      "version": "9.1.4"
     },
     {
       "type": "datasource",
@@ -70,7 +70,6 @@
   "gnetId": 9411,
   "graphTooltip": 0,
   "id": null,
-  "iteration": 1661525710773,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -86,6 +85,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "CPU Cores",
             "axisPlacement": "auto",
             "axisSoftMin": 0,
@@ -147,7 +148,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -180,7 +182,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "min(sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n  * on (namespace, pod) group_right\n    kube_pod_info{${priority_class_selector:raw}}\n  * on (namespace, pod) group_right\n    kube_pod_container_resource_requests{resource=\"cpu\"}\n) by (instance))",
+          "expr": "min(sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n  * on (uid) group_right\n    kube_pod_info{${priority_class_selector:raw}}\n  * on (uid) group_right\n    kube_pod_container_resource_requests{resource=\"cpu\"}\n) by (instance))",
           "format": "time_series",
           "hide": false,
           "interval": "",
@@ -262,15 +264,16 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.0",
+      "pluginVersion": "9.1.4",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "min(sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n  * on (namespace, pod) group_right\n    kube_pod_info{${priority_class_selector:raw}}\n  * on (namespace, pod) group_right\n    kube_pod_container_resource_requests{resource=\"cpu\"}\n) by (instance))\n\n/ \n\nmin(sum(\n  kube_node_labels{$node_selector}\n  * on (node) group_right\n  kube_node_status_allocatable{resource=\"cpu\"}\n) by (instance))\n\n* 100",
+          "expr": "min(sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n  * on (uid) group_right\n    kube_pod_info{${priority_class_selector:raw}}\n  * on (uid) group_right\n    kube_pod_container_resource_requests{resource=\"cpu\"}\n) by (instance))\n\n/ \n\nmin(sum(\n  kube_node_labels{$node_selector}\n  * on (node) group_right\n  kube_node_status_allocatable{resource=\"cpu\"}\n) by (instance))\n\n* 100",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -295,6 +298,8 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "Memory",
             "axisPlacement": "auto",
             "axisSoftMin": 0,
@@ -356,7 +361,8 @@
         "legend": {
           "calcs": [],
           "displayMode": "list",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
           "mode": "single",
@@ -385,13 +391,15 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "min(sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n  * on (namespace, pod) group_right\n    kube_pod_info{${priority_class_selector:raw}}\n  * on (namespace, pod) group_right\n    kube_pod_container_resource_requests{resource=\"memory\"}\n) by (instance))",
+          "expr": "min(sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n  * on (uid) group_right\n    kube_pod_info{${priority_class_selector:raw}}\n  * on (uid) group_right\n    kube_pod_container_resource_requests{resource=\"memory\"}\n) by (instance))",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
           "legendFormat": "Requested Memory",
+          "range": true,
           "refId": "B",
           "step": 20
         }
@@ -467,15 +475,16 @@
         "showThresholdMarkers": true,
         "text": {}
       },
-      "pluginVersion": "8.5.0",
+      "pluginVersion": "9.1.4",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "min(sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n  * on (namespace, pod) group_right\n    kube_pod_info{${priority_class_selector:raw}}\n  * on (namespace, pod) group_right\n    kube_pod_container_resource_requests{resource=\"memory\"}\n) by (instance))\n/ \n\nmin(sum(\n  kube_node_labels{$node_selector}\n  * on (node) group_right\n  kube_node_status_allocatable{resource=\"memory\"}\n) by (instance))\n\n\n* 100",
+          "expr": "min(sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n  * on (uid) group_right\n    kube_pod_info{${priority_class_selector:raw}}\n  * on (uid) group_right\n    kube_pod_container_resource_requests{resource=\"memory\"}\n) by (instance))\n/ \n\nmin(sum(\n  kube_node_labels{$node_selector}\n  * on (node) group_right\n  kube_node_status_allocatable{resource=\"memory\"}\n) by (instance))\n\n\n* 100",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -689,7 +698,7 @@
           }
         ]
       },
-      "pluginVersion": "8.5.0",
+      "pluginVersion": "9.1.4",
       "repeatDirection": "v",
       "targets": [
         {
@@ -697,8 +706,9 @@
             "type": "prometheus",
             "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": false,
-          "expr": "kube_node_labels{$node_selector}\n* on (node)\n( \n  sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n    * on (namespace, pod) group_right\n    kube_pod_container_resource_requests{resource=\"cpu\"}\n  ) by (node)\n  /\n  sum(kube_node_status_allocatable{resource=\"cpu\"} > 8) by (node)\n) * 100",
+          "expr": "kube_node_labels{$node_selector}\n* on (node)\n( \n  sum(\n    kube_pod_status_phase{phase=~\"Running\"}\n    * on (uid) group_right\n    kube_pod_container_resource_requests{resource=\"cpu\"}\n  ) by (node)\n  /\n  sum(kube_node_status_allocatable{resource=\"cpu\"}) by (node)\n) * 100",
           "format": "table",
           "instant": true,
           "interval": "",
@@ -734,8 +744,8 @@
       "type": "table"
     }
   ],
-  "refresh": "",
-  "schemaVersion": 36,
+  "refresh": false,
+  "schemaVersion": 37,
   "style": "dark",
   "tags": [],
   "templating": {
@@ -763,8 +773,8 @@
         "allValue": " ",
         "current": {
           "selected": true,
-          "text": "label_node_role_kubernetes_io_production!=\"true\"",
-          "value": "label_node_role_kubernetes_io_production!=\"true\""
+          "text": "All",
+          "value": "$__all"
         },
         "hide": 0,
         "includeAll": true,
@@ -773,12 +783,12 @@
         "name": "node_selector",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "All",
             "value": "$__all"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "label_node_role_kubernetes_io_production!=\"true\"",
             "value": "label_node_role_kubernetes_io_production!=\"true\""
           },
@@ -797,8 +807,8 @@
         "allValue": " ",
         "current": {
           "selected": true,
-          "text": "priority_class!~\".*-prod.*\"",
-          "value": "priority_class!~\".*-prod.*\""
+          "text": "All",
+          "value": "$__all"
         },
         "hide": 0,
         "includeAll": true,
@@ -807,12 +817,12 @@
         "name": "priority_class_selector",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "All",
             "value": "$__all"
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "priority_class!~\".*-prod.*\"",
             "value": "priority_class!~\".*-prod.*\""
           },
@@ -830,7 +840,7 @@
     ]
   },
   "time": {
-    "from": "now-1d",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {
@@ -860,6 +870,6 @@
   "timezone": "browser",
   "title": "Kubernetes Resource Requests",
   "uid": "XZ-kM6KMk",
-  "version": 100,
+  "version": 105,
   "weekStart": ""
 }
