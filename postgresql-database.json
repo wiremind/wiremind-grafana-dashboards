@@ -1668,18 +1668,16 @@
       "id": 1,
       "legend": {
         "alignAsTable": false,
-        "avg": true,
-        "current": true,
+        "avg": false,
+        "current": false,
         "hideEmpty": true,
         "hideZero": true,
-        "max": true,
+        "max": false,
         "min": false,
         "rightSide": false,
-        "show": false,
-        "sort": "current",
-        "sortDesc": true,
+        "show": true,
         "total": false,
-        "values": true
+        "values": false
       },
       "lines": true,
       "linewidth": 1,
@@ -1706,6 +1704,16 @@
           "intervalFactor": 2,
           "legendFormat": "{{state}}",
           "refId": "A",
+          "step": 2
+        },
+        {
+          "exemplar": true,
+          "expr": "pg_stat_database_numbackends{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 2,
+          "legendFormat": "total",
+          "refId": "B",
           "step": 2
         }
       ],
@@ -1777,15 +1785,15 @@
       "id": 60,
       "interval": "30s",
       "legend": {
-        "alignAsTable": true,
-        "avg": true,
-        "current": true,
+        "alignAsTable": false,
+        "avg": false,
+        "current": false,
         "max": false,
         "min": false,
-        "rightSide": true,
-        "show": false,
-        "total": true,
-        "values": true
+        "rightSide": false,
+        "show": true,
+        "total": false,
+        "values": false
       },
       "lines": true,
       "linewidth": 1,
@@ -1821,6 +1829,16 @@
           "intervalFactor": 1,
           "legendFormat": "rollbacks",
           "refId": "B"
+        },
+        {
+          "exemplar": true,
+          "expr": "sum(irate(pg_stat_database_xact_rollback{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m]) + irate(pg_stat_database_xact_commit{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m]))",
+          "format": "time_series",
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "total",
+          "refId": "C",
+          "hide": true
         }
       ],
       "thresholds": [],
@@ -3150,5 +3168,5 @@
   "timezone": "",
   "title": "PostgreSQL Database",
   "uid": "postgresql-database",
-  "version": 26
+  "version": 27
 }
