@@ -40,6 +40,7 @@
             "filterable": true,
             "inspect": false
           },
+          "decimals": 0,
           "mappings": [],
           "thresholds": {
             "mode": "absolute",
@@ -49,7 +50,8 @@
                 "value": null
               }
             ]
-          }
+          },
+          "unit": "none"
         },
         "overrides": [
           {
@@ -128,52 +130,12 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "CPU Cost"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "currencyUSD"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
               "options": "Memory Cost"
             },
             "properties": [
               {
                 "id": "unit",
                 "value": "currencyUSD"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Storage Cost"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "currencyUSD"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Total Cost"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "currencyUSD"
-              },
-              {
-                "id": "decimals",
-                "value": 0
               }
             ]
           },
@@ -555,7 +517,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "Thanos",
           "value": "Thanos"
         },
@@ -573,7 +535,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "ovh-gra3",
           "value": "ovh-gra3"
         },
@@ -600,7 +562,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": ".*",
           "value": ".*"
         },
@@ -643,6 +605,6 @@
   "timezone": "browser",
   "title": "Cost Analysis by Cluster",
   "uid": "cost-analysis-by-cluster",
-  "version": 49,
+  "version": 50,
   "weekStart": ""
 }
