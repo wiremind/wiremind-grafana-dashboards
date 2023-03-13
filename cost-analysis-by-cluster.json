@@ -1,44 +1,13 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_THANOS",
-      "label": "Thanos",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "9.3.1"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
         "builtIn": 1,
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_THANOS}"
+          "uid": "${datasource}"
         },
-        "enable": true,
+        "enable": false,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
         "name": "Annotations & Alerts",
@@ -51,14 +20,14 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 8932,
   "graphTooltip": 0,
-  "id": null,
+  "id": 1720,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_THANOS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -276,13 +245,13 @@
           }
         ]
       },
-      "pluginVersion": "9.3.1",
+      "pluginVersion": "9.3.8",
       "repeatDirection": "v",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_THANOS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -298,7 +267,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_THANOS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -314,7 +283,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_THANOS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -329,7 +298,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_THANOS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -345,7 +314,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_THANOS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -585,10 +554,32 @@
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "selected": true,
+          "text": "Thanos",
+          "value": "Thanos"
+        },
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "queryValue": "",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "type": "datasource"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "ovh-gra3",
+          "value": "ovh-gra3"
+        },
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_THANOS}"
+          "uid": "${datasource}"
         },
         "definition": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
         "hide": 0,
@@ -610,8 +601,8 @@
       {
         "current": {
           "selected": false,
-          "text": "pythie.*staging.*",
-          "value": "pythie.*staging.*"
+          "text": ".*",
+          "value": ".*"
         },
         "description": "Namespace",
         "hide": 0,
@@ -620,11 +611,11 @@
         "options": [
           {
             "selected": true,
-            "text": "pythie.*staging.*",
-            "value": "pythie.*staging.*"
+            "text": ".*",
+            "value": ".*"
           }
         ],
-        "query": "pythie.*staging.*",
+        "query": ".*",
         "skipUrlSync": false,
         "type": "textbox"
       }
