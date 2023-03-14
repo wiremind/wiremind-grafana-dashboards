@@ -74,7 +74,7 @@
             "barAlignment": 0,
             "drawStyle": "line",
             "fillOpacity": 10,
-            "gradientMode": "none",
+            "gradientMode": "opacity",
             "hideFrom": {
               "legend": false,
               "tooltip": false,
@@ -86,18 +86,20 @@
             "scaleDistribution": {
               "type": "linear"
             },
-            "showPoints": "never",
-            "spanNulls": true,
+            "showPoints": "auto",
+            "spanNulls": false,
             "stacking": {
               "group": "A",
-              "mode": "normal"
+              "mode": "none"
             },
             "thresholdsStyle": {
               "mode": "off"
             }
           },
+          "decimals": 0,
           "links": [],
           "mappings": [],
+          "min": 0,
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -116,7 +118,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 9,
+        "h": 13,
         "w": 24,
         "x": 0,
         "y": 1
@@ -146,13 +148,16 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
+          "editorMode": "code",
           "exemplar": true,
           "expr": "sum(rate(container_cpu_usage_seconds_total{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}[5m]))",
           "format": "time_series",
           "hide": false,
+          "instant": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "",
+          "legendFormat": "Real Usage",
+          "range": true,
           "refId": "A"
         },
         {
@@ -160,15 +165,18 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "",
+          "expr": "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\", container!=\"POD\", container!=\"\"})",
+          "format": "time_series",
           "hide": false,
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "Requests",
+          "range": true,
           "refId": "B"
         }
       ],
-      "title": "CPU sum (instant rate)",
+      "title": "CPU instant rate and requests (sum)",
       "type": "timeseries"
     },
     {
@@ -241,7 +249,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 10
+        "y": 14
       },
       "id": 2,
       "links": [],
@@ -294,10 +302,129 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 19
+        "y": 23
       },
       "id": 16,
       "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "drawStyle": "line",
+                "fillOpacity": 10,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "links": [],
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 24
+          },
+          "id": 21,
+          "links": [],
+          "options": {
+            "legend": {
+              "calcs": [
+                "mean",
+                "lastNotNull",
+                "max"
+              ],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "8.0.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "sum(container_memory_usage_bytes{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"})",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "Real Usage",
+              "range": true,
+              "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": true,
+              "expr": "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{pod=~\"[[pod_name]].*\", namespace=\"$namespace\", cluster=~\"$cluster.*\", container!=\"POD\", container!=\"\"})",
+              "format": "time_series",
+              "hide": false,
+              "interval": "",
+              "legendFormat": "Requests",
+              "range": true,
+              "refId": "B"
+            }
+          ],
+          "title": "RAM usage and requests (sum)",
+          "type": "timeseries"
+        },
         {
           "datasource": {
             "type": "prometheus",
@@ -350,8 +477,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -363,7 +489,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 20
+            "y": 37
           },
           "id": 14,
           "options": {
@@ -397,7 +523,7 @@
               "refId": "A"
             }
           ],
-          "title": "Memory Usage",
+          "title": "Memory Usage (per pod)",
           "type": "timeseries"
         }
       ],
@@ -419,7 +545,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 20
+        "y": 24
       },
       "id": 20,
       "panels": [
@@ -471,8 +597,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -534,7 +659,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 21
+        "y": 25
       },
       "id": 10,
       "panels": [
@@ -590,8 +715,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -694,8 +818,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -771,7 +894,7 @@
       "type": "row"
     }
   ],
-  "refresh": "",
+  "refresh": false,
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
@@ -819,7 +942,11 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": false,
+          "text": "kube-system",
+          "value": "kube-system"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -896,6 +1023,6 @@
   "timezone": "",
   "title": "Pods (Aggregated view)",
   "uid": "pods-aggregated-view",
-  "version": 103,
+  "version": 108,
   "weekStart": ""
 }
