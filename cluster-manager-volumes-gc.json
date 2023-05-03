@@ -116,6 +116,18 @@
                 ]
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
+              }
+            ]
           }
         ]
       },
@@ -135,7 +147,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Creation date"
+          }
+        ]
       },
       "pluginVersion": "9.3.8",
       "targets": [
@@ -165,7 +182,8 @@
                 "corresponding_pvc_name",
                 "corresponding_pvc_namespace",
                 "volume_id",
-                "volume_size"
+                "volume_size",
+                "Value"
               ]
             }
           }
@@ -182,6 +200,26 @@
               "reducer": "lastNotNull"
             }
           }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Creation date",
+            "binary": {
+              "left": "Value",
+              "operator": "*",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {}
         }
       ],
       "type": "table"
@@ -318,7 +356,19 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 134
+                "value": 91
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
               }
             ]
           }
@@ -330,7 +380,7 @@
         "x": 0,
         "y": 8
       },
-      "id": 12,
+      "id": 4,
       "options": {
         "footer": {
           "fields": "",
@@ -340,7 +390,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Creation date"
+          }
+        ]
       },
       "pluginVersion": "9.3.8",
       "targets": [
@@ -351,7 +406,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "cluster_manager_gc_volume_without_node_created_at_timestamp{cluster=\"$cluster\", storage_provider_name=\"$storage_provider\"}",
+          "expr": "cluster_manager_gc_pv_without_pvc_creation_timestamp{cluster=\"$cluster\", storage_provider_name=\"$storage_provider\"}",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -359,21 +414,51 @@
           "refId": "A"
         }
       ],
-      "title": "Volume without node",
+      "title": "PV without PVC",
       "transformations": [
         {
           "id": "filterFieldsByName",
           "options": {
             "include": {
               "names": [
-                "corresponding_k8s_pv",
-                "corresponding_pvc_name",
-                "corresponding_pvc_namespace",
                 "name",
+                "namespace",
+                "pvc_name",
+                "pvc_namespace",
+                "skip_it",
+                "tagged_by",
                 "volume_id",
-                "volume_size"
+                "Value"
               ]
             }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Creation date",
+            "binary": {
+              "left": "Value",
+              "operator": "*",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "Creation date"
+              }
+            ],
+            "fields": {}
           }
         }
       ],
@@ -510,7 +595,19 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 91
+                "value": 134
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value"
+            },
+            "properties": [
+              {
+                "id": "custom.hidden",
+                "value": true
               }
             ]
           }
@@ -522,7 +619,7 @@
         "x": 0,
         "y": 16
       },
-      "id": 4,
+      "id": 12,
       "options": {
         "footer": {
           "fields": "",
@@ -532,7 +629,12 @@
           "show": false
         },
         "showHeader": true,
-        "sortBy": []
+        "sortBy": [
+          {
+            "desc": false,
+            "displayName": "Creation date"
+          }
+        ]
       },
       "pluginVersion": "9.3.8",
       "targets": [
@@ -543,7 +645,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "cluster_manager_gc_pv_without_pvc_creation_timestamp{cluster=\"$cluster\", storage_provider_name=\"$storage_provider\"}",
+          "expr": "cluster_manager_gc_volume_without_node_created_at_timestamp{cluster=\"$cluster\", storage_provider_name=\"$storage_provider\"}",
           "format": "table",
           "instant": true,
           "legendFormat": "__auto",
@@ -551,22 +653,62 @@
           "refId": "A"
         }
       ],
-      "title": "PV without PVC",
+      "title": "Volume without node",
       "transformations": [
         {
           "id": "filterFieldsByName",
           "options": {
             "include": {
               "names": [
+                "corresponding_k8s_pv",
+                "corresponding_pvc_name",
+                "corresponding_pvc_namespace",
                 "name",
-                "namespace",
-                "pvc_name",
-                "pvc_namespace",
-                "skip_it",
-                "tagged_by",
-                "volume_id"
+                "volume_id",
+                "volume_size",
+                "Value"
               ]
             }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Creation date",
+            "binary": {
+              "left": "Value",
+              "operator": "*",
+              "reducer": "sum",
+              "right": "1000"
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "time",
+                "targetField": "Creation date"
+              }
+            ],
+            "fields": {}
+          }
+        },
+        {
+          "id": "convertFieldType",
+          "options": {
+            "conversions": [
+              {
+                "destinationType": "number",
+                "targetField": "volume_size"
+              }
+            ],
+            "fields": {}
           }
         }
       ],
@@ -876,7 +1018,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -972,7 +1115,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -1110,13 +1254,13 @@
     ]
   },
   "time": {
-    "from": "now-30d",
+    "from": "now-7d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Volumes GC",
   "uid": "IqvRBqF4z",
-  "version": 29,
+  "version": 30,
   "weekStart": ""
 }
