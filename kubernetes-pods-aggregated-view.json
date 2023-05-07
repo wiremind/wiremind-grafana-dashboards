@@ -366,8 +366,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               }
             ]
           },
@@ -499,8 +498,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   }
                 ]
               },
@@ -616,8 +614,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -733,8 +730,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -837,8 +833,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -914,7 +909,7 @@
       "type": "row"
     }
   ],
-  "refresh": false,
+  "refresh": "1m",
   "schemaVersion": 37,
   "style": "dark",
   "tags": [],
@@ -922,7 +917,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "default",
           "value": "default"
         },
@@ -940,9 +935,9 @@
       },
       {
         "current": {
-          "selected": false,
-          "text": "None",
-          "value": ""
+          "selected": true,
+          "text": "ovh-gra3",
+          "value": "ovh-gra3"
         },
         "datasource": {
           "type": "prometheus",
@@ -975,14 +970,14 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(kube_pod_info{cluster=\"$cluster\"}, namespace)",
+        "definition": "label_values(kube_namespace_created{cluster=\"$cluster\"}, namespace)",
         "hide": 0,
         "includeAll": false,
         "multi": false,
         "name": "namespace",
         "options": [],
         "query": {
-          "query": "label_values(kube_pod_info{cluster=\"$cluster\"}, namespace)",
+          "query": "label_values(kube_namespace_created{cluster=\"$cluster\"}, namespace)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -1005,7 +1000,7 @@
         "name": "pod_name",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "my-regexp.*",
             "value": "my-regexp.*"
           }
@@ -1068,6 +1063,6 @@
   "timezone": "",
   "title": "Pods (Aggregated view)",
   "uid": "pods-aggregated-view",
-  "version": 115,
+  "version": 116,
   "weekStart": ""
 }
