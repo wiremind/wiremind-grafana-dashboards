@@ -935,7 +935,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "ovh-gra3",
           "value": "ovh-gra3"
         },
@@ -943,7 +943,7 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(kube_pod_info, cluster)",
+        "definition": "label_values(kube_namespace_created, cluster)",
         "hide": 0,
         "includeAll": false,
         "label": "Cluster",
@@ -951,7 +951,7 @@
         "name": "cluster",
         "options": [],
         "query": {
-          "query": "label_values(kube_pod_info, cluster)",
+          "query": "label_values(kube_namespace_created, cluster)",
           "refId": "StandardVariableQuery"
         },
         "refresh": 1,
@@ -1001,8 +1001,8 @@
         "options": [
           {
             "selected": true,
-            "text": "my-regexp.*",
-            "value": "my-regexp.*"
+            "text": ".*",
+            "value": ".*"
           }
         ],
         "query": ".*",
@@ -1012,7 +1012,7 @@
       },
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": ".*",
           "value": ".*"
         },
@@ -1033,7 +1033,7 @@
     ]
   },
   "time": {
-    "from": "now-1h",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {
@@ -1063,6 +1063,6 @@
   "timezone": "",
   "title": "Pods (Aggregated view)",
   "uid": "pods-aggregated-view",
-  "version": 116,
+  "version": 118,
   "weekStart": ""
 }
