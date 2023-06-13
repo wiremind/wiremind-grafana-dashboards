@@ -3,7 +3,10 @@
         "list": [
             {
                 "builtIn": 1,
-                "datasource": "-- Grafana --",
+                "datasource": {
+                    "type": "datasource",
+                    "uid": "grafana"
+                },
                 "enable": true,
                 "hide": true,
                 "iconColor": "rgba(0, 211, 255, 1)",
@@ -27,17 +30,23 @@
     "liveNow": false,
     "panels": [
         {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "P5DCFC7561CCDE821"
+            },
             "fieldConfig": {
                 "defaults": {
                     "color": {
                         "mode": "palette-classic"
                     },
                     "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
                         "axisLabel": "",
                         "axisPlacement": "auto",
                         "barAlignment": 0,
                         "drawStyle": "bars",
-                        "fillOpacity": 10,
+                        "fillOpacity": 15,
                         "gradientMode": "none",
                         "hideFrom": {
                             "legend": false,
@@ -45,16 +54,114 @@
                             "viz": false
                         },
                         "lineInterpolation": "stepAfter",
+                        "lineWidth": 2,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "auto",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "normal"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "off"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "short"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 14,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 4,
+            "interval": "30s",
+            "links": [],
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "8.3.3",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "P5DCFC7561CCDE821"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "sum (gitlab_runner_jobs{state=\"running\"}) by (cluster, job)",
+                    "format": "time_series",
+                    "interval": "",
+                    "intervalFactor": 1,
+                    "legendFormat": "{{cluster}} - {{job}}",
+                    "metric": "ci_runner_builds",
+                    "range": true,
+                    "refId": "A",
+                    "step": 60
+                }
+            ],
+            "title": "Pipelines running",
+            "type": "timeseries"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "P5DCFC7561CCDE821"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "palette-classic"
+                    },
+                    "custom": {
+                        "axisCenteredZero": false,
+                        "axisColorMode": "text",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "barAlignment": 0,
+                        "drawStyle": "line",
+                        "fillOpacity": 10,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "lineInterpolation": "linear",
                         "lineWidth": 1,
                         "pointSize": 5,
                         "scaleDistribution": {
                             "type": "linear"
                         },
-                        "showPoints": "always",
+                        "showPoints": "never",
                         "spanNulls": false,
                         "stacking": {
                             "group": "A",
-                            "mode": "normal"
+                            "mode": "none"
                         },
                         "thresholdsStyle": {
                             "mode": "off"
@@ -79,143 +186,58 @@
                 "overrides": []
             },
             "gridPos": {
-                "h": 10,
+                "h": 7,
                 "w": 24,
                 "x": 0,
-                "y": 0
+                "y": 14
             },
-            "id": 4,
+            "id": 8,
             "links": [],
             "options": {
                 "legend": {
                     "calcs": [],
                     "displayMode": "list",
-                    "placement": "bottom"
+                    "placement": "bottom",
+                    "showLegend": true
                 },
                 "tooltip": {
-                    "mode": "single"
+                    "mode": "multi",
+                    "sort": "none"
                 }
             },
-            "pluginVersion": "8.3.3",
+            "pluginVersion": "9.3.8",
             "targets": [
                 {
                     "datasource": {
                         "type": "prometheus",
                         "uid": "P5DCFC7561CCDE821"
                     },
+                    "editorMode": "code",
                     "exemplar": false,
-                    "expr": "sum (gitlab_runner_jobs{state=\"running\"}) by (cluster, executor_stage, job)",
-                    "format": "time_series",
-                    "interval": "",
-                    "intervalFactor": 1,
-                    "legendFormat": "{{cluster}} - {{job}} - {{executor_stage}}",
-                    "metric": "ci_runner_builds",
-                    "refId": "A",
-                    "step": 60
-                }
-            ],
-            "title": "Pipelines running",
-            "type": "timeseries"
-        },
-        {
-            "aliasColors": {},
-            "bars": false,
-            "dashLength": 10,
-            "dashes": false,
-            "fill": 1,
-            "fillGradient": 0,
-            "gridPos": {
-                "h": 10,
-                "w": 24,
-                "x": 0,
-                "y": 10
-            },
-            "hiddenSeries": false,
-            "id": 8,
-            "legend": {
-                "avg": false,
-                "current": false,
-                "max": false,
-                "min": false,
-                "show": true,
-                "total": false,
-                "values": false
-            },
-            "lines": true,
-            "linewidth": 1,
-            "links": [],
-            "nullPointMode": "null as zero",
-            "options": {
-                "alertThreshold": true
-            },
-            "percentage": false,
-            "pluginVersion": "8.3.3",
-            "pointradius": 5,
-            "points": false,
-            "renderer": "flot",
-            "seriesOverrides": [],
-            "spaceLength": 10,
-            "stack": false,
-            "steppedLine": false,
-            "targets": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "P5DCFC7561CCDE821"
-                    },
-                    "exemplar": false,
-                    "expr": "gitlab_runner_jobs{job=~\"$runner\", state=\"pending\"}",
+                    "expr": "sum(gitlab_runner_jobs{state=\"pending\"})",
                     "format": "time_series",
                     "interval": "",
                     "intervalFactor": 2,
                     "legendFormat": "{{executor_stage}}",
                     "metric": "ci_runner_builds",
+                    "range": true,
                     "refId": "A",
                     "step": 60
                 }
             ],
-            "thresholds": [],
-            "timeRegions": [],
             "title": "Pipelines pending",
-            "tooltip": {
-                "shared": true,
-                "sort": 0,
-                "value_type": "individual"
-            },
-            "type": "graph",
-            "xaxis": {
-                "mode": "time",
-                "show": true,
-                "values": []
-            },
-            "yaxes": [
-                {
-                    "$$hashKey": "object:386",
-                    "format": "short",
-                    "logBase": 1,
-                    "show": true
-                },
-                {
-                    "$$hashKey": "object:387",
-                    "format": "short",
-                    "logBase": 1,
-                    "show": true
-                }
-            ],
-            "yaxis": {
-                "align": false
-            }
+            "type": "timeseries"
         }
     ],
-    "refresh": "10s",
-    "schemaVersion": 34,
+    "refresh": "",
+    "schemaVersion": 37,
     "style": "dark",
     "tags": [],
     "templating": {
         "list": []
     },
     "time": {
-        "from": "now-1h",
+        "from": "now-6h",
         "to": "now"
     },
     "timepicker": {
@@ -246,6 +268,6 @@
     "timezone": "browser",
     "title": "Gitlab Runner Kubernetes Executor",
     "uid": "vS08Dj-mk",
-    "version": 28,
+    "version": 44,
     "weekStart": ""
 }
