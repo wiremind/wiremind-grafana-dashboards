@@ -1,54 +1,11 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_THANOS",
-      "label": "Thanos",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "9.5.5"
-    },
-    {
-      "type": "panel",
-      "id": "graph",
-      "name": "Graph (old)",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "piechart",
-      "name": "Pie chart",
-      "version": ""
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
         "builtIn": 1,
         "datasource": {
-          "type": "grafana",
-          "uid": "-- Grafana --"
+          "type": "prometheus",
+          "uid": "${datasource}"
         },
         "enable": true,
         "hide": true,
@@ -70,7 +27,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$PROMETHEUS_DS"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -118,7 +75,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "sum(namedprocess_namegroup_memory_bytes{instance=~\"$instance\", memtype=\"proportionalResident\"} > 0) by (groupname)",
@@ -136,7 +94,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "$PROMETHEUS_DS"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -189,7 +147,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -213,7 +172,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "$PROMETHEUS_DS"
+        "uid": "${datasource}"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -255,7 +214,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "namedprocess_namegroup_memory_bytes{instance=~\"$instance\", memtype=\"proportionalResident\"} > 0",
@@ -303,7 +263,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "$PROMETHEUS_DS"
+        "uid": "${datasource}"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -345,7 +305,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "expr": "sum (rate(namedprocess_namegroup_cpu_seconds_total{instance=~\"$instance\"}[$__rate_interval]) )without (mode) > 0",
@@ -392,7 +353,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$PROMETHEUS_DS"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -434,7 +396,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "expr": "namedprocess_namegroup_memory_bytes{instance=~\"$instance\", memtype=\"resident\"} / ignoring(memtype) namedprocess_namegroup_num_procs > 0",
           "format": "time_series",
@@ -479,7 +442,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$PROMETHEUS_DS"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -521,7 +485,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "expr": "namedprocess_namegroup_num_procs{instance=~\"$instance\"}",
           "format": "time_series",
@@ -566,7 +531,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$PROMETHEUS_DS"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -608,7 +574,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "expr": "namedprocess_namegroup_memory_bytes{instance=~\"$instance\", memtype=\"virtual\"}",
           "format": "time_series",
@@ -653,7 +620,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$PROMETHEUS_DS"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -695,7 +663,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "expr": "rate(namedprocess_namegroup_context_switches_total{instance=~\"$instance\", ctxswitchtype=\"voluntary\"}[$__rate_interval])",
           "format": "time_series",
@@ -740,7 +709,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$PROMETHEUS_DS"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -782,7 +752,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "expr": "rate(namedprocess_namegroup_context_switches_total{instance=~\"$instance\", ctxswitchtype=\"nonvoluntary\"}[$__rate_interval])",
           "format": "time_series",
@@ -827,7 +798,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$PROMETHEUS_DS"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -869,7 +841,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "expr": "namedprocess_namegroup_open_filedesc{instance=~\"$instance\"}",
           "format": "time_series",
@@ -914,7 +887,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$PROMETHEUS_DS"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -956,7 +930,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "expr": "rate(namedprocess_namegroup_read_bytes_total{instance=~\"$instance\"}[$__rate_interval])",
           "format": "time_series",
@@ -1001,7 +976,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$PROMETHEUS_DS"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -1043,7 +1019,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "expr": "rate(namedprocess_namegroup_write_bytes_total{instance=~\"$instance\"}[$__rate_interval])",
           "format": "time_series",
@@ -1088,7 +1065,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$PROMETHEUS_DS"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -1130,7 +1108,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "expr": "rate(namedprocess_namegroup_major_page_faults_total{instance=~\"$instance\"}[$__rate_interval])",
           "format": "time_series",
@@ -1175,7 +1154,8 @@
       "dashLength": 10,
       "dashes": false,
       "datasource": {
-        "uid": "$PROMETHEUS_DS"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fill": 1,
       "fillGradient": 0,
@@ -1217,7 +1197,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "expr": "rate(namedprocess_namegroup_minor_page_faults_total{instance=~\"$instance\"}[$__rate_interval])",
           "format": "time_series",
@@ -1258,7 +1239,8 @@
     },
     {
       "datasource": {
-        "uid": "$PROMETHEUS_DS"
+        "type": "prometheus",
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1274,8 +1256,7 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green",
-                "value": null
+                "color": "green"
               },
               {
                 "color": "red",
@@ -1317,7 +1298,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "$PROMETHEUS_DS"
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
           "exemplar": true,
           "expr": "time() - (avg by (groupname) (namedprocess_namegroup_oldest_start_time_seconds{instance=~\"$instance\"} > 0))",
@@ -1358,7 +1340,7 @@
         "hide": 1,
         "includeAll": false,
         "multi": false,
-        "name": "PROMETHEUS_DS",
+        "name": "datasource",
         "options": [],
         "query": "prometheus",
         "queryValue": "",
@@ -1371,7 +1353,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_THANOS}"
+          "uid": "${datasource}"
         },
         "definition": "label_values(kube_pod_info{pod=~\"process-exporter.*\"},node)",
         "hide": 0,
@@ -1394,7 +1376,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_THANOS}"
+          "uid": "${datasource}"
         },
         "definition": "label_values(kube_pod_info{pod=~\"process-exporter.*\", node=\"$node\"},pod)",
         "hide": 2,
@@ -1416,7 +1398,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "$PROMETHEUS_DS"
+          "uid": "${datasource}"
         },
         "definition": "label_values(namedprocess_namegroup_cpu_seconds_total{pod=\"$pod\"},instance)",
         "hide": 2,
@@ -1471,6 +1453,6 @@
   "timezone": "browser",
   "title": "Process exporter",
   "uid": "process-exporter-with-tree",
-  "version": 5,
+  "version": 9,
   "weekStart": ""
 }
