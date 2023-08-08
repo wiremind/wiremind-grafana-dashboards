@@ -9,12 +9,13 @@
       "pluginName": "Prometheus"
     }
   ],
+  "__elements": {},
   "__requires": [
     {
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "8.1.2"
+      "version": "10.0.3"
     },
     {
       "type": "datasource",
@@ -39,7 +40,10 @@
     "list": [
       {
         "builtIn": 1,
-        "datasource": "-- Grafana --",
+        "datasource": {
+          "type": "datasource",
+          "uid": "grafana"
+        },
         "enable": true,
         "hide": true,
         "iconColor": "rgba(0, 211, 255, 1)",
@@ -56,15 +60,18 @@
   },
   "description": "Rabbitmq stats using RabbitMQ Exporter (https://github.com/kbudde/rabbitmq_exporter)",
   "editable": true,
+  "fiscalYearStartMonth": 0,
   "gnetId": 8585,
   "graphTooltip": 1,
   "id": null,
-  "iteration": 1631701954464,
   "links": [],
+  "liveNow": false,
   "panels": [
     {
-      "cacheTimeout": null,
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -121,7 +128,6 @@
       },
       "hideTimeOverride": true,
       "id": 14,
-      "interval": null,
       "links": [],
       "maxDataPoints": 1,
       "options": {
@@ -139,13 +145,17 @@
         "text": {},
         "textMode": "name"
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "10.0.3",
       "repeat": "node",
       "repeatDirection": "h",
       "targets": [
         {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
           "exemplar": false,
-          "expr": "rabbitmq_running{job=\"$job\"}",
+          "expr": "rabbitmq_running{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "hide": false,
           "instant": true,
@@ -160,13 +170,18 @@
       "type": "stat"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "hidden",
             "barAlignment": 0,
@@ -211,7 +226,20 @@
           },
           "unit": "percentunit"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byType",
+              "options": "time"
+            },
+            "properties": [
+              {
+                "id": "custom.axisPlacement",
+                "value": "auto"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 7,
@@ -228,16 +256,22 @@
             "lastNotNull"
           ],
           "displayMode": "table",
-          "placement": "bottom"
+          "placement": "bottom",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "expr": "rabbitmq_running{job=\"$job\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "rabbitmq_running{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -247,19 +281,22 @@
           "step": 2
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Nodes Up",
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -322,16 +359,22 @@
             "max"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "expr": "rabbitmq_connectionsTotal{job=\"$job\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "rabbitmq_connectionsTotal{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "connections",
@@ -340,33 +383,44 @@
           "step": 2
         },
         {
-          "expr": "rabbitmq_channelsTotal{job=\"$job\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "rabbitmq_channelsTotal{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "channels",
           "refId": "B"
         },
         {
-          "expr": "rabbitmq_consumersTotal{job=\"$job\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "rabbitmq_consumersTotal{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "consumers",
           "refId": "C"
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Connections, channels and consumers",
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -428,16 +482,22 @@
             "lastNotNull"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "expr": "rabbitmq_queue_messages{job=\"$job\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "rabbitmq_queue_messages{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{queue}}",
@@ -446,19 +506,22 @@
           "step": 2
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Messages per Queue",
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -518,16 +581,22 @@
             "lastNotNull"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "expr": "sum by (queue)(rabbitmq_queue_messages_ready{job=\"$job\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum by (queue)(rabbitmq_queue_messages_ready{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{queue}}:ready",
@@ -536,7 +605,11 @@
           "step": 2
         },
         {
-          "expr": "sum by (queue)(rabbitmq_queue_messages_published_total{job=\"$job\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum by (queue)(rabbitmq_queue_messages_published_total{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{queue}}:published",
@@ -545,7 +618,11 @@
           "step": 2
         },
         {
-          "expr": "sum by (queue)(rabbitmq_queue_messages_delivered_total{job=\"$job\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum by (queue)(rabbitmq_queue_messages_delivered_total{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{queue}}:delivered",
@@ -554,7 +631,11 @@
           "step": 2
         },
         {
-          "expr": "sum by (queue)(rabbitmq_queue_messages_unacknowledged{job=\"$job\"})",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "sum by (queue)(rabbitmq_queue_messages_unacknowledged{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{queue}}:unack",
@@ -563,19 +644,22 @@
           "step": 2
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Messages status",
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -635,16 +719,22 @@
             "lastNotNull"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "expr": "rabbitmq_node_disk_free{job=\"$job\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "rabbitmq_node_disk_free{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{job}}:free",
@@ -653,7 +743,11 @@
           "step": 2
         },
         {
-          "expr": "rabbitmq_node_disk_free_limit{job=\"$job\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "rabbitmq_node_disk_free_limit{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{job}}:limit",
@@ -662,19 +756,22 @@
           "step": 2
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Free disk space",
       "type": "timeseries"
     },
     {
-      "datasource": "${DS_PROMETHEUS}",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
       "fieldConfig": {
         "defaults": {
           "color": {
             "mode": "palette-classic"
           },
           "custom": {
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
             "barAlignment": 0,
@@ -734,16 +831,22 @@
             "lastNotNull"
           ],
           "displayMode": "table",
-          "placement": "right"
+          "placement": "right",
+          "showLegend": true
         },
         "tooltip": {
-          "mode": "single"
+          "mode": "single",
+          "sort": "none"
         }
       },
       "pluginVersion": "8.1.2",
       "targets": [
         {
-          "expr": "rabbitmq_node_mem_used{job=\"$job\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "rabbitmq_node_mem_used{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{job}}:used",
@@ -752,7 +855,11 @@
           "step": 2
         },
         {
-          "expr": "rabbitmq_node_mem_limit{job=\"$job\"}",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "expr": "rabbitmq_node_mem_limit{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{job}}:limit",
@@ -761,14 +868,12 @@
           "step": 2
         }
       ],
-      "timeFrom": null,
-      "timeShift": null,
       "title": "Used memory",
       "type": "timeseries"
     }
   ],
   "refresh": "30s",
-  "schemaVersion": 30,
+  "schemaVersion": 38,
   "style": "dark",
   "tags": [
     "rabbitmq",
@@ -782,36 +887,56 @@
           "text": "default",
           "value": "default"
         },
-        "description": null,
-        "error": null,
         "hide": 0,
         "includeAll": false,
-        "label": null,
         "multi": false,
         "name": "datasource",
         "options": [],
         "query": "prometheus",
+        "queryValue": "",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
         "type": "datasource"
       },
       {
-        "allValue": null,
         "current": {},
-        "datasource": "${DS_PROMETHEUS}",
-        "definition": "",
-        "description": null,
-        "error": null,
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "label_values(rabbitmq_running,namespace)",
+        "hide": 0,
+        "includeAll": false,
+        "label": "Namespace",
+        "multi": false,
+        "name": "namespace",
+        "options": [],
+        "query": {
+          "query": "label_values(rabbitmq_running,namespace)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${DS_PROMETHEUS}"
+        },
+        "definition": "label_values(rabbitmq_running{namespace=\"$namespace\"},job)",
         "hide": 0,
         "includeAll": true,
-        "label": null,
         "multi": true,
         "name": "job",
         "options": [],
         "query": {
-          "query": "label_values(rabbitmq_running, job)",
-          "refId": "Prometheus-job-Variable-Query"
+          "query": "label_values(rabbitmq_running{namespace=\"$namespace\"},job)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 1,
         "regex": "",
@@ -856,5 +981,6 @@
   "timezone": "browser",
   "title": "RabbitMQ Monitoring",
   "uid": "XcmAVv0iz",
-  "version": 18
+  "version": 28,
+  "weekStart": ""
 }
