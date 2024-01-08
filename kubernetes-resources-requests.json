@@ -473,7 +473,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -584,7 +585,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -627,7 +629,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "rgba(245, 54, 54, 0.9)"
+                          "color": "rgba(245, 54, 54, 0.9)",
+                          "value": null
                         },
                         {
                           "color": "rgba(50, 172, 45, 0.97)",
@@ -721,7 +724,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "rgba(245, 54, 54, 0.9)"
+                          "color": "rgba(245, 54, 54, 0.9)",
+                          "value": null
                         },
                         {
                           "color": "rgba(50, 172, 45, 0.97)",
@@ -735,14 +739,26 @@
                     }
                   }
                 ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #C"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "CPU Count"
+                  }
+                ]
               }
             ]
           },
           "gridPos": {
-            "h": 14,
+            "h": 16,
             "w": 24,
             "x": 0,
-            "y": 18
+            "y": 26
           },
           "hideTimeOverride": true,
           "id": 6,
@@ -763,7 +779,7 @@
             "sortBy": [
               {
                 "desc": false,
-                "displayName": "CPU Requests"
+                "displayName": "Node"
               }
             ]
           },
@@ -800,6 +816,21 @@
               "intervalFactor": 1,
               "legendFormat": "{{ node }}",
               "refId": "A"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_THANOS}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "kube_node_labels{cluster=~\"$cluster.*\", $node_selector}\n* on (node)\n( \n  node:node_num_cpu:sum\n)",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "CPU count",
+              "range": false,
+              "refId": "C"
             }
           ],
           "title": "Cluster Node Utilisation by CPU and RAM requests",
@@ -967,6 +998,6 @@
   "timezone": "browser",
   "title": "Kubernetes Resource Requests",
   "uid": "XZ-kM6KMk",
-  "version": 112,
+  "version": 114,
   "weekStart": ""
 }
