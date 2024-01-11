@@ -21,7 +21,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.2.2"
+      "version": "10.2.3"
     },
     {
       "type": "datasource",
@@ -82,7 +82,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_THANOS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -147,14 +147,15 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_THANOS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -174,7 +175,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_THANOS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -239,14 +240,15 @@
         },
         "showThresholdLabels": false,
         "showThresholdMarkers": true,
+        "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_THANOS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -266,7 +268,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_THANOS}"
+        "uid": "${datasource}"
       },
       "gridPos": {
         "h": 8,
@@ -284,14 +286,14 @@
         "content": "Please keep in sync he variable \"Node Selector\" & \"Priority Class Selector\" in order to have meaningful values:\n- For the whole cluster\n- For prod only\n- For non-prod only",
         "mode": "markdown"
       },
-      "pluginVersion": "10.2.2",
+      "pluginVersion": "10.2.3",
       "title": "Guide",
       "type": "text"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_THANOS}"
+        "uid": "${datasource}"
       },
       "description": "This represents the total [CPU resource requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#meaning-of-cpu) in the cluster.\nFor comparison the total [allocatable CPU cores](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/node-allocatable.md) is also shown.",
       "fieldConfig": {
@@ -378,7 +380,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_THANOS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -395,7 +397,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_THANOS}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -426,7 +428,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_THANOS}"
+            "uid": "${datasource}"
           },
           "description": "This represents the total [memory resource requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#meaning-of-memory) in the cluster.\nFor comparison the total [allocatable memory](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/node-allocatable.md) is also shown.",
           "fieldConfig": {
@@ -473,8 +475,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -513,7 +514,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_THANOS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -530,7 +531,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_THANOS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": true,
@@ -565,7 +566,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_THANOS}"
+            "uid": "${datasource}"
           },
           "description": "This table shows the comparison of CPU and RAM requests by applications, vs the capacity of the node",
           "fieldConfig": {
@@ -585,8 +586,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -629,8 +629,7 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "rgba(245, 54, 54, 0.9)",
-                          "value": null
+                          "color": "rgba(245, 54, 54, 0.9)"
                         },
                         {
                           "color": "rgba(50, 172, 45, 0.97)",
@@ -724,8 +723,7 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "rgba(245, 54, 54, 0.9)",
-                          "value": null
+                          "color": "rgba(245, 54, 54, 0.9)"
                         },
                         {
                           "color": "rgba(50, 172, 45, 0.97)",
@@ -758,7 +756,7 @@
             "h": 16,
             "w": 24,
             "x": 0,
-            "y": 26
+            "y": 18
           },
           "hideTimeOverride": true,
           "id": 6,
@@ -783,13 +781,13 @@
               }
             ]
           },
-          "pluginVersion": "10.2.2",
+          "pluginVersion": "10.2.3",
           "repeatDirection": "v",
           "targets": [
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_THANOS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -804,7 +802,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_THANOS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -820,7 +818,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_THANOS}"
+                "uid": "${datasource}"
               },
               "editorMode": "code",
               "exemplar": false,
@@ -850,13 +848,13 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 38,
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "default",
           "value": "default"
         },
@@ -864,7 +862,7 @@
         "includeAll": false,
         "label": "Datasource",
         "multi": false,
-        "name": "DS_PROMETHEUS",
+        "name": "datasource",
         "options": [],
         "query": "prometheus",
         "queryValue": "",
@@ -877,7 +875,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_THANOS}"
+          "uid": "${datasource}"
         },
         "definition": "label_values(up{job=\"kube-state-metrics\"},cluster)",
         "hide": 0,
@@ -998,6 +996,6 @@
   "timezone": "browser",
   "title": "Kubernetes Resource Requests",
   "uid": "XZ-kM6KMk",
-  "version": 114,
+  "version": 118,
   "weekStart": ""
 }
