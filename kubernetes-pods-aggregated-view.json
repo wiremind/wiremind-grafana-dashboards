@@ -206,6 +206,7 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -244,7 +245,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
               },
@@ -256,7 +258,7 @@
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 2
+            "y": 15
           },
           "id": 21,
           "links": [],
@@ -285,7 +287,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "sum(container_memory_usage_bytes{pod=~\"[[pod_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", node=~\"[[node_name]]\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"})",
+              "expr": "sum(container_memory_usage_bytes{pod=~\"[[pod_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", node=~\"[[node_name]]\", image!=\"\", pod!=\"\", pod=~\"[[pod_name]]\", container!=\"POD\", container!=\"\", container=~\"[[container_name]]\"})",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -302,7 +304,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{pod=~\"[[pod_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", node=~\"[[node_name]]\", container!=\"POD\", container!=\"\"})",
+              "expr": "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{pod=~\"[[pod_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", node=~\"[[node_name]]\",  pod=~\"[[pod_name]]\", container!=\"POD\", container!=\"\", container=~\"[[container_name]]\"})",
               "format": "time_series",
               "hide": false,
               "interval": "",
@@ -672,7 +674,7 @@
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 16
+            "y": 17
           },
           "id": 34,
           "links": [],
@@ -701,7 +703,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "(\n  sum by (container) (\n    rate(container_cpu_usage_seconds_total{namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"[[container_name]]\"}[5m])\n  )\n) \n/\n(\n  sum by (container) (\n    cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", container!=\"POD\", container!=\"\", container=~\"[[container_name]]\"}\n  )\n)",
+              "expr": "(\n  sum by (container) (\n    rate(container_cpu_usage_seconds_total{namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", pod=~\"[[pod_name]]\", image!=\"\", pod=~\"[[pod_name]].*\", container!=\"POD\", container!=\"\", container=~\"[[container_name]]\"}[5m])\n  )\n) \n/\n(\n  sum by (container) (\n    cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", pod=~\"[[pod_name]].*\", container!=\"POD\", container!=\"\", container=~\"[[container_name]]\"}\n  )\n)",
               "format": "time_series",
               "hide": false,
               "instant": false,
@@ -787,7 +789,7 @@
             "h": 9,
             "w": 24,
             "x": 0,
-            "y": 29
+            "y": 30
           },
           "id": 2,
           "links": [],
@@ -817,7 +819,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "rate(container_cpu_usage_seconds_total{pod=~\"[[pod_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", node=~\"[[node_name]]\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"[[container_name]]\"}[5m])",
+              "expr": "rate(container_cpu_usage_seconds_total{pod=~\"[[pod_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", node=~\"[[node_name]]\", image!=\"\", pod=~\"[[pod_name]]\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"[[container_name]]\"}[5m])",
               "format": "time_series",
               "hide": false,
               "interval": "",
@@ -855,6 +857,7 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -893,7 +896,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -909,7 +913,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 32
+            "y": 18
           },
           "id": 12,
           "options": {
@@ -936,7 +940,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "sum (irate(container_cpu_cfs_throttled_periods_total{pod=~\"[[pod_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", node=~\"[[node_name]]\"}[5m]))\n/\nsum (irate(container_cpu_cfs_periods_total{pod=~\"[[pod_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", node=~\"[[node_name]]\"}[5m]))",
+              "expr": "sum (irate(container_cpu_cfs_throttled_periods_total{ pod=~\"[[pod_name]].*\", container!=\"POD\", container!=\"\", container=~\"[[container_name]]\",namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", node=~\"[[node_name]]\"}[5m]))\n/\nsum (irate(container_cpu_cfs_periods_total{ pod=~\"[[pod_name]].*\", container!=\"POD\", container!=\"\", container=~\"[[container_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", node=~\"[[node_name]]\"}[5m]))",
               "interval": "",
               "legendFormat": "Sum",
               "range": true,
@@ -971,6 +975,7 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -1013,7 +1018,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   }
                 ]
               },
@@ -1025,7 +1031,7 @@
             "h": 8,
             "w": 24,
             "x": 0,
-            "y": 31
+            "y": 19
           },
           "id": 29,
           "options": {
@@ -1054,7 +1060,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "container_memory_working_set_bytes{pod=~\"[[pod_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", node=~\"[[node_name]]\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}\n",
+              "expr": "container_memory_working_set_bytes{pod=~\"[[pod_name]].*\", container!=\"POD\", container!=\"\", container=~\"[[container_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", node=~\"[[node_name]]\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}\n",
               "interval": "",
               "legendFormat": "{{ pod }}",
               "range": true,
@@ -1090,6 +1096,7 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -1132,7 +1139,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1173,7 +1181,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "rate(container_network_receive_bytes_total{pod=~\"[[pod_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", interface!=\"tunl0\"}[5m])",
+              "expr": "rate(container_network_receive_bytes_total{ pod=~\"[[pod_name]].*\", container!=\"POD\", container!=\"\", container=~\"[[container_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", interface!=\"tunl0\"}[5m])",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 4,
@@ -1196,6 +1204,7 @@
                 "mode": "palette-classic"
               },
               "custom": {
+                "axisBorderShow": false,
                 "axisCenteredZero": false,
                 "axisColorMode": "text",
                 "axisLabel": "",
@@ -1238,7 +1247,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -1279,7 +1289,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "rate(container_network_transmit_bytes_total{pod=~\"[[pod_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", interface!=\"tunl0\"}[5m])",
+              "expr": "rate(container_network_transmit_bytes_total{pod=~\"[[pod_name]].*\", container!=\"POD\", container!=\"\", container=~\"[[container_name]]\", namespace=~\"[[namespace]]\", cluster=~\"[[cluster]]\", interface!=\"tunl0\"}[5m])",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 4,
@@ -1317,7 +1327,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 38,
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
@@ -1340,7 +1350,11 @@
         "type": "datasource"
       },
       {
-        "current": {},
+        "current": {
+          "selected": true,
+          "text": "ovh-main-gra11-prod",
+          "value": "ovh-main-gra11-prod"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -1363,7 +1377,11 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "selected": true,
+          "text": "default",
+          "value": "default"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -1451,7 +1469,7 @@
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {
@@ -1481,6 +1499,6 @@
   "timezone": "",
   "title": "Pods (Aggregated view)",
   "uid": "pods-aggregated-view",
-  "version": 124,
+  "version": 127,
   "weekStart": ""
 }
