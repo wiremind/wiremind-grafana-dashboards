@@ -1,4 +1,55 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_PROMETHEUS",
+      "label": "Prometheus",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    },
+    {
+      "name": "DS_THANOS",
+      "label": "Thanos",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "panel",
+      "id": "gauge",
+      "name": "Gauge",
+      "version": ""
+    },
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "10.3.3"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "stat",
+      "name": "Stat",
+      "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "timeseries",
+      "name": "Time series",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -20,7 +71,7 @@
   "fiscalYearStartMonth": 0,
   "gnetId": 9628,
   "graphTooltip": 0,
-  "id": 538,
+  "id": null,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -50,7 +101,8 @@
     },
     {
       "datasource": {
-        "uid": "${datasource}"
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -81,7 +133,7 @@
               }
             ]
           },
-          "unit": "none",
+          "unit": "short",
           "unitScale": true
         },
         "overrides": []
@@ -92,92 +144,9 @@
         "x": 0,
         "y": 1
       },
-      "id": 36,
+      "id": 10,
       "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "name",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.3.3",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "${datasource}"
-          },
-          "expr": "pg_static{namespace=\"$namespace\", pod=\"$pod\"}",
-          "format": "time_series",
-          "instant": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "{{short_version}}",
-          "refId": "A"
-        }
-      ],
-      "title": "Version",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "description": "start time of the process",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "dateTimeFromNow",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 4,
-        "y": 1
-      },
-      "id": 28,
-      "links": [],
-      "maxDataPoints": 100,
+      "maxDataPoints": 1,
       "options": {
         "colorMode": "none",
         "graphMode": "none",
@@ -185,7 +154,7 @@
         "orientation": "horizontal",
         "reduceOptions": {
           "calcs": [
-            "mean"
+            "lastNotNull"
           ],
           "fields": "",
           "values": false
@@ -198,26 +167,115 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "process_start_time_seconds{namespace=\"$namespace\", pod=\"$pod\"} * 1000",
+          "expr": "SUM(increase(pg_stat_database_tup_fetched{namespace=\"$namespace\", datname=\"$datname\", pod=\"$pod\"}[$__interval]))",
           "format": "time_series",
           "instant": true,
           "interval": "",
-          "intervalFactor": 2,
+          "intervalFactor": 1,
           "legendFormat": "",
           "range": false,
-          "refId": "A"
+          "refId": "A",
+          "step": 4
         }
       ],
-      "title": "Start Time",
+      "title": "Tuple fetched during the period",
       "type": "stat"
     },
     {
       "datasource": {
-        "uid": "${datasource}"
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [
+            {
+              "options": {
+                "match": "null",
+                "result": {
+                  "text": "N/A"
+                }
+              },
+              "type": "special"
+            }
+          ],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "short",
+          "unitScale": true
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 4,
+        "x": 4,
+        "y": 1
+      },
+      "id": 11,
+      "links": [],
+      "maxDataPoints": 1,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "horizontal",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "10.3.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "SUM(increase(pg_stat_database_tup_inserted{namespace=\"$namespace\", datname=\"$datname\", pod=\"$pod\"}[$__interval]))",
+          "format": "time_series",
+          "instant": true,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "",
+          "refId": "A",
+          "step": 4
+        }
+      ],
+      "title": "Tuple inserted during the period",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -259,7 +317,7 @@
         "x": 8,
         "y": 1
       },
-      "id": 10,
+      "id": 12,
       "links": [],
       "maxDataPoints": 1,
       "options": {
@@ -282,25 +340,27 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
-          "expr": "SUM(increase(pg_stat_database_tup_fetched{namespace=\"$namespace\", datname=\"$datname\", pod=\"$pod\"}[$__interval]))",
+          "expr": "SUM(increase(pg_stat_database_tup_updated{datname=\"$datname\", pod=\"$pod\"}[$__interval]))",
           "format": "time_series",
           "instant": true,
           "interval": "",
-          "intervalFactor": 1,
+          "intervalFactor": 2,
           "legendFormat": "",
           "refId": "A",
           "step": 4
         }
       ],
-      "title": "Tuple fetched during the period",
+      "title": "Tuple updated during the period",
       "type": "stat"
     },
     {
       "datasource": {
-        "uid": "${datasource}"
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -342,7 +402,7 @@
         "x": 12,
         "y": 1
       },
-      "id": 11,
+      "id": 89,
       "links": [],
       "maxDataPoints": 1,
       "options": {
@@ -365,25 +425,28 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "SUM(increase(pg_stat_database_tup_inserted{namespace=\"$namespace\", datname=\"$datname\", pod=\"$pod\"}[$__interval]))",
+          "expr": "SUM(increase(pg_stat_database_tup_deleted{datname=\"$datname\", pod=\"$pod\"}[$__interval]))",
           "format": "time_series",
           "instant": true,
           "interval": "",
-          "intervalFactor": 1,
+          "intervalFactor": 2,
           "legendFormat": "",
           "refId": "A",
           "step": 4
         }
       ],
-      "title": "Tuple inserted during the period",
+      "title": "Tuple deleted during the period",
       "type": "stat"
     },
     {
       "datasource": {
-        "uid": "${datasource}"
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -425,7 +488,7 @@
         "x": 16,
         "y": 1
       },
-      "id": 12,
+      "id": 90,
       "links": [],
       "maxDataPoints": 1,
       "options": {
@@ -448,10 +511,12 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
+          "editorMode": "code",
           "exemplar": true,
-          "expr": "SUM(increase(pg_stat_database_tup_updated{datname=\"$datname\", pod=\"$pod\"}[$__interval]))",
+          "expr": "SUM(increase(pg_stat_database_tup_returned{datname=\"$datname\", pod=\"$pod\"}[$__interval]))",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -461,97 +526,13 @@
           "step": 4
         }
       ],
-      "title": "Tuple updated during the period",
+      "title": "Tuple returned during the period",
       "type": "stat"
     },
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [
-            {
-              "options": {
-                "match": "null",
-                "result": {
-                  "text": "N/A"
-                }
-              },
-              "type": "special"
-            }
-          ],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 20,
-        "y": 1
-      },
-      "id": 38,
-      "links": [],
-      "maxDataPoints": 100,
-      "options": {
-        "colorMode": "none",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "horizontal",
-        "reduceOptions": {
-          "calcs": [
-            "mean"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showPercentChange": false,
-        "textMode": "auto",
-        "wideLayout": true
-      },
-      "pluginVersion": "10.3.3",
-      "targets": [
-        {
-          "datasource": {
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "pg_settings_max_connections{namespace=\"$namespace\", pod=\"$pod\"}",
-          "format": "time_series",
-          "instant": true,
-          "interval": "",
-          "intervalFactor": 1,
-          "legendFormat": "",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Max Connections",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "Average user and system CPU time spent in seconds.",
       "fieldConfig": {
@@ -640,7 +621,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "irate(container_cpu_usage_seconds_total{namespace=\"$namespace\", pod=\"$pod\", container!=\"metrics-exporter\", container!=\"POD\", container!=\"\"}[4m])",
@@ -652,7 +634,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "kube_pod_container_resource_requests{namespace=\"$namespace\", pod=\"$pod\", container!=\"metrics-exporter\", resource=\"cpu\"}",
@@ -662,7 +645,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "kube_pod_container_resource_limits{job=\"kube-state-metrics\", namespace=\"$namespace\", pod=\"$pod\", container!=\"metrics-exporter\", resource=\"cpu\"}",
@@ -677,7 +661,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "Virtual and Resident memory size in bytes, averages over 5 min interval",
       "fieldConfig": {
@@ -766,7 +750,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -780,7 +765,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -794,7 +780,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -806,7 +793,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -823,7 +811,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -881,7 +869,8 @@
         {
           "aggregation": "Last",
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "decimals": 2,
           "displayAliasType": "Warning / Critical",
@@ -929,7 +918,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -944,7 +933,7 @@
             "axisPlacement": "auto",
             "barAlignment": 0,
             "drawStyle": "line",
-            "fillOpacity": 30,
+            "fillOpacity": 0,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -953,6 +942,9 @@
             },
             "insertNulls": false,
             "lineInterpolation": "linear",
+            "lineStyle": {
+              "fill": "solid"
+            },
             "lineWidth": 1,
             "pointSize": 5,
             "scaleDistribution": {
@@ -1043,7 +1035,7 @@
           "calcs": [],
           "displayMode": "list",
           "placement": "bottom",
-          "showLegend": true
+          "showLegend": false
         },
         "tooltip": {
           "mode": "multi",
@@ -1054,7 +1046,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -1070,7 +1063,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "pg_stat_database_numbackends{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}",
@@ -1081,6 +1075,19 @@
           "legendFormat": "total",
           "refId": "B",
           "step": 2
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "editorMode": "code",
+          "expr": "max(pg_settings_max_connections{namespace=\"$namespace\", pod=\"$pod\"})",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Max connections",
+          "range": true,
+          "refId": "C"
         }
       ],
       "title": "PG Connections",
@@ -1088,7 +1095,8 @@
     },
     {
       "datasource": {
-        "uid": "${datasource}"
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1172,7 +1180,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "irate(pg_stat_database_xact_commit{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
@@ -1184,7 +1193,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "irate(pg_stat_database_xact_rollback{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
@@ -1196,7 +1206,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "sum(irate(pg_stat_database_xact_rollback{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m]) + irate(pg_stat_database_xact_commit{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m]))",
@@ -1213,7 +1224,8 @@
     },
     {
       "datasource": {
-        "uid": "${datasource}"
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1291,7 +1303,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "max(pg_stat_activity_max_tx_duration{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"})",
@@ -1309,7 +1322,8 @@
     },
     {
       "datasource": {
-        "uid": "${datasource}"
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1392,7 +1406,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "sum(irate(pg_stat_database_tup_returned{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m]))",
@@ -1405,7 +1420,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "sum(irate(pg_stat_database_tup_fetched{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m]))",
@@ -1422,7 +1438,8 @@
     },
     {
       "datasource": {
-        "uid": "${datasource}"
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1505,7 +1522,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "irate(pg_stat_database_tup_inserted{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
@@ -1519,7 +1537,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "irate(pg_stat_database_tup_updated{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
@@ -1533,7 +1552,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "irate(pg_stat_database_tup_deleted{datname=\"$datname\", pod=\"$pod\"}[$__rate_interval])",
@@ -1552,7 +1572,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1607,7 +1627,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": false,
@@ -1627,7 +1648,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -1716,7 +1737,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -1735,7 +1757,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "",
       "fieldConfig": {
@@ -1824,7 +1846,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -1842,7 +1865,8 @@
     },
     {
       "datasource": {
-        "uid": "${datasource}"
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -1924,7 +1948,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "pg_replication_lag{namespace=\"$namespace\", pod=\"$pod\"}",
@@ -1943,7 +1968,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2029,7 +2054,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2049,7 +2075,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2132,7 +2158,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2146,7 +2173,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2160,7 +2188,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2174,7 +2203,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2188,7 +2218,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2202,7 +2233,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2217,7 +2249,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2232,7 +2265,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2247,7 +2281,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2262,7 +2297,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2277,7 +2313,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2296,7 +2333,8 @@
     },
     {
       "datasource": {
-        "uid": "${datasource}"
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "Number of open file descriptors",
       "fieldConfig": {
@@ -2385,7 +2423,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "expr": "process_open_fds{namespace=\"$namespace\", pod=\"$pod\"}",
           "format": "time_series",
@@ -2401,7 +2440,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${datasource}"
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2489,7 +2528,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2503,7 +2543,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2517,7 +2558,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2532,7 +2574,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -2551,7 +2594,8 @@
     },
     {
       "datasource": {
-        "uid": "${datasource}"
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "description": "Total amount of data written to temporary files by queries in this database. All temporary files are counted, regardless of why the temporary file was created, and regardless of the log_temp_files setting.",
       "fieldConfig": {
@@ -2640,7 +2684,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "irate(pg_stat_database_temp_bytes{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
@@ -2656,7 +2701,8 @@
     },
     {
       "datasource": {
-        "uid": "${datasource}"
+        "type": "prometheus",
+        "uid": "${DS_PROMETHEUS}"
       },
       "fieldConfig": {
         "defaults": {
@@ -2740,7 +2786,8 @@
       "targets": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "irate(pg_stat_database_conflicts{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
@@ -2752,7 +2799,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "exemplar": true,
           "expr": "irate(pg_stat_database_deadlocks{namespace=\"$namespace\", pod=\"$pod\", datname=\"$datname\"}[2m])",
@@ -2781,7 +2829,8 @@
       "panels": [
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2803,7 +2852,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -2820,7 +2870,7 @@
             "h": 3,
             "w": 3,
             "x": 0,
-            "y": 12
+            "y": 48
           },
           "id": 40,
           "links": [],
@@ -2845,13 +2895,18 @@
           "targets": [
             {
               "datasource": {
-                "uid": "${datasource}"
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
               },
+              "editorMode": "code",
+              "exemplar": false,
               "expr": "pg_settings_shared_buffers_bytes{namepsace=\"$namespace\", pod=\"$pod\"}",
               "format": "time_series",
+              "instant": true,
               "interval": "",
               "intervalFactor": 1,
               "legendFormat": "",
+              "range": false,
               "refId": "A"
             }
           ],
@@ -2860,7 +2915,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2882,7 +2938,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -2899,7 +2956,7 @@
             "h": 3,
             "w": 3,
             "x": 3,
-            "y": 12
+            "y": 48
           },
           "id": 42,
           "links": [],
@@ -2924,13 +2981,18 @@
           "targets": [
             {
               "datasource": {
-                "uid": "${datasource}"
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
               },
+              "editorMode": "code",
+              "exemplar": false,
               "expr": "pg_settings_effective_cache_size_bytes{namespace=\"$namespace\", pod=\"$pod\"}",
               "format": "time_series",
+              "instant": true,
               "interval": "",
               "intervalFactor": 1,
               "legendFormat": "",
+              "range": false,
               "refId": "A"
             }
           ],
@@ -2939,7 +3001,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -2961,7 +3024,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -2978,7 +3042,7 @@
             "h": 3,
             "w": 3,
             "x": 6,
-            "y": 12
+            "y": 48
           },
           "id": 44,
           "links": [],
@@ -3003,13 +3067,18 @@
           "targets": [
             {
               "datasource": {
-                "uid": "${datasource}"
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
               },
+              "editorMode": "code",
+              "exemplar": false,
               "expr": "pg_settings_maintenance_work_mem_bytes{namespace=\"$namespace\", pod=\"$pod\"}",
               "format": "time_series",
+              "instant": true,
               "interval": "",
               "intervalFactor": 1,
               "legendFormat": "",
+              "range": false,
               "refId": "A"
             }
           ],
@@ -3018,7 +3087,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -3041,7 +3111,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -3058,7 +3129,7 @@
             "h": 3,
             "w": 3,
             "x": 9,
-            "y": 12
+            "y": 48
           },
           "id": 46,
           "links": [],
@@ -3083,13 +3154,18 @@
           "targets": [
             {
               "datasource": {
-                "uid": "${datasource}"
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
               },
+              "editorMode": "code",
+              "exemplar": false,
               "expr": "pg_settings_work_mem_bytes{namespace=\"$namespace\", pod=\"$pod\"}",
               "format": "time_series",
+              "instant": true,
               "interval": "",
               "intervalFactor": 1,
               "legendFormat": "",
+              "range": false,
               "refId": "A"
             }
           ],
@@ -3098,7 +3174,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -3120,7 +3197,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -3137,7 +3215,7 @@
             "h": 3,
             "w": 3,
             "x": 12,
-            "y": 12
+            "y": 48
           },
           "id": 50,
           "links": [],
@@ -3162,13 +3240,18 @@
           "targets": [
             {
               "datasource": {
-                "uid": "${datasource}"
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
               },
+              "editorMode": "code",
+              "exemplar": false,
               "expr": "pg_settings_random_page_cost{namespace=\"$namespace\", pod=\"$pod\"}",
               "format": "time_series",
+              "instant": true,
               "interval": "",
               "intervalFactor": 1,
               "legendFormat": "",
+              "range": false,
               "refId": "A"
             }
           ],
@@ -3177,7 +3260,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -3199,7 +3283,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -3216,7 +3301,7 @@
             "h": 3,
             "w": 3,
             "x": 15,
-            "y": 12
+            "y": 48
           },
           "id": 52,
           "links": [],
@@ -3241,13 +3326,18 @@
           "targets": [
             {
               "datasource": {
-                "uid": "${datasource}"
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
               },
+              "editorMode": "code",
+              "exemplar": false,
               "expr": "pg_settings_seq_page_cost{namespace=\"$namespace\", pod=\"$pod\"}",
               "format": "time_series",
+              "instant": true,
               "interval": "",
               "intervalFactor": 1,
               "legendFormat": "",
+              "range": false,
               "refId": "A"
             }
           ],
@@ -3256,7 +3346,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -3278,7 +3369,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -3295,7 +3387,7 @@
             "h": 3,
             "w": 3,
             "x": 18,
-            "y": 12
+            "y": 48
           },
           "id": 54,
           "links": [],
@@ -3320,13 +3412,18 @@
           "targets": [
             {
               "datasource": {
-                "uid": "${datasource}"
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
               },
+              "editorMode": "code",
+              "exemplar": false,
               "expr": "pg_settings_max_worker_processes{namespace=\"$namespace\", pod=\"$pod\"}",
               "format": "time_series",
+              "instant": true,
               "interval": "",
               "intervalFactor": 1,
               "legendFormat": "",
+              "range": false,
               "refId": "A"
             }
           ],
@@ -3335,7 +3432,8 @@
         },
         {
           "datasource": {
-            "uid": "${datasource}"
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
           },
           "fieldConfig": {
             "defaults": {
@@ -3357,7 +3455,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -3374,7 +3473,7 @@
             "h": 3,
             "w": 3,
             "x": 21,
-            "y": 12
+            "y": 48
           },
           "id": 56,
           "links": [],
@@ -3399,17 +3498,192 @@
           "targets": [
             {
               "datasource": {
-                "uid": "${datasource}"
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
               },
+              "editorMode": "code",
+              "exemplar": false,
               "expr": "pg_settings_max_parallel_workers{namespace=\"$namespace\", pod=\"$pod\"}",
               "format": "time_series",
+              "instant": true,
               "interval": "",
               "intervalFactor": 1,
               "legendFormat": "",
+              "range": false,
               "refId": "A"
             }
           ],
           "title": "Max Parallel Workers",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none",
+              "unitScale": true
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 4,
+            "x": 0,
+            "y": 51
+          },
+          "id": 36,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "value",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "name",
+            "wideLayout": true
+          },
+          "pluginVersion": "10.3.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+              },
+              "expr": "pg_static{namespace=\"$namespace\", pod=\"$pod\"}",
+              "format": "time_series",
+              "instant": true,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "{{short_version}}",
+              "refId": "A"
+            }
+          ],
+          "title": "Version",
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${DS_PROMETHEUS}"
+          },
+          "description": "start time of the process",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "mappings": [
+                {
+                  "options": {
+                    "match": "null",
+                    "result": {
+                      "text": "N/A"
+                    }
+                  },
+                  "type": "special"
+                }
+              ],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "dateTimeFromNow",
+              "unitScale": true
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 4,
+            "x": 4,
+            "y": 51
+          },
+          "id": 28,
+          "links": [],
+          "maxDataPoints": 100,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "none",
+            "justifyMode": "auto",
+            "orientation": "horizontal",
+            "reduceOptions": {
+              "calcs": [
+                "mean"
+              ],
+              "fields": "",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "10.3.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_PROMETHEUS}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "process_start_time_seconds{namespace=\"$namespace\", pod=\"$pod\"} * 1000",
+              "format": "time_series",
+              "instant": true,
+              "interval": "",
+              "intervalFactor": 2,
+              "legendFormat": "",
+              "range": false,
+              "refId": "A"
+            }
+          ],
+          "title": "Start Time",
           "type": "stat"
         }
       ],
@@ -3437,7 +3711,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P5DCFC7561CCDE821"
+            "uid": "${DS_THANOS}"
           },
           "description": "Number of buffer hits in this table",
           "fieldConfig": {
@@ -3482,8 +3756,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3519,7 +3792,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P5DCFC7561CCDE821"
+                "uid": "${DS_THANOS}"
               },
               "editorMode": "code",
               "expr": "topk(5, max by (relname)(rate(pg_statio_user_tables_heap_blks_hit{namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval])))",
@@ -3535,7 +3808,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P5DCFC7561CCDE821"
+            "uid": "${DS_THANOS}"
           },
           "description": "Number of disk blocks read from this table",
           "fieldConfig": {
@@ -3580,8 +3853,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3617,7 +3889,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P5DCFC7561CCDE821"
+                "uid": "${DS_THANOS}"
               },
               "editorMode": "code",
               "expr": "topk(5, max by (relname)(rate(pg_statio_user_tables_heap_blks_read{namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval])))",
@@ -3633,7 +3905,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P5DCFC7561CCDE821"
+            "uid": "${DS_THANOS}"
           },
           "description": "Number of buffer hits in all indexes on this table",
           "fieldConfig": {
@@ -3678,8 +3950,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3715,7 +3986,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P5DCFC7561CCDE821"
+                "uid": "${DS_THANOS}"
               },
               "editorMode": "code",
               "expr": "topk(5, max by (relname)(rate(pg_statio_user_tables_idx_blks_hit{namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval])))",
@@ -3731,7 +4002,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "P5DCFC7561CCDE821"
+            "uid": "${DS_THANOS}"
           },
           "description": "Number of disk blocks read from all indexes on this table",
           "fieldConfig": {
@@ -3776,8 +4047,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -3813,7 +4083,7 @@
             {
               "datasource": {
                 "type": "prometheus",
-                "uid": "P5DCFC7561CCDE821"
+                "uid": "${DS_THANOS}"
               },
               "editorMode": "code",
               "expr": "topk(5, max by (relname)(rate(pg_statio_user_tables_idx_blks_read{namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval])))",
@@ -3858,14 +4128,10 @@
         "type": "datasource"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "cayzn-prod-sj",
-          "value": "cayzn-prod-sj"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${datasource}"
+          "uid": "${DS_PROMETHEUS}"
         },
         "definition": "label_values(pg_up, namespace)\t",
         "hide": 0,
@@ -3888,14 +4154,10 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "cayzn-prod-sj-patroni-postgresql-0",
-          "value": "cayzn-prod-sj-patroni-postgresql-0"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${datasource}"
+          "uid": "${DS_PROMETHEUS}"
         },
         "definition": "label_values(pg_up{namespace=\"$namespace\"}, pod)\t",
         "hide": 0,
@@ -3918,14 +4180,10 @@
         "useTags": false
       },
       {
-        "current": {
-          "selected": false,
-          "text": "wiremind",
-          "value": "wiremind"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${datasource}"
+          "uid": "${DS_PROMETHEUS}"
         },
         "definition": "label_values(pg_database_size_bytes{namespace=\"$namespace\", pod=\"$pod\"}, datname)\t",
         "hide": 0,
@@ -3981,6 +4239,6 @@
   "timezone": "",
   "title": "PostgreSQL Database",
   "uid": "postgresql-database",
-  "version": 58,
+  "version": 59,
   "weekStart": ""
 }
