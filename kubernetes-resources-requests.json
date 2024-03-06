@@ -21,7 +21,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.2.3"
+      "version": "10.3.3"
     },
     {
       "type": "datasource",
@@ -119,12 +119,13 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "percent",
+          "unitScale": true
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 6,
         "w": 6,
         "x": 0,
         "y": 0
@@ -150,7 +151,7 @@
         "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -212,12 +213,13 @@
               }
             ]
           },
-          "unit": "percent"
+          "unit": "percent",
+          "unitScale": true
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 8,
+        "h": 6,
         "w": 6,
         "x": 6,
         "y": 0
@@ -243,7 +245,7 @@
         "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "targets": [
         {
           "datasource": {
@@ -271,7 +273,7 @@
         "uid": "${datasource}"
       },
       "gridPos": {
-        "h": 8,
+        "h": 6,
         "w": 6,
         "x": 12,
         "y": 0
@@ -286,7 +288,7 @@
         "content": "Please keep in sync he variable \"Node Selector\" & \"Priority Class Selector\" in order to have meaningful values:\n- For the whole cluster\n- For prod only\n- For non-prod only",
         "mode": "markdown"
       },
-      "pluginVersion": "10.2.3",
+      "pluginVersion": "10.3.3",
       "title": "Guide",
       "type": "text"
     },
@@ -349,7 +351,8 @@
               }
             ]
           },
-          "unit": "short"
+          "unit": "short",
+          "unitScale": true
         },
         "overrides": []
       },
@@ -357,7 +360,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 8
+        "y": 6
       },
       "id": 1,
       "interval": "30s",
@@ -401,12 +404,12 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "min(sum(\n    kube_pod_status_phase{cluster=~\"$cluster.*\", phase=~\"Running\"}\n  * on (uid) group_right\n    kube_pod_info{cluster=~\"$cluster.*\", ${priority_class_selector:raw}}\n  * on (uid) group_right\n    kube_pod_container_resource_requests{cluster=~\"$cluster.*\", resource=\"cpu\"}\n) by (instance))",
+          "expr": "sum(namespace_cpu:priority_class:requests:sum{cluster=~\"$cluster.*\", phase=\"Running\", ${priority_class_selector:raw}})",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Requested CPU Cores",
+          "legendFormat": "Requested CPUs",
           "range": true,
           "refId": "B",
           "step": 20
@@ -416,142 +419,130 @@
       "type": "timeseries"
     },
     {
-      "collapsed": true,
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "This represents the total [memory resource requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#meaning-of-memory) in the cluster.\nFor comparison the total [allocatable memory](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/node-allocatable.md) is also shown.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "Memory",
+            "axisPlacement": "auto",
+            "axisSoftMin": 0,
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "links": [],
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "bytes",
+          "unitScale": true
+        },
+        "overrides": []
+      },
       "gridPos": {
-        "h": 1,
+        "h": 8,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 14
       },
-      "id": 10,
-      "panels": [
+      "id": 3,
+      "interval": "30s",
+      "links": [],
+      "maxDataPoints": 200,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "8.1.2",
+      "targets": [
         {
           "datasource": {
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "description": "This represents the total [memory resource requests](https://kubernetes.io/docs/concepts/configuration/manage-compute-resources-container/#meaning-of-memory) in the cluster.\nFor comparison the total [allocatable memory](https://github.com/kubernetes/community/blob/master/contributors/design-proposals/node-allocatable.md) is also shown.",
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "palette-classic"
-              },
-              "custom": {
-                "axisBorderShow": false,
-                "axisCenteredZero": false,
-                "axisColorMode": "text",
-                "axisLabel": "Memory",
-                "axisPlacement": "auto",
-                "axisSoftMin": 0,
-                "barAlignment": 0,
-                "drawStyle": "line",
-                "fillOpacity": 10,
-                "gradientMode": "none",
-                "hideFrom": {
-                  "legend": false,
-                  "tooltip": false,
-                  "viz": false
-                },
-                "insertNulls": false,
-                "lineInterpolation": "linear",
-                "lineWidth": 1,
-                "pointSize": 5,
-                "scaleDistribution": {
-                  "type": "linear"
-                },
-                "showPoints": "never",
-                "spanNulls": false,
-                "stacking": {
-                  "group": "A",
-                  "mode": "none"
-                },
-                "thresholdsStyle": {
-                  "mode": "off"
-                }
-              },
-              "links": [],
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green"
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              },
-              "unit": "bytes"
-            },
-            "overrides": []
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "min(sum(\n  kube_node_labels{cluster=~\"$cluster.*\", $node_selector}\n  * on (node) group_right\n  kube_node_status_allocatable{cluster=~\"$cluster.*\", resource=\"memory\"}\n) by (instance))",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Allocatable Memory",
+          "range": true,
+          "refId": "A",
+          "step": 20
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
           },
-          "gridPos": {
-            "h": 8,
-            "w": 24,
-            "x": 0,
-            "y": 17
-          },
-          "id": 3,
-          "interval": "30s",
-          "links": [],
-          "maxDataPoints": 200,
-          "options": {
-            "legend": {
-              "calcs": [],
-              "displayMode": "list",
-              "placement": "bottom",
-              "showLegend": true
-            },
-            "tooltip": {
-              "mode": "single",
-              "sort": "none"
-            }
-          },
-          "pluginVersion": "8.1.2",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "exemplar": true,
-              "expr": "min(sum(\n  kube_node_labels{cluster=~\"$cluster.*\", $node_selector}\n  * on (node) group_right\n  kube_node_status_allocatable{cluster=~\"$cluster.*\", resource=\"memory\"}\n) by (instance))",
-              "format": "time_series",
-              "hide": false,
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "Allocatable Memory",
-              "range": true,
-              "refId": "A",
-              "step": 20
-            },
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "exemplar": true,
-              "expr": "min(sum(\n    kube_pod_status_phase{cluster=~\"$cluster.*\", phase=~\"Running\"}\n  * on (uid) group_right\n    kube_pod_info{cluster=~\"$cluster.*\", ${priority_class_selector:raw}}\n  * on (uid) group_right\n    kube_pod_container_resource_requests{cluster=~\"$cluster.*\", resource=\"memory\"}\n) by (instance))",
-              "format": "time_series",
-              "hide": false,
-              "interval": "",
-              "intervalFactor": 1,
-              "legendFormat": "Requested Memory",
-              "range": true,
-              "refId": "B",
-              "step": 20
-            }
-          ],
-          "title": "Memory",
-          "type": "timeseries"
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "sum(namespace_memory:priority_class:requests:sum{cluster=~\"$cluster.*\", phase=\"Running\", ${priority_class_selector:raw}})",
+          "format": "time_series",
+          "hide": false,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "Requested Memory",
+          "range": true,
+          "refId": "B",
+          "step": 20
         }
       ],
       "title": "Memory",
-      "type": "row"
+      "type": "timeseries"
     },
     {
       "collapsed": true,
@@ -559,7 +550,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 17
+        "y": 22
       },
       "id": 8,
       "panels": [
@@ -854,7 +845,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "default",
           "value": "default"
         },
@@ -966,7 +957,7 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {
@@ -996,6 +987,6 @@
   "timezone": "browser",
   "title": "Kubernetes Resource Requests",
   "uid": "XZ-kM6KMk",
-  "version": 118,
+  "version": 120,
   "weekStart": ""
 }
