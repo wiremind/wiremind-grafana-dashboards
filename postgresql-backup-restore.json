@@ -1,4 +1,43 @@
 {
+    "__inputs": [
+        {
+            "name": "DS_PROMETHEUS",
+            "label": "Prometheus",
+            "description": "",
+            "type": "datasource",
+            "pluginId": "prometheus",
+            "pluginName": "Prometheus"
+        },
+        {
+            "name": "DS_THANOS",
+            "label": "Thanos",
+            "description": "",
+            "type": "datasource",
+            "pluginId": "prometheus",
+            "pluginName": "Prometheus"
+        }
+    ],
+    "__elements": {},
+    "__requires": [
+        {
+            "type": "grafana",
+            "id": "grafana",
+            "name": "Grafana",
+            "version": "10.4.0"
+        },
+        {
+            "type": "datasource",
+            "id": "prometheus",
+            "name": "Prometheus",
+            "version": "1.0.0"
+        },
+        {
+            "type": "panel",
+            "id": "stat",
+            "name": "Stat",
+            "version": ""
+        }
+    ],
     "annotations": {
         "list": [
             {
@@ -25,7 +64,7 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 1055,
+    "id": null,
     "links": [],
     "liveNow": false,
     "panels": [
@@ -33,7 +72,7 @@
             "collapsed": false,
             "datasource": {
                 "type": "prometheus",
-                "uid": "P5DCFC7561CCDE821"
+                "uid": "${datasource}"
             },
             "gridPos": {
                 "h": 1,
@@ -49,7 +88,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "${datasource}"
             },
             "fieldConfig": {
                 "defaults": {
@@ -66,8 +105,7 @@
                             }
                         ]
                     },
-                    "unit": "dateTimeAsLocal",
-                    "unitScale": true
+                    "unit": "dateTimeAsLocal"
                 },
                 "overrides": []
             },
@@ -95,11 +133,16 @@
                 "textMode": "auto",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
+                    "editorMode": "code",
                     "exemplar": true,
-                    "expr": "wal_g_last_backup_refresh_time_seconds{namespace=\"$namespace\", job=\"$postgresql_cluster\"} * 1000",
+                    "expr": "wal_g_last_backup_refresh_time_seconds{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"} * 1000",
                     "instant": true,
                     "interval": "",
                     "legendFormat": "",
@@ -112,7 +155,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "${datasource}"
             },
             "fieldConfig": {
                 "defaults": {
@@ -129,8 +172,7 @@
                             }
                         ]
                     },
-                    "unit": "none",
-                    "unitScale": true
+                    "unit": "none"
                 },
                 "overrides": []
             },
@@ -158,15 +200,19 @@
                 "textMode": "auto",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
                     "exemplar": true,
-                    "expr": "wal_g_last_backup_pg_version{namespace=\"$namespace\", job=\"$postgresql_cluster\"}",
+                    "expr": "wal_g_last_backup_pg_version{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"}",
                     "instant": true,
                     "interval": "",
                     "legendFormat": "",
-                    "refId": "A"
+                    "refId": "A",
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    }
                 }
             ],
             "title": "Backup Postgres version (format me)",
@@ -192,8 +238,7 @@
                             }
                         ]
                     },
-                    "unit": "dateTimeAsLocal",
-                    "unitScale": true
+                    "unit": "dateTimeAsLocal"
                 },
                 "overrides": []
             },
@@ -221,15 +266,16 @@
                 "textMode": "value",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
                     "datasource": {
                         "type": "prometheus",
                         "uid": "${datasource}"
                     },
+                    "editorMode": "code",
                     "exemplar": false,
-                    "expr": "wal_g_last_backup_start_time_seconds{namespace=\"$namespace\", job=\"$postgresql_cluster\"} * 1000",
+                    "expr": "wal_g_last_backup_start_time_seconds{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"} * 1000",
                     "format": "time_series",
                     "instant": true,
                     "interval": "",
@@ -260,8 +306,7 @@
                             }
                         ]
                     },
-                    "unit": "dthms",
-                    "unitScale": true
+                    "unit": "dthms"
                 },
                 "overrides": []
             },
@@ -289,15 +334,16 @@
                 "textMode": "auto",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
                     "datasource": {
                         "type": "prometheus",
                         "uid": "${datasource}"
                     },
+                    "editorMode": "code",
                     "exemplar": true,
-                    "expr": "wal_g_last_backup_finish_time_seconds{namespace=\"$namespace\", job=\"$postgresql_cluster\"}  - wal_g_last_backup_start_time_seconds{namespace=\"$namespace\", job=\"$postgresql_cluster\"}",
+                    "expr": "wal_g_last_backup_finish_time_seconds{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"}  - wal_g_last_backup_start_time_seconds{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"}",
                     "instant": true,
                     "interval": "",
                     "legendFormat": "",
@@ -327,8 +373,7 @@
                             }
                         ]
                     },
-                    "unit": "dateTimeAsLocal",
-                    "unitScale": true
+                    "unit": "dateTimeAsLocal"
                 },
                 "overrides": []
             },
@@ -356,7 +401,7 @@
                 "textMode": "auto",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
                     "datasource": {
@@ -364,7 +409,7 @@
                         "uid": "${datasource}"
                     },
                     "exemplar": true,
-                    "expr": "wal_g_last_backup_finish_time_seconds{namespace=\"$namespace\", job=\"$postgresql_cluster\"} * 1000",
+                    "expr": "wal_g_last_backup_finish_time_seconds{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"} * 1000",
                     "instant": true,
                     "interval": "",
                     "intervalFactor": 1,
@@ -395,8 +440,7 @@
                             }
                         ]
                     },
-                    "unit": "decbytes",
-                    "unitScale": true
+                    "unit": "decbytes"
                 },
                 "overrides": []
             },
@@ -424,7 +468,7 @@
                 "textMode": "value",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
                     "datasource": {
@@ -432,7 +476,7 @@
                         "uid": "${datasource}"
                     },
                     "exemplar": false,
-                    "expr": "wal_g_last_backup_uncompressed_size_bytes{namespace=\"$namespace\", job=\"$postgresql_cluster\"}",
+                    "expr": "wal_g_last_backup_uncompressed_size_bytes{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"}",
                     "format": "time_series",
                     "instant": true,
                     "interval": "",
@@ -463,8 +507,7 @@
                             }
                         ]
                     },
-                    "unit": "none",
-                    "unitScale": true
+                    "unit": "none"
                 },
                 "overrides": []
             },
@@ -492,7 +535,7 @@
                 "textMode": "auto",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
                     "datasource": {
@@ -500,7 +543,7 @@
                         "uid": "${datasource}"
                     },
                     "exemplar": false,
-                    "expr": "wal_g_last_backup_uncompressed_size_bytes{namespace=\"$namespace\", job=\"$postgresql_cluster\"} / wal_g_last_backup_compressed_size_bytes{namespace=\"$namespace\", job=\"$postgresql_cluster\"}",
+                    "expr": "wal_g_last_backup_uncompressed_size_bytes{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"} / wal_g_last_backup_compressed_size_bytes{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"}",
                     "format": "time_series",
                     "instant": true,
                     "interval": "",
@@ -531,8 +574,7 @@
                             }
                         ]
                     },
-                    "unit": "decbytes",
-                    "unitScale": true
+                    "unit": "decbytes"
                 },
                 "overrides": []
             },
@@ -560,7 +602,7 @@
                 "textMode": "value",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
                     "datasource": {
@@ -568,7 +610,7 @@
                         "uid": "${datasource}"
                     },
                     "exemplar": false,
-                    "expr": "wal_g_last_backup_compressed_size_bytes{namespace=\"$namespace\", job=\"$postgresql_cluster\"}",
+                    "expr": "wal_g_last_backup_compressed_size_bytes{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"}",
                     "format": "time_series",
                     "instant": true,
                     "interval": "",
@@ -583,7 +625,7 @@
             "collapsed": false,
             "datasource": {
                 "type": "prometheus",
-                "uid": "P5DCFC7561CCDE821"
+                "uid": "${datasource}"
             },
             "gridPos": {
                 "h": 1,
@@ -599,7 +641,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "${datasource}"
             },
             "fieldConfig": {
                 "defaults": {
@@ -620,8 +662,7 @@
                             }
                         ]
                     },
-                    "unit": "none",
-                    "unitScale": true
+                    "unit": "none"
                 },
                 "overrides": []
             },
@@ -649,16 +690,16 @@
                 "textMode": "value",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
                     "datasource": {
                         "type": "prometheus",
-                        "uid": "PBFA97CFB590B2093"
+                        "uid": "${datasource}"
                     },
                     "editorMode": "code",
                     "exemplar": false,
-                    "expr": "sum by (job) (increase(pg_stat_archiver_archived_count{namespace=\"$namespace\", job=\"$postgresql_cluster\"}[30m]))",
+                    "expr": "sum by (job) (increase(pg_stat_archiver_archived_count{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"}[30m]))",
                     "format": "time_series",
                     "instant": true,
                     "interval": "",
@@ -673,7 +714,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "${datasource}"
             },
             "fieldConfig": {
                 "defaults": {
@@ -690,8 +731,7 @@
                             }
                         ]
                     },
-                    "unit": "s",
-                    "unitScale": true
+                    "unit": "s"
                 },
                 "overrides": []
             },
@@ -719,11 +759,15 @@
                 "textMode": "value",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
                     "exemplar": false,
-                    "expr": "pg_stat_archiver_last_archive_age{namespace=\"$namespace\", job=\"$postgresql_cluster\"}",
+                    "expr": "pg_stat_archiver_last_archive_age{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"}",
                     "format": "time_series",
                     "instant": true,
                     "interval": "",
@@ -737,7 +781,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "${datasource}"
             },
             "fieldConfig": {
                 "defaults": {
@@ -758,8 +802,7 @@
                             }
                         ]
                     },
-                    "unit": "none",
-                    "unitScale": true
+                    "unit": "none"
                 },
                 "overrides": []
             },
@@ -787,11 +830,15 @@
                 "textMode": "value",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
                     "exemplar": false,
-                    "expr": "pg_stat_archiver_failed_count{namespace=\"$namespace\", job=\"$postgresql_cluster\"}",
+                    "expr": "pg_stat_archiver_failed_count{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"}",
                     "format": "time_series",
                     "instant": true,
                     "interval": "",
@@ -803,10 +850,10 @@
             "type": "stat"
         },
         {
-            "collapsed": true,
+            "collapsed": false,
             "datasource": {
                 "type": "prometheus",
-                "uid": "P5DCFC7561CCDE821"
+                "uid": "${datasource}"
             },
             "gridPos": {
                 "h": 1,
@@ -815,143 +862,90 @@
                 "y": 18
             },
             "id": 24,
-            "panels": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "PBFA97CFB590B2093"
-                    },
-                    "description": "",
-                    "fieldConfig": {
-                        "defaults": {
-                            "color": {
-                                "mode": "thresholds"
-                            },
-                            "mappings": [],
-                            "noValue": "Nothing In Progress",
-                            "thresholds": {
-                                "mode": "absolute",
-                                "steps": [
-                                    {
-                                        "color": "green"
-                                    }
-                                ]
-                            },
-                            "unit": "dateTimeAsLocal"
-                        },
-                        "overrides": []
-                    },
-                    "gridPos": {
-                        "h": 5,
-                        "w": 12,
-                        "x": 0,
-                        "y": 19
-                    },
-                    "id": 25,
-                    "options": {
-                        "colorMode": "value",
-                        "graphMode": "none",
-                        "justifyMode": "auto",
-                        "orientation": "auto",
-                        "reduceOptions": {
-                            "calcs": [
-                                "lastNotNull"
-                            ],
-                            "fields": "",
-                            "values": false
-                        },
-                        "text": {},
-                        "textMode": "value"
-                    },
-                    "pluginVersion": "8.0.3",
-                    "targets": [
-                        {
-                            "exemplar": false,
-                            "expr": "wal_g_restore_test_in_progress_seconds{namespace=\"$namespace\", job=\"$postgresql_cluster\"} * 1000",
-                            "format": "time_series",
-                            "instant": true,
-                            "interval": "",
-                            "legendFormat": "",
-                            "refId": "A"
-                        }
-                    ],
-                    "title": "Restore Test Start Time",
-                    "type": "stat"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "PBFA97CFB590B2093"
-                    },
-                    "fieldConfig": {
-                        "defaults": {
-                            "color": {
-                                "mode": "thresholds"
-                            },
-                            "mappings": [],
-                            "noValue": "Nothing In Progress",
-                            "thresholds": {
-                                "mode": "absolute",
-                                "steps": [
-                                    {
-                                        "color": "green"
-                                    }
-                                ]
-                            },
-                            "unit": "decbytes"
-                        },
-                        "overrides": []
-                    },
-                    "gridPos": {
-                        "h": 5,
-                        "w": 12,
-                        "x": 12,
-                        "y": 19
-                    },
-                    "id": 26,
-                    "options": {
-                        "orientation": "auto",
-                        "reduceOptions": {
-                            "calcs": [
-                                "lastNotNull"
-                            ],
-                            "fields": "",
-                            "values": false
-                        },
-                        "showThresholdLabels": false,
-                        "showThresholdMarkers": true,
-                        "text": {}
-                    },
-                    "pluginVersion": "8.0.3",
-                    "targets": [
-                        {
-                            "exemplar": false,
-                            "expr": "(\n  sum without(instance, node) (kubelet_volume_stats_capacity_bytes{cluster=\"\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"cayzn-staging-sncf\", persistentvolumeclaim=\"pgdata-cayzn-staging-sncf-patroni-restore-postgresql-0\"})\n  -\n  sum without(instance, node) (kubelet_volume_stats_available_bytes{cluster=\"\", job=\"kubelet\", metrics_path=\"/metrics\", namespace=\"cayzn-staging-sncf\", persistentvolumeclaim=\"pgdata-cayzn-staging-sncf-patroni-restore-postgresql-0\"})\n)\n",
-                            "format": "time_series",
-                            "instant": true,
-                            "interval": "",
-                            "legendFormat": "",
-                            "refId": "A"
-                        }
-                    ],
-                    "title": "WIP: Restore Test Progress ",
-                    "type": "gauge"
-                }
-            ],
+            "panels": [],
             "title": "Restore Test in Progress (WIP)",
             "type": "row"
+        },
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "mappings": [],
+                    "noValue": "Nothing In Progress",
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            }
+                        ]
+                    },
+                    "unit": "dateTimeAsLocal"
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 5,
+                "w": 12,
+                "x": 0,
+                "y": 19
+            },
+            "id": 25,
+            "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "reduceOptions": {
+                    "calcs": [
+                        "lastNotNull"
+                    ],
+                    "fields": "",
+                    "values": false
+                },
+                "showPercentChange": false,
+                "text": {},
+                "textMode": "value",
+                "wideLayout": true
+            },
+            "pluginVersion": "10.4.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
+                    "exemplar": false,
+                    "expr": "wal_g_restore_test_in_progress_seconds{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"} * 1000",
+                    "format": "time_series",
+                    "instant": true,
+                    "interval": "",
+                    "legendFormat": "",
+                    "refId": "A"
+                }
+            ],
+            "title": "Restore Test Start Time",
+            "type": "stat"
         },
         {
             "collapsed": false,
             "datasource": {
                 "type": "prometheus",
-                "uid": "P5DCFC7561CCDE821"
+                "uid": "${datasource}"
             },
             "gridPos": {
                 "h": 1,
                 "w": 24,
                 "x": 0,
-                "y": 19
+                "y": 24
             },
             "id": 12,
             "panels": [],
@@ -961,7 +955,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "${datasource}"
             },
             "fieldConfig": {
                 "defaults": {
@@ -973,12 +967,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             }
                         ]
                     },
-                    "unit": "dateTimeAsLocal",
-                    "unitScale": true
+                    "unit": "dateTimeAsLocal"
                 },
                 "overrides": []
             },
@@ -986,7 +980,7 @@
                 "h": 5,
                 "w": 6,
                 "x": 0,
-                "y": 20
+                "y": 25
             },
             "id": 19,
             "options": {
@@ -1006,11 +1000,15 @@
                 "textMode": "value",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
                     "exemplar": false,
-                    "expr": "wal_g_last_restore_test_start_time_seconds{namespace=\"$namespace\", job=\"$postgresql_cluster\"} * 1000",
+                    "expr": "wal_g_last_restore_test_start_time_seconds{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"} * 1000",
                     "format": "time_series",
                     "instant": true,
                     "interval": "",
@@ -1024,7 +1022,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "${datasource}"
             },
             "fieldConfig": {
                 "defaults": {
@@ -1036,12 +1034,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             }
                         ]
                     },
-                    "unit": "dateTimeAsLocal",
-                    "unitScale": true
+                    "unit": "dateTimeAsLocal"
                 },
                 "overrides": []
             },
@@ -1049,7 +1047,7 @@
                 "h": 5,
                 "w": 6,
                 "x": 6,
-                "y": 20
+                "y": 25
             },
             "id": 21,
             "options": {
@@ -1069,11 +1067,15 @@
                 "textMode": "value",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
                     "exemplar": false,
-                    "expr": "wal_g_last_restore_test_last_insert_seconds{namespace=\"$namespace\", job=\"$postgresql_cluster\"} * 1000",
+                    "expr": "wal_g_last_restore_test_last_insert_seconds{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"} * 1000",
                     "format": "time_series",
                     "instant": true,
                     "interval": "",
@@ -1082,13 +1084,12 @@
                 }
             ],
             "title": "Test state Until",
-            "transformations": [],
             "type": "stat"
         },
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "${datasource}"
             },
             "fieldConfig": {
                 "defaults": {
@@ -1100,12 +1101,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             }
                         ]
                     },
-                    "unit": "dthms",
-                    "unitScale": true
+                    "unit": "dthms"
                 },
                 "overrides": []
             },
@@ -1113,7 +1114,7 @@
                 "h": 5,
                 "w": 6,
                 "x": 12,
-                "y": 20
+                "y": 25
             },
             "id": 22,
             "options": {
@@ -1133,11 +1134,15 @@
                 "textMode": "value",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
                     "exemplar": false,
-                    "expr": "wal_g_last_restore_test_finish_time_seconds{namespace=\"$namespace\", job=\"$postgresql_cluster\"} - wal_g_last_restore_test_start_time_seconds{namespace=\"$namespace\", job=\"$postgresql_cluster\"}",
+                    "expr": "wal_g_last_restore_test_finish_time_seconds{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"} - wal_g_last_restore_test_start_time_seconds{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"}",
                     "format": "time_series",
                     "instant": true,
                     "interval": "",
@@ -1151,7 +1156,7 @@
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "PBFA97CFB590B2093"
+                "uid": "${datasource}"
             },
             "fieldConfig": {
                 "defaults": {
@@ -1163,12 +1168,12 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green"
+                                "color": "green",
+                                "value": null
                             }
                         ]
                     },
-                    "unit": "dateTimeAsLocal",
-                    "unitScale": true
+                    "unit": "dateTimeAsLocal"
                 },
                 "overrides": []
             },
@@ -1176,7 +1181,7 @@
                 "h": 5,
                 "w": 6,
                 "x": 18,
-                "y": 20
+                "y": 25
             },
             "id": 20,
             "options": {
@@ -1196,11 +1201,15 @@
                 "textMode": "value",
                 "wideLayout": true
             },
-            "pluginVersion": "10.3.1",
+            "pluginVersion": "10.4.0",
             "targets": [
                 {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
                     "exemplar": false,
-                    "expr": "wal_g_last_restore_test_finish_time_seconds{namespace=\"$namespace\", job=\"$postgresql_cluster\"} * 1000",
+                    "expr": "wal_g_last_restore_test_finish_time_seconds{namespace=\"$namespace\", job=~\"$postgresql_cluster.*\"} * 1000",
                     "format": "time_series",
                     "instant": true,
                     "interval": "",
@@ -1220,8 +1229,8 @@
             {
                 "current": {
                     "selected": false,
-                    "text": "Thanos",
-                    "value": "P5DCFC7561CCDE821"
+                    "text": "Prometheus",
+                    "value": "PBFA97CFB590B2093"
                 },
                 "hide": 0,
                 "includeAll": false,
@@ -1236,14 +1245,10 @@
                 "type": "datasource"
             },
             {
-                "current": {
-                    "selected": false,
-                    "text": "paxone-review",
-                    "value": "paxone-review"
-                },
+                "current": {},
                 "datasource": {
                     "type": "prometheus",
-                    "uid": "P5DCFC7561CCDE821"
+                    "uid": "${datasource}"
                 },
                 "definition": "label_values(wal_g_last_backup_start_time_seconds, namespace)",
                 "hide": 0,
@@ -1266,14 +1271,10 @@
                 "useTags": false
             },
             {
-                "current": {
-                    "selected": false,
-                    "text": "paxone-review/walg-demo-patroni-postgresql-walg",
-                    "value": "paxone-review/walg-demo-patroni-postgresql-walg"
-                },
+                "current": {},
                 "datasource": {
                     "type": "prometheus",
-                    "uid": "P5DCFC7561CCDE821"
+                    "uid": "${datasource}"
                 },
                 "definition": "label_values(wal_g_last_backup_start_time_seconds{namespace=~\"$namespace\"}, job)",
                 "hide": 0,
@@ -1305,6 +1306,6 @@
     "timezone": "",
     "title": "Postgres Backup/Restore",
     "uid": "dbtr_WRnz",
-    "version": 67,
+    "version": 71,
     "weekStart": ""
 }
