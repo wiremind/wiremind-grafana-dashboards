@@ -218,10 +218,6 @@
                             {
                                 "color": "red",
                                 "value": 0.3
-                            },
-                            {
-                                "color": "#6ED0E0",
-                                "value": 10.3
                             }
                         ]
                     },
@@ -255,7 +251,7 @@
                         "uid": "${datasource}"
                     },
                     "editorMode": "code",
-                    "expr": "avg by (mode, instance, cluster) (\n    (rate(node_cpu_seconds_total{instance=~\"$node_name\", cluster=~\".*$cluster\", mode=~\"system|iowait|softirq\"}[30m]))\n) > 0.2",
+                    "expr": "sum by (mode, instance, cluster) (\n    (rate(node_cpu_seconds_total{instance=~\"$node_name\", cluster=~\".*$cluster\", mode=~\"system|iowait|softirq\"}[15m]))\n) / scalar(machine_cpu_cores{node=~\"$node_name\"})\n> 0.1",
                     "legendFormat": "{{mode}}: {{instance}} / {{cluster}}",
                     "range": true,
                     "refId": "A"
@@ -574,6 +570,6 @@
     "timezone": "",
     "title": "Node: overloaded nodes",
     "uid": "8s0aPf_4k",
-    "version": 21,
+    "version": 23,
     "weekStart": ""
 }
