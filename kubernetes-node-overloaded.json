@@ -251,13 +251,13 @@
                         "uid": "${datasource}"
                     },
                     "editorMode": "code",
-                    "expr": "sum by (mode, instance, cluster) (\n    (rate(node_cpu_seconds_total{instance=~\"$node_name\", cluster=~\".*$cluster\", mode=~\"system|iowait|softirq\"}[15m]))\n) / scalar(machine_cpu_cores{node=~\"$node_name\"})\n> 0.1",
+                    "expr": "# total \"bad\" cpu usage\nsum by (mode, instance, cluster) (\n    rate(node_cpu_seconds_total{instance=~\"$node_name\", cluster=~\".*$cluster\", mode=~\"system|iowait|softirq\"}[15m])\n)\n# divided by total cpu usage\n/ on (instance, cluster) group_left()\nsum by (instance, cluster) (rate(node_cpu_seconds_total{instance=~\"$node_name\", cluster=~\".*$cluster\"}[15m]))\n> 0.2",
                     "legendFormat": "{{mode}}: {{instance}} / {{cluster}}",
                     "range": true,
                     "refId": "A"
                 }
             ],
-            "title": "CPU system / softirq / iowait too high",
+            "title": "CPU system / softirq / iowait ratio too high",
             "type": "timeseries"
         },
         {
@@ -480,7 +480,7 @@
         "list": [
             {
                 "current": {
-                    "selected": false,
+                    "selected": true,
                     "text": "default",
                     "value": "default"
                 },
@@ -563,13 +563,13 @@
         ]
     },
     "time": {
-        "from": "now-12h",
+        "from": "now-6h",
         "to": "now"
     },
     "timepicker": {},
     "timezone": "",
     "title": "Node: overloaded nodes",
     "uid": "8s0aPf_4k",
-    "version": 23,
+    "version": 26,
     "weekStart": ""
 }
