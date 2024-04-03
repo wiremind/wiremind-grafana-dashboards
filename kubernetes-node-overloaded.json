@@ -150,8 +150,8 @@
                         "uid": "${datasource}"
                     },
                     "editorMode": "code",
-                    "expr": "avg by (instance) (node_load15{instance=~\"$node_name\", cluster=~\".*$cluster\"}) / count(count(node_cpu_seconds_total{instance=~\"$node_name\", cluster=~\".*$cluster\"}) by (cpu, instance)) by (instance) > $query_min_threshold",
-                    "legendFormat": "__auto",
+                    "expr": "avg by (instance, cluster) (node_load5{instance=~\"$node_name\", cluster=~\".*$cluster\"})\n/ on (instance, cluster)\nlabel_replace(\n  machine_cpu_cores{node=~\"$node_name\", cluster=~\".*$cluster\"},\n  \"instance\", \"$1\", \"node\", \"(.+)\"\n)\n> $query_min_threshold",
+                    "legendFormat": "{{cluster}} - {{instance}}",
                     "range": true,
                     "refId": "A"
                 }
@@ -480,7 +480,7 @@
         "list": [
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": "default",
                     "value": "default"
                 },
@@ -570,6 +570,6 @@
     "timezone": "",
     "title": "Node: overloaded nodes",
     "uid": "8s0aPf_4k",
-    "version": 26,
+    "version": 27,
     "weekStart": ""
 }
