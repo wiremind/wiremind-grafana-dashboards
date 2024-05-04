@@ -150,14 +150,120 @@
                         "uid": "${datasource}"
                     },
                     "editorMode": "code",
-                    "expr": "avg by (instance, cluster) (node_load5{instance=~\"$node_name\", cluster=~\".*$cluster\"})\n/ on (instance, cluster)\nlabel_replace(\n  machine_cpu_cores{node=~\"$node_name\", cluster=~\".*$cluster\"},\n  \"instance\", \"$1\", \"node\", \"(.+)\"\n)\n> $query_min_threshold",
-                    "legendFormat": "{{cluster}} - {{instance}}",
+                    "expr": "avg by (instance) (node_load15{instance=~\"$node_name\", cluster=~\".*$cluster\"}) / count(count(node_cpu_seconds_total{instance=~\"$node_name\", cluster=~\".*$cluster\"}) by (cpu, instance)) by (instance) > $query_min_threshold",
+                    "legendFormat": "__auto",
                     "range": true,
                     "refId": "A"
                 }
             ],
             "title": "CPU load / amount of cpu",
             "type": "timeseries"
+        },
+        {
+            "collapsed": true,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 8
+            },
+            "id": 6,
+            "panels": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
+                    "description": "",
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 0,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "auto",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "mappings": [],
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green"
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            }
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 8,
+                        "w": 24,
+                        "x": 0,
+                        "y": 12
+                    },
+                    "id": 4,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "mode": "single",
+                            "sort": "none"
+                        }
+                    },
+                    "targets": [
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "${datasource}"
+                            },
+                            "editorMode": "code",
+                            "expr": "(\nsum by (container, namespace) (rate(container_cpu_usage_seconds_total{cluster=~\".*$cluster\", node=~\"$node_name\", container!=\"\", container!=\"POD\"}[15m]))\n-\nsum by (container, namespace) (avg_over_time(kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\".*$cluster\", node=~\"$node_name\"}[15m]))\n) > 2",
+                            "legendFormat": "__auto",
+                            "range": true,
+                            "refId": "A"
+                        }
+                    ],
+                    "title": "(container, namespace) exceeding by 2 cpu their request",
+                    "type": "timeseries"
+                }
+            ],
+            "title": "Node related, can be cpu intensive",
+            "type": "row"
         },
         {
             "datasource": {
@@ -229,7 +335,7 @@
                 "h": 8,
                 "w": 24,
                 "x": 0,
-                "y": 8
+                "y": 9
             },
             "id": 7,
             "options": {
@@ -251,226 +357,14 @@
                         "uid": "${datasource}"
                     },
                     "editorMode": "code",
-                    "expr": "# total \"bad\" cpu usage\nsum by (mode, instance, cluster) (\n    rate(node_cpu_seconds_total{instance=~\"$node_name\", cluster=~\".*$cluster\", mode=~\"system|iowait|softirq\"}[15m])\n)\n# divided by total cpu usage\n/ on (instance, cluster) group_left()\nsum by (instance, cluster) (rate(node_cpu_seconds_total{instance=~\"$node_name\", cluster=~\".*$cluster\"}[15m]))\n> 0.2",
+                    "expr": "avg by (mode, instance, cluster) (\n    (rate(node_cpu_seconds_total{instance=~\"$node_name\", cluster=~\".*$cluster\", mode=~\"system|iowait|softirq\"}[30m]))\n) > 0.2",
                     "legendFormat": "{{mode}}: {{instance}} / {{cluster}}",
                     "range": true,
                     "refId": "A"
                 }
             ],
-            "title": "CPU system / softirq / iowait ratio too high",
+            "title": "CPU system / softirq / iowait too high",
             "type": "timeseries"
-        },
-        {
-            "collapsed": true,
-            "gridPos": {
-                "h": 1,
-                "w": 24,
-                "x": 0,
-                "y": 16
-            },
-            "id": 6,
-            "panels": [
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "${datasource}"
-                    },
-                    "description": "",
-                    "fieldConfig": {
-                        "defaults": {
-                            "color": {
-                                "mode": "palette-classic"
-                            },
-                            "custom": {
-                                "axisBorderShow": false,
-                                "axisCenteredZero": false,
-                                "axisColorMode": "text",
-                                "axisLabel": "",
-                                "axisPlacement": "auto",
-                                "barAlignment": 0,
-                                "drawStyle": "line",
-                                "fillOpacity": 0,
-                                "gradientMode": "none",
-                                "hideFrom": {
-                                    "legend": false,
-                                    "tooltip": false,
-                                    "viz": false
-                                },
-                                "insertNulls": false,
-                                "lineInterpolation": "linear",
-                                "lineWidth": 1,
-                                "pointSize": 5,
-                                "scaleDistribution": {
-                                    "type": "linear"
-                                },
-                                "showPoints": "auto",
-                                "spanNulls": false,
-                                "stacking": {
-                                    "group": "A",
-                                    "mode": "none"
-                                },
-                                "thresholdsStyle": {
-                                    "mode": "off"
-                                }
-                            },
-                            "mappings": [],
-                            "thresholds": {
-                                "mode": "absolute",
-                                "steps": [
-                                    {
-                                        "color": "green"
-                                    },
-                                    {
-                                        "color": "red",
-                                        "value": 80
-                                    }
-                                ]
-                            }
-                        },
-                        "overrides": []
-                    },
-                    "gridPos": {
-                        "h": 8,
-                        "w": 24,
-                        "x": 0,
-                        "y": 17
-                    },
-                    "id": 4,
-                    "options": {
-                        "legend": {
-                            "calcs": [],
-                            "displayMode": "list",
-                            "placement": "bottom",
-                            "showLegend": true
-                        },
-                        "tooltip": {
-                            "mode": "single",
-                            "sort": "none"
-                        }
-                    },
-                    "targets": [
-                        {
-                            "datasource": {
-                                "type": "prometheus",
-                                "uid": "${datasource}"
-                            },
-                            "editorMode": "code",
-                            "expr": "(\nsum by (container, namespace) (rate(container_cpu_usage_seconds_total{cluster=~\".*$cluster\", node=~\"$node_name\", container!=\"\", container!=\"POD\"}[15m]))\n-\nsum by (container, namespace) (avg_over_time(kube_pod_container_resource_requests{resource=\"cpu\", cluster=~\".*$cluster\", node=~\"$node_name\"}[15m]))\n) > 2",
-                            "legendFormat": "__auto",
-                            "range": true,
-                            "refId": "A"
-                        }
-                    ],
-                    "title": "(container, namespace) exceeding by 2 cpu their request",
-                    "type": "timeseries"
-                },
-                {
-                    "datasource": {
-                        "type": "prometheus",
-                        "uid": "${datasource}"
-                    },
-                    "fieldConfig": {
-                        "defaults": {
-                            "color": {
-                                "mode": "palette-classic"
-                            },
-                            "custom": {
-                                "axisBorderShow": false,
-                                "axisCenteredZero": false,
-                                "axisColorMode": "text",
-                                "axisLabel": "",
-                                "axisPlacement": "auto",
-                                "barAlignment": 0,
-                                "drawStyle": "line",
-                                "fillOpacity": 0,
-                                "gradientMode": "none",
-                                "hideFrom": {
-                                    "legend": false,
-                                    "tooltip": false,
-                                    "viz": false
-                                },
-                                "insertNulls": false,
-                                "lineInterpolation": "linear",
-                                "lineWidth": 1,
-                                "pointSize": 5,
-                                "scaleDistribution": {
-                                    "type": "linear"
-                                },
-                                "showPoints": "auto",
-                                "spanNulls": false,
-                                "stacking": {
-                                    "group": "A",
-                                    "mode": "none"
-                                },
-                                "thresholdsStyle": {
-                                    "mode": "off"
-                                }
-                            },
-                            "mappings": [],
-                            "min": 0,
-                            "thresholds": {
-                                "mode": "absolute",
-                                "steps": [
-                                    {
-                                        "color": "green"
-                                    }
-                                ]
-                            },
-                            "unit": "none"
-                        },
-                        "overrides": []
-                    },
-                    "gridPos": {
-                        "h": 8,
-                        "w": 24,
-                        "x": 0,
-                        "y": 25
-                    },
-                    "id": 8,
-                    "options": {
-                        "legend": {
-                            "calcs": [],
-                            "displayMode": "list",
-                            "placement": "bottom",
-                            "showLegend": true
-                        },
-                        "tooltip": {
-                            "mode": "single",
-                            "sort": "none"
-                        }
-                    },
-                    "targets": [
-                        {
-                            "datasource": {
-                                "type": "prometheus",
-                                "uid": "${datasource}"
-                            },
-                            "editorMode": "code",
-                            "expr": "sum(\n  kube_pod_info{container!=\"\",container!=\"POD\", node=~\"$node_name\", cluster=~\".*$cluster\"}\n  * on (cluster, uid)\n  max by (cluster, pod, uid) (kube_pod_container_status_running == 1)\n)",
-                            "legendFormat": "Running Pods",
-                            "range": true,
-                            "refId": "A"
-                        },
-                        {
-                            "datasource": {
-                                "type": "prometheus",
-                                "uid": "${datasource}"
-                            },
-                            "editorMode": "code",
-                            "expr": "sum(\n  kube_pod_info{container!=\"\",container!=\"POD\", node=~\"$node_name\", cluster=~\".*$cluster\"}\n  * on (cluster, uid)\n  sum by (cluster, pod, uid) (kube_pod_container_status_running == 1)\n)",
-                            "hide": false,
-                            "instant": false,
-                            "legendFormat": "Running Containers",
-                            "range": true,
-                            "refId": "B"
-                        }
-                    ],
-                    "title": "Amount of pods & containers per node",
-                    "type": "timeseries"
-                }
-            ],
-            "title": "Node related, can be cpu intensive",
-            "type": "row"
         }
     ],
     "refresh": "",
@@ -522,7 +416,7 @@
             },
             {
                 "current": {
-                    "selected": false,
+                    "selected": true,
                     "text": ".*",
                     "value": ".*"
                 },
@@ -551,25 +445,25 @@
                 "name": "query_min_threshold",
                 "options": [
                     {
-                        "selected": true,
+                        "selected": false,
                         "text": "0",
                         "value": "0"
                     }
                 ],
-                "query": "0",
+                "query": "1",
                 "skipUrlSync": false,
                 "type": "textbox"
             }
         ]
     },
     "time": {
-        "from": "now-6h",
+        "from": "now-12h",
         "to": "now"
     },
     "timepicker": {},
     "timezone": "",
     "title": "Node: overloaded nodes",
     "uid": "8s0aPf_4k",
-    "version": 27,
+    "version": 20,
     "weekStart": ""
 }
