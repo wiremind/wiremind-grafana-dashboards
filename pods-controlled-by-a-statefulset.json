@@ -15,7 +15,7 @@
             "type": "grafana",
             "id": "grafana",
             "name": "Grafana",
-            "version": "10.3.3"
+            "version": "10.4.1"
         },
         {
             "type": "datasource",
@@ -83,8 +83,7 @@
                                 "value": 80
                             }
                         ]
-                    },
-                    "unitScale": true
+                    }
                 },
                 "overrides": []
             },
@@ -107,7 +106,7 @@
                 },
                 "showHeader": true
             },
-            "pluginVersion": "10.3.3",
+            "pluginVersion": "10.4.1",
             "targets": [
                 {
                     "datasource": {
@@ -116,7 +115,7 @@
                     },
                     "editorMode": "code",
                     "exemplar": false,
-                    "expr": "kube_pod_info{node=~\"[[node_name]]\", pod!~\".*keycloak-[0-9]\", pod=~\"[[pod_name]]\", namespace=~\"[[namespace]]\"}\n* on (pod, namespace, cluster) (\n  kube_pod_owner{owner_kind=\"StatefulSet\"}\n)",
+                    "expr": "kube_pod_info{cluster=~\"[[cluster]]\", node=~\"[[node_name]]\", pod!~\".*keycloak-[0-9]\", pod=~\"[[pod_name]]\", namespace=~\"[[namespace]]\"}\n* on (pod, namespace, cluster) (\n  kube_pod_owner{owner_kind=\"StatefulSet\"}\n)",
                     "format": "table",
                     "instant": true,
                     "legendFormat": "__auto",
@@ -149,7 +148,7 @@
         "list": [
             {
                 "current": {
-                    "selected": false,
+                    "selected": true,
                     "text": "default",
                     "value": "default"
                 },
@@ -236,7 +235,7 @@
             },
             {
                 "current": {
-                    "selected": true,
+                    "selected": false,
                     "text": ".*",
                     "value": ".*"
                 },
@@ -264,6 +263,6 @@
     "timezone": "",
     "title": "Pods controlled by a statefulset",
     "uid": "pods-controlled-by-a-statefulset",
-    "version": 4,
+    "version": 2,
     "weekStart": ""
 }
