@@ -672,7 +672,7 @@
         "name": "container",
         "options": [],
         "query": {
-          "query": "label_values(kube_pod_container_info{cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}, container)",
+          "query": "label_values({__name__=~ \"kube_pod_container_info|kube_pod_init_container_info\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}, container)",
           "refId": "Prometheus-container-Variable-Query"
         },
         "refresh": 2,
