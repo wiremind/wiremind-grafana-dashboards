@@ -15,7 +15,7 @@
             "type": "grafana",
             "id": "grafana",
             "name": "Grafana",
-            "version": "10.4.0"
+            "version": "11.0.0"
         },
         {
             "type": "datasource",
@@ -139,6 +139,7 @@
                     "showLegend": true
                 },
                 "tooltip": {
+                    "maxHeight": 600,
                     "mode": "single",
                     "sort": "none"
                 }
@@ -230,7 +231,7 @@
                         "h": 8,
                         "w": 24,
                         "x": 0,
-                        "y": 12
+                        "y": 20
                     },
                     "id": 4,
                     "options": {
@@ -346,6 +347,7 @@
                     "showLegend": true
                 },
                 "tooltip": {
+                    "maxHeight": 600,
                     "mode": "single",
                     "sort": "none"
                 }
@@ -365,6 +367,212 @@
             ],
             "title": "CPU system / softirq / iowait too high",
             "type": "timeseries"
+        },
+        {
+            "collapsed": true,
+            "gridPos": {
+                "h": 1,
+                "w": 24,
+                "x": 0,
+                "y": 17
+            },
+            "id": 8,
+            "panels": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 0,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "auto",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "mappings": [],
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            }
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 0,
+                        "y": 18
+                    },
+                    "id": 9,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "maxHeight": 600,
+                            "mode": "single",
+                            "sort": "none"
+                        }
+                    },
+                    "targets": [
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "${datasource}"
+                            },
+                            "editorMode": "code",
+                            "expr": "sum(\n  kube_pod_status_phase{cluster=~\"$cluster\", phase=~\"Running\"}\n  * on (uid) group_right\n  kube_pod_info{cluster=~\"$cluster\", node=~\"$node_name\"}\n) by (node)",
+                            "instant": false,
+                            "legendFormat": "__auto",
+                            "range": true,
+                            "refId": "A"
+                        }
+                    ],
+                    "title": "Pods number",
+                    "type": "timeseries"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
+                    "fieldConfig": {
+                        "defaults": {
+                            "color": {
+                                "mode": "palette-classic"
+                            },
+                            "custom": {
+                                "axisBorderShow": false,
+                                "axisCenteredZero": false,
+                                "axisColorMode": "text",
+                                "axisLabel": "",
+                                "axisPlacement": "auto",
+                                "barAlignment": 0,
+                                "drawStyle": "line",
+                                "fillOpacity": 0,
+                                "gradientMode": "none",
+                                "hideFrom": {
+                                    "legend": false,
+                                    "tooltip": false,
+                                    "viz": false
+                                },
+                                "insertNulls": false,
+                                "lineInterpolation": "linear",
+                                "lineWidth": 1,
+                                "pointSize": 5,
+                                "scaleDistribution": {
+                                    "type": "linear"
+                                },
+                                "showPoints": "auto",
+                                "spanNulls": false,
+                                "stacking": {
+                                    "group": "A",
+                                    "mode": "none"
+                                },
+                                "thresholdsStyle": {
+                                    "mode": "off"
+                                }
+                            },
+                            "mappings": [],
+                            "thresholds": {
+                                "mode": "absolute",
+                                "steps": [
+                                    {
+                                        "color": "green",
+                                        "value": null
+                                    },
+                                    {
+                                        "color": "red",
+                                        "value": 80
+                                    }
+                                ]
+                            }
+                        },
+                        "overrides": []
+                    },
+                    "gridPos": {
+                        "h": 8,
+                        "w": 12,
+                        "x": 12,
+                        "y": 18
+                    },
+                    "id": 10,
+                    "options": {
+                        "legend": {
+                            "calcs": [],
+                            "displayMode": "list",
+                            "placement": "bottom",
+                            "showLegend": true
+                        },
+                        "tooltip": {
+                            "maxHeight": 600,
+                            "mode": "single",
+                            "sort": "none"
+                        }
+                    },
+                    "targets": [
+                        {
+                            "datasource": {
+                                "type": "prometheus",
+                                "uid": "${datasource}"
+                            },
+                            "editorMode": "code",
+                            "expr": "sum by (node) (\n    kube_pod_container_info{cluster=~\"$cluster\"}\n    * on (cluster, namespace, pod) group_left (node)\n    (kube_pod_status_phase{cluster=~\"$cluster\", phase=~\"Running\"}\n    * on (uid, cluster, namespace, pod) group_right\n    kube_pod_info{cluster=~\"$cluster\", node=~\"$node_name\"})\n)",
+                            "instant": false,
+                            "legendFormat": "__auto",
+                            "range": true,
+                            "refId": "A"
+                        }
+                    ],
+                    "title": "Containers number",
+                    "type": "timeseries"
+                }
+            ],
+            "title": "Node Pods & containers amount",
+            "type": "row"
         }
     ],
     "refresh": "",
@@ -445,7 +653,7 @@
                 "name": "query_min_threshold",
                 "options": [
                     {
-                        "selected": false,
+                        "selected": true,
                         "text": "0",
                         "value": "0"
                     }
@@ -460,10 +668,11 @@
         "from": "now-12h",
         "to": "now"
     },
+    "timeRangeUpdatedDuringEditOrView": false,
     "timepicker": {},
     "timezone": "",
     "title": "Node: overloaded nodes",
     "uid": "8s0aPf_4k",
-    "version": 20,
+    "version": 30,
     "weekStart": ""
 }
