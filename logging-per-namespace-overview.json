@@ -1,0 +1,623 @@
+{
+    "annotations": {
+        "list": [
+            {
+                "builtIn": 1,
+                "datasource": {
+                    "type": "grafana",
+                    "uid": "-- Grafana --"
+                },
+                "enable": true,
+                "hide": true,
+                "iconColor": "rgba(0, 211, 255, 1)",
+                "name": "Annotations & Alerts",
+                "type": "dashboard"
+            }
+        ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 4970,
+    "links": [],
+    "panels": [
+        {
+            "datasource": {
+                "type": "prometheus",
+                "uid": "${DS_THANOS}"
+            },
+            "gridPos": {
+                "h": 4,
+                "w": 24,
+                "x": 0,
+                "y": 0
+            },
+            "id": 5,
+            "options": {
+                "code": {
+                    "language": "plaintext",
+                    "showLineNumbers": false,
+                    "showMiniMap": false
+                },
+                "content": "This dashboard helps you vizualizing:\n- Namespace exceeding amount of logs per day agreed upon: \n- Namespaces exceeding absolute value putting infrastructure in danger\nGreen is ok, red is not ok.",
+                "mode": "markdown"
+            },
+            "pluginVersion": "11.2.0",
+            "title": "Explanations",
+            "type": "text"
+        },
+        {
+            "datasource": {
+                "default": false,
+                "type": "prometheus",
+                "uid": "${datasource}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "align": "auto",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "filterable": false,
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 1000000
+                            }
+                        ]
+                    }
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Value #Logs"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Logs"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Value #CPUs"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "CPUs"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Logs per CPU"
+                        },
+                        "properties": [
+                            {
+                                "id": "unit",
+                                "value": ""
+                            },
+                            {
+                                "id": "custom.cellOptions",
+                                "value": {
+                                    "type": "color-text"
+                                }
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "label_project"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Project"
+                            },
+                            {
+                                "id": "custom.filterable",
+                                "value": true
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 18,
+                "w": 24,
+                "x": 0,
+                "y": 4
+            },
+            "id": 2,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "enablePagination": true,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true,
+                "sortBy": [
+                    {
+                        "desc": true,
+                        "displayName": "Logs per CPU"
+                    }
+                ]
+            },
+            "pluginVersion": "11.2.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "max by (namespace, label_project) (\n  kube_namespace_labels\n)",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "legendFormat": "__auto",
+                    "range": false,
+                    "refId": "namespace_label"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "sum by (namespace) (\n  label_replace(\n    rate(vector_log_counter[$__range])\n  , \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\"\n  )\n) * 86400 > 0",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "legendFormat": "__auto",
+                    "range": false,
+                    "refId": "Logs"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "sum by (namespace) (\n  avg_over_time(\n    namespace_cpu:kube_pod_container_resource_requests:sum[$__range]\n  )\n) > 0",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "legendFormat": "__auto",
+                    "range": false,
+                    "refId": "CPUs"
+                }
+            ],
+            "title": "Logging amount, per day, per cpu, 7-days average",
+            "transformations": [
+                {
+                    "id": "filterFieldsByName",
+                    "options": {
+                        "include": {
+                            "names": [
+                                "namespace",
+                                "Value #Logs",
+                                "Value #CPUs",
+                                "label_project"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": "merge",
+                    "options": {}
+                },
+                {
+                    "id": "calculateField",
+                    "options": {
+                        "alias": "Logs per CPU",
+                        "binary": {
+                            "left": "Value #Logs",
+                            "operator": "/",
+                            "right": "Value #CPUs"
+                        },
+                        "mode": "binary",
+                        "reduce": {
+                            "reducer": "sum"
+                        },
+                        "replaceFields": false
+                    }
+                },
+                {
+                    "id": "filterByValue",
+                    "options": {
+                        "filters": [
+                            {
+                                "config": {
+                                    "id": "equal",
+                                    "options": {
+                                        "value": ""
+                                    }
+                                },
+                                "fieldName": "label_project"
+                            }
+                        ],
+                        "match": "any",
+                        "type": "exclude"
+                    }
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "datasource": {
+                "default": false,
+                "type": "prometheus",
+                "uid": "${datasource}"
+            },
+            "fieldConfig": {
+                "defaults": {
+                    "custom": {
+                        "align": "auto",
+                        "cellOptions": {
+                            "type": "auto"
+                        },
+                        "filterable": false,
+                        "inspect": false
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 10000
+                            }
+                        ]
+                    },
+                    "unit": "decbytes"
+                },
+                "overrides": [
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Value #Size"
+                        },
+                        "properties": [
+                            {
+                                "id": "custom.cellOptions",
+                                "value": {
+                                    "type": "color-text"
+                                }
+                            },
+                            {
+                                "id": "displayName",
+                                "value": "Size"
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "label_project"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Project"
+                            },
+                            {
+                                "id": "custom.filterable",
+                                "value": true
+                            }
+                        ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Value #Logs"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "Logs"
+                            },
+                            {
+                                "id": "unit",
+                                "value": "Logs"
+                            }
+                        ]
+                    }
+                ]
+            },
+            "gridPos": {
+                "h": 19,
+                "w": 24,
+                "x": 0,
+                "y": 22
+            },
+            "id": 7,
+            "options": {
+                "cellHeight": "sm",
+                "footer": {
+                    "countRows": false,
+                    "enablePagination": true,
+                    "fields": "",
+                    "reducer": [
+                        "sum"
+                    ],
+                    "show": false
+                },
+                "showHeader": true,
+                "sortBy": [
+                    {
+                        "desc": true,
+                        "displayName": "Size"
+                    }
+                ]
+            },
+            "pluginVersion": "11.2.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "max by (namespace, label_project) (\n  kube_namespace_labels\n)",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "legendFormat": "__auto",
+                    "range": false,
+                    "refId": "namespace_label"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "sum by (namespace) (\n  label_replace(\n    increase(vector_log_counter[$__range])\n  , \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\"\n  )\n) > 0",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "legendFormat": "__auto",
+                    "range": false,
+                    "refId": "Logs"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "label_replace(\n  sum by (exported_namespace) (\n      increase(vector_message_len_bytes_sum[1d])\n  )\n  / on (exported_namespace) (\n    sum by (exported_namespace) (\n      increase(vector_log_counter[1d])\n    ) > 100000\n  )\n, \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\")\n> 0",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "legendFormat": "__auto",
+                    "range": false,
+                    "refId": "Size"
+                }
+            ],
+            "title": "Average size of logs, 7-days average",
+            "transformations": [
+                {
+                    "id": "filterFieldsByName",
+                    "options": {
+                        "include": {
+                            "names": [
+                                "label_project",
+                                "namespace",
+                                "Value #Size",
+                                "Value #Logs"
+                            ]
+                        }
+                    }
+                },
+                {
+                    "id": "merge",
+                    "options": {}
+                },
+                {
+                    "id": "filterByValue",
+                    "options": {
+                        "filters": [
+                            {
+                                "config": {
+                                    "id": "equal",
+                                    "options": {
+                                        "value": ""
+                                    }
+                                },
+                                "fieldName": "label_project"
+                            }
+                        ],
+                        "match": "any",
+                        "type": "exclude"
+                    }
+                }
+            ],
+            "type": "table"
+        },
+        {
+            "datasource": {
+                "name": "${datasource}",
+                "type": "prometheus",
+                "uid": "${datasource}"
+            },
+            "description": "",
+            "fieldConfig": {
+                "defaults": {
+                    "color": {
+                        "mode": "thresholds"
+                    },
+                    "custom": {
+                        "axisBorderShow": false,
+                        "axisCenteredZero": false,
+                        "axisColorMode": "series",
+                        "axisLabel": "",
+                        "axisPlacement": "auto",
+                        "axisSoftMax": 110000000,
+                        "axisSoftMin": 0,
+                        "barAlignment": 0,
+                        "barWidthFactor": 0.6,
+                        "drawStyle": "line",
+                        "fillOpacity": 0,
+                        "gradientMode": "none",
+                        "hideFrom": {
+                            "legend": false,
+                            "tooltip": false,
+                            "viz": false
+                        },
+                        "insertNulls": false,
+                        "lineInterpolation": "linear",
+                        "lineWidth": 1,
+                        "pointSize": 5,
+                        "scaleDistribution": {
+                            "type": "linear"
+                        },
+                        "showPoints": "never",
+                        "spanNulls": false,
+                        "stacking": {
+                            "group": "A",
+                            "mode": "none"
+                        },
+                        "thresholdsStyle": {
+                            "mode": "dashed"
+                        }
+                    },
+                    "mappings": [],
+                    "thresholds": {
+                        "mode": "absolute",
+                        "steps": [
+                            {
+                                "color": "green",
+                                "value": null
+                            },
+                            {
+                                "color": "red",
+                                "value": 100000000
+                            }
+                        ]
+                    }
+                },
+                "overrides": []
+            },
+            "gridPos": {
+                "h": 11,
+                "w": 24,
+                "x": 0,
+                "y": 41
+            },
+            "id": 3,
+            "interval": "3h",
+            "options": {
+                "legend": {
+                    "calcs": [],
+                    "displayMode": "list",
+                    "placement": "bottom",
+                    "showLegend": true
+                },
+                "tooltip": {
+                    "mode": "single",
+                    "sort": "none"
+                }
+            },
+            "pluginVersion": "11.2.0",
+            "targets": [
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "label_replace(\n  sum by (exported_namespace) (\n    increase(vector_log_counter[3h])\n  ), \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\"\n)",
+                    "format": "time_series",
+                    "hide": false,
+                    "instant": false,
+                    "legendFormat": "{{namespace}}",
+                    "range": true,
+                    "refId": "A"
+                }
+            ],
+            "title": "Logging amount, per 3 hours: absolute limit reached",
+            "type": "timeseries"
+        }
+    ],
+    "schemaVersion": 39,
+    "tags": [],
+    "templating": {
+        "list": [
+            {
+                "datasource": {
+                    "type": "prometheus",
+                    "uid": "P5DCFC7561CCDE821"
+                },
+                "filters": [],
+                "hide": 0,
+                "name": "Filters",
+                "skipUrlSync": false,
+                "type": "adhoc"
+            },
+            {
+                "current": {
+                    "selected": true,
+                    "text": "default",
+                    "value": "default"
+                },
+                "hide": 0,
+                "includeAll": false,
+                "label": "Datasource",
+                "multi": false,
+                "name": "datasource",
+                "options": [],
+                "query": "prometheus",
+                "queryValue": "",
+                "refresh": 1,
+                "regex": "",
+                "skipUrlSync": false,
+                "type": "datasource"
+            }
+        ]
+    },
+    "time": {
+        "from": "now-7d",
+        "to": "now"
+    },
+    "timepicker": {},
+    "timezone": "browser",
+    "title": "Logging per namespace overview",
+    "uid": "ddlo6noih0ni8b",
+    "version": 4,
+    "weekStart": ""
+}
