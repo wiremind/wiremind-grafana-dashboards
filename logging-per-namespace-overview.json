@@ -1,4 +1,38 @@
 {
+    "__inputs": [],
+    "__elements": {},
+    "__requires": [
+        {
+            "type": "grafana",
+            "id": "grafana",
+            "name": "Grafana",
+            "version": "11.2.0"
+        },
+        {
+            "type": "datasource",
+            "id": "prometheus",
+            "name": "Prometheus",
+            "version": "1.0.0"
+        },
+        {
+            "type": "panel",
+            "id": "table",
+            "name": "Table",
+            "version": ""
+        },
+        {
+            "type": "panel",
+            "id": "text",
+            "name": "Text",
+            "version": ""
+        },
+        {
+            "type": "panel",
+            "id": "timeseries",
+            "name": "Time series",
+            "version": ""
+        }
+    ],
     "annotations": {
         "list": [
             {
@@ -18,13 +52,13 @@
     "editable": true,
     "fiscalYearStartMonth": 0,
     "graphTooltip": 0,
-    "id": 4970,
+    "id": null,
     "links": [],
     "panels": [
         {
             "datasource": {
                 "type": "prometheus",
-                "uid": "${DS_THANOS}"
+                "uid": "${datasource}"
             },
             "gridPos": {
                 "h": 4,
@@ -260,6 +294,15 @@
                                     }
                                 },
                                 "fieldName": "label_project"
+                            },
+                            {
+                                "config": {
+                                    "id": "lower",
+                                    "options": {
+                                        "value": "$cpu_threshold"
+                                    }
+                                },
+                                "fieldName": "Value #CPUs"
                             }
                         ],
                         "match": "any",
@@ -351,6 +394,22 @@
                                 "value": "Logs"
                             }
                         ]
+                    },
+                    {
+                        "matcher": {
+                            "id": "byName",
+                            "options": "Value #CPUs"
+                        },
+                        "properties": [
+                            {
+                                "id": "displayName",
+                                "value": "CPUs"
+                            },
+                            {
+                                "id": "unit",
+                                "value": "CPUs"
+                            }
+                        ]
                     }
                 ]
             },
@@ -426,6 +485,21 @@
                     "legendFormat": "__auto",
                     "range": false,
                     "refId": "Size"
+                },
+                {
+                    "datasource": {
+                        "type": "prometheus",
+                        "uid": "${datasource}"
+                    },
+                    "editorMode": "code",
+                    "exemplar": false,
+                    "expr": "sum by (namespace) (\n  avg_over_time(\n    namespace_cpu:kube_pod_container_resource_requests:sum[$__range]\n  )\n) > 0",
+                    "format": "table",
+                    "hide": false,
+                    "instant": true,
+                    "legendFormat": "__auto",
+                    "range": false,
+                    "refId": "CPUs"
                 }
             ],
             "title": "Average size of logs, 7-days average",
@@ -437,8 +511,9 @@
                             "names": [
                                 "label_project",
                                 "namespace",
+                                "Value #Logs",
                                 "Value #Size",
-                                "Value #Logs"
+                                "Value #CPUs"
                             ]
                         }
                     }
@@ -459,6 +534,15 @@
                                     }
                                 },
                                 "fieldName": "label_project"
+                            },
+                            {
+                                "config": {
+                                    "id": "lower",
+                                    "options": {
+                                        "value": "$cpu_threshold"
+                                    }
+                                },
+                                "fieldName": "Value #CPUs"
                             }
                         ],
                         "match": "any",
@@ -520,8 +604,7 @@
                         "mode": "absolute",
                         "steps": [
                             {
-                                "color": "green",
-                                "value": null
+                                "color": "green"
                             },
                             {
                                 "color": "red",
@@ -590,11 +673,7 @@
                 "type": "adhoc"
             },
             {
-                "current": {
-                    "selected": true,
-                    "text": "default",
-                    "value": "default"
-                },
+                "current": {},
                 "hide": 0,
                 "includeAll": false,
                 "label": "Datasource",
@@ -607,17 +686,56 @@
                 "regex": "",
                 "skipUrlSync": false,
                 "type": "datasource"
+            },
+            {
+                "current": {
+                    "selected": false,
+                    "text": "50",
+                    "value": "50"
+                },
+                "description": "Allows to exclude namespaces smaller than this value",
+                "hide": 0,
+                "includeAll": false,
+                "label": "CPU Amount Threshold",
+                "multi": false,
+                "name": "cpu_threshold",
+                "options": [
+                    {
+                        "selected": false,
+                        "text": "0",
+                        "value": "0"
+                    },
+                    {
+                        "selected": false,
+                        "text": "5",
+                        "value": "5"
+                    },
+                    {
+                        "selected": false,
+                        "text": "10",
+                        "value": "10"
+                    },
+                    {
+                        "selected": true,
+                        "text": "50",
+                        "value": "50"
+                    }
+                ],
+                "query": "0, 5, 10, 50",
+                "queryValue": "",
+                "skipUrlSync": false,
+                "type": "custom"
             }
         ]
     },
     "time": {
-        "from": "now-7d",
+        "from": "now-30m",
         "to": "now"
     },
     "timepicker": {},
     "timezone": "browser",
     "title": "Logging per namespace overview",
     "uid": "ddlo6noih0ni8b",
-    "version": 4,
+    "version": 7,
     "weekStart": ""
 }
