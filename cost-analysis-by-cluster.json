@@ -1,4 +1,35 @@
 {
+  "__inputs": [
+    {
+      "name": "DS_THANOS",
+      "label": "Thanos",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "11.3.0"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
   "annotations": {
     "list": [
       {
@@ -18,11 +49,9 @@
   "description": "A dashboard to help with cost and utilisation",
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "gnetId": 8932,
   "graphTooltip": 0,
-  "id": 1720,
+  "id": null,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -189,9 +218,7 @@
         "x": 0,
         "y": 0
       },
-      "hideTimeOverride": false,
       "id": 73,
-      "links": [],
       "maxDataPoints": 800,
       "options": {
         "cellHeight": "sm",
@@ -211,8 +238,7 @@
           }
         ]
       },
-      "pluginVersion": "10.1.5",
-      "repeatDirection": "v",
+      "pluginVersion": "11.3.0",
       "targets": [
         {
           "datasource": {
@@ -268,7 +294,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "# Storage Requested\nkube_namespace_labels{label_project=~\"$project\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) (\n  avg_over_time(\n    sum without (storageclass) (\n      namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", namespace=~\"$namespace\", storageclass!=\"topolvm-provisioner\", storageclass!=\"localstorage\"}\n    )[$__range:$__interval]\n  ) / 1024^3\n  or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0) # Allow to list even namespaces without PVC\n)",
+          "expr": "# Storage Requested\nkube_namespace_labels{label_project=~\"$project\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) (\n  avg_over_time(\n    sum without (storageclass) (\n      namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", namespace=~\"$namespace\", storageclass!~\"csi-topolvm-standard-.*\"}\n    )[$__range:$__interval]\n  ) / 1024^3\n  or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0) # Allow to list even namespaces without PVC\n)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -284,7 +310,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "# Storage Requested, bare metal\nkube_namespace_labels{label_project=~\"$project\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) (\n  avg_over_time(\n    sum without (storageclass) (\n      namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", namespace=~\"$namespace\", storageclass=~\"topolvm-provisioner|localstorage\"}\n    )[$__range:$__interval]\n  ) / 1024^3\n  or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0) # Allow to list even namespaces without PVC\n)",
+          "expr": "# Storage Requested, bare metal\nkube_namespace_labels{label_project=~\"$project\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) (\n  avg_over_time(\n    sum without (storageclass) (\n      namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", namespace=~\"$namespace\", storageclass=~\"csi-topolvm-standard-.*\"}\n    )[$__range:$__interval]\n  ) / 1024^3\n  or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0) # Allow to list even namespaces without PVC\n)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -293,7 +319,6 @@
           "refId": "storage_requested_baremetal"
         }
       ],
-      "timeFrom": "",
       "title": "Namespace cost and utilisation analysis over the period",
       "transformations": [
         {
@@ -307,10 +332,16 @@
           "options": {
             "alias": "CPU Cost",
             "binary": {
-              "left": "Value #cpu_requested",
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #cpu_requested"
+                }
+              },
               "operator": "*",
-              "reducer": "sum",
-              "right": "7"
+              "right": {
+                "fixed": "7"
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -324,10 +355,16 @@
           "options": {
             "alias": "Memory Cost Public Cloud",
             "binary": {
-              "left": "Value #memory_requested",
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #memory_requested"
+                }
+              },
               "operator": "*",
-              "reducer": "sum",
-              "right": "2.5"
+              "right": {
+                "fixed": "2.5"
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -340,9 +377,15 @@
           "options": {
             "alias": "Memory Cost Bare Metal",
             "binary": {
-              "left": "Value #memory_requested_bare_metal",
-              "reducer": "sum",
-              "right": "0.4"
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #memory_requested_bare_metal"
+                }
+              },
+              "right": {
+                "fixed": "0.4"
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -355,9 +398,18 @@
           "options": {
             "alias": "Memory Cost",
             "binary": {
-              "left": "Value #memory_requested",
-              "reducer": "sum",
-              "right": "Value #memory_requested_bare_metal"
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #memory_requested"
+                }
+              },
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #memory_requested_bare_metal"
+                }
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -370,10 +422,16 @@
           "options": {
             "alias": "Storage Cost, Public Cloud",
             "binary": {
-              "left": "Value #storage_requested",
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #storage_requested"
+                }
+              },
               "operator": "*",
-              "reducer": "sum",
-              "right": "0.12"
+              "right": {
+                "fixed": "0.12"
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -386,10 +444,16 @@
           "options": {
             "alias": "Storage Cost, bare metal",
             "binary": {
-              "left": "Value #storage_requested_baremetal",
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #storage_requested_baremetal"
+                }
+              },
               "operator": "*",
-              "reducer": "sum",
-              "right": "0.025"
+              "right": {
+                "fixed": "0.025"
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -403,9 +467,18 @@
           "options": {
             "alias": "Storage Cost",
             "binary": {
-              "left": "Storage Cost, Public Cloud",
-              "reducer": "sum",
-              "right": "Storage Cost, bare metal"
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Storage Cost, Public Cloud"
+                }
+              },
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Storage Cost, bare metal"
+                }
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -417,10 +490,19 @@
           "id": "calculateField",
           "options": {
             "binary": {
-              "left": "CPU Cost",
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CPU Cost"
+                }
+              },
               "operator": "+",
-              "reducer": "sum",
-              "right": "Memory Cost"
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Memory Cost"
+                }
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -433,10 +515,19 @@
           "options": {
             "alias": "Total Cost",
             "binary": {
-              "left": "CPU Cost + Memory Cost",
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CPU Cost + Memory Cost"
+                }
+              },
               "operator": "+",
-              "reducer": "sum",
-              "right": "Storage Cost"
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Storage Cost"
+                }
+              }
             },
             "mode": "binary",
             "reduce": {
@@ -514,44 +605,29 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 38,
-  "style": "dark",
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": true,
-          "text": "Thanos",
-          "value": "Thanos"
-        },
-        "hide": 0,
+        "current": {},
         "includeAll": false,
-        "multi": false,
         "name": "datasource",
         "options": [],
         "query": "prometheus",
-        "queryValue": "",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "type": "datasource"
       },
       {
-        "current": {
-          "selected": false,
-          "text": "ovh-gra3",
-          "value": "ovh-gra3"
-        },
+        "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
         },
         "definition": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
-        "hide": 0,
         "includeAll": false,
         "label": "Cluster",
-        "multi": false,
         "name": "cluster",
         "options": [],
         "query": {
@@ -560,18 +636,14 @@
         },
         "refresh": 2,
         "regex": "",
-        "skipUrlSync": false,
-        "sort": 0,
         "type": "query"
       },
       {
         "current": {
-          "selected": true,
           "text": ".*",
           "value": ".*"
         },
         "description": "Namespace",
-        "hide": 0,
         "label": "Namespace",
         "name": "namespace",
         "options": [
@@ -582,20 +654,13 @@
           }
         ],
         "query": ".*",
-        "skipUrlSync": false,
         "type": "textbox"
       },
       {
-        "current": {
-          "selected": true,
-          "text": "All",
-          "value": "$__all"
-        },
+        "current": {},
         "definition": "label_values(kube_namespace_labels,label_project)",
-        "hide": 0,
         "includeAll": true,
         "label": "Project",
-        "multi": false,
         "name": "project",
         "options": [],
         "query": {
@@ -604,7 +669,6 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       }
@@ -615,23 +679,11 @@
     "to": "now-1M/M"
   },
   "timepicker": {
-    "hidden": false,
-    "refresh_intervals": [],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
-    ]
+    "refresh_intervals": []
   },
   "timezone": "browser",
   "title": "Cost Analysis by Cluster",
   "uid": "cost-analysis-by-cluster",
-  "version": 6,
+  "version": 8,
   "weekStart": ""
 }
