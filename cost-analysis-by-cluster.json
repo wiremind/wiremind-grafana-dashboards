@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.3.0"
+      "version": "11.4.0"
     },
     {
       "type": "datasource",
@@ -177,10 +177,6 @@
             },
             "properties": [
               {
-                "id": "displayName",
-                "value": "RAM Utilisation (with fs cache)"
-              },
-              {
                 "id": "unit",
                 "value": "percent"
               }
@@ -238,7 +234,7 @@
           }
         ]
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -545,10 +541,12 @@
               "Storage Cost, Public Cloud": true,
               "Storage Cost, bare metal": true,
               "Time": true,
+              "Value #storage_requested_baremetal": false,
               "cluster": true,
               "prometheus": true,
               "prometheus_replica": true
             },
+            "includeByName": {},
             "indexByName": {
               "CPU Cost": 11,
               "CPU Cost + Memory Cost": 15,
@@ -684,6 +682,6 @@
   "timezone": "browser",
   "title": "Cost Analysis by Cluster",
   "uid": "cost-analysis-by-cluster",
-  "version": 8,
+  "version": 10,
   "weekStart": ""
 }
