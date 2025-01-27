@@ -21,7 +21,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "10.3.3"
+      "version": "11.4.0"
     },
     {
       "type": "datasource",
@@ -73,11 +73,9 @@
   "description": "Kubernetes Resource Requests",
   "editable": true,
   "fiscalYearStartMonth": 0,
-  "gnetId": 9411,
   "graphTooltip": 0,
   "id": null,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "datasource": {
@@ -119,8 +117,7 @@
               }
             ]
           },
-          "unit": "percent",
-          "unitScale": true
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -130,10 +127,8 @@
         "x": 0,
         "y": 0
       },
-      "hideTimeOverride": false,
       "id": 2,
       "interval": "30s",
-      "links": [],
       "maxDataPoints": 1,
       "options": {
         "minVizHeight": 75,
@@ -151,7 +146,7 @@
         "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -213,8 +208,7 @@
               }
             ]
           },
-          "unit": "percent",
-          "unitScale": true
+          "unit": "percent"
         },
         "overrides": []
       },
@@ -224,10 +218,8 @@
         "x": 6,
         "y": 0
       },
-      "hideTimeOverride": false,
       "id": 4,
       "interval": "30s",
-      "links": [],
       "maxDataPoints": 1,
       "options": {
         "minVizHeight": 75,
@@ -245,7 +237,7 @@
         "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -268,10 +260,6 @@
       "type": "gauge"
     },
     {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
       "gridPos": {
         "h": 6,
         "w": 6,
@@ -288,7 +276,7 @@
         "content": "Please keep in sync he variable \"Node Selector\" & \"Priority Class Selector\" in order to have meaningful values:\n- For the whole cluster\n- For prod only\n- For non-prod only",
         "mode": "markdown"
       },
-      "pluginVersion": "10.3.3",
+      "pluginVersion": "11.4.0",
       "title": "Guide",
       "type": "text"
     },
@@ -311,6 +299,7 @@
             "axisPlacement": "auto",
             "axisSoftMin": 0,
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -351,8 +340,7 @@
               }
             ]
           },
-          "unit": "short",
-          "unitScale": true
+          "unit": "short"
         },
         "overrides": []
       },
@@ -364,7 +352,6 @@
       },
       "id": 1,
       "interval": "30s",
-      "links": [],
       "maxDataPoints": 200,
       "options": {
         "legend": {
@@ -378,7 +365,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -437,6 +424,7 @@
             "axisPlacement": "auto",
             "axisSoftMin": 0,
             "barAlignment": 0,
+            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 10,
             "gradientMode": "none",
@@ -477,8 +465,7 @@
               }
             ]
           },
-          "unit": "bytes",
-          "unitScale": true
+          "unit": "bytes"
         },
         "overrides": []
       },
@@ -490,7 +477,6 @@
       },
       "id": 3,
       "interval": "30s",
-      "links": [],
       "maxDataPoints": 200,
       "options": {
         "legend": {
@@ -504,7 +490,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "8.1.2",
+      "pluginVersion": "11.4.0",
       "targets": [
         {
           "datasource": {
@@ -749,10 +735,8 @@
             "x": 0,
             "y": 18
           },
-          "hideTimeOverride": true,
           "id": 6,
           "interval": "30",
-          "links": [],
           "maxDataPoints": 1,
           "options": {
             "cellHeight": "sm",
@@ -773,7 +757,6 @@
             ]
           },
           "pluginVersion": "10.2.3",
-          "repeatDirection": "v",
           "targets": [
             {
               "datasource": {
@@ -839,27 +822,19 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 39,
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": [
       {
-        "current": {
-          "selected": false,
-          "text": "default",
-          "value": "default"
-        },
-        "hide": 0,
+        "current": {},
         "includeAll": false,
         "label": "Datasource",
-        "multi": false,
         "name": "datasource",
         "options": [],
         "query": "prometheus",
-        "queryValue": "",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "type": "datasource"
       },
       {
@@ -869,10 +844,8 @@
           "uid": "${datasource}"
         },
         "definition": "label_values(up{job=\"kube-state-metrics\"},cluster)",
-        "hide": 0,
-        "includeAll": false,
+        "includeAll": true,
         "label": "Cluster",
-        "multi": false,
         "name": "cluster",
         "options": [],
         "query": {
@@ -882,28 +855,19 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
         "allValue": " ",
         "current": {
-          "selected": false,
-          "text": "All",
+          "text": "$__all",
           "value": "$__all"
         },
-        "hide": 0,
         "includeAll": true,
         "label": "Node Selector",
-        "multi": false,
         "name": "node_selector",
         "options": [
-          {
-            "selected": true,
-            "text": "All",
-            "value": "$__all"
-          },
           {
             "selected": false,
             "text": "label_node_role_kubernetes_io_production!=\"true\"",
@@ -916,28 +880,18 @@
           }
         ],
         "query": "label_node_role_kubernetes_io_production!=\"true\", label_node_role_kubernetes_io_production=\"true\"",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       },
       {
         "allValue": " ",
         "current": {
-          "selected": false,
-          "text": "All",
+          "text": "$__all",
           "value": "$__all"
         },
-        "hide": 0,
         "includeAll": true,
         "label": "Priority Class Selector",
-        "multi": false,
         "name": "priority_class_selector",
         "options": [
-          {
-            "selected": true,
-            "text": "All",
-            "value": "$__all"
-          },
           {
             "selected": false,
             "text": "priority_class!~\".*-prod.*\"",
@@ -950,8 +904,6 @@
           }
         ],
         "query": "priority_class!~\".*-prod.*\", priority_class=~\".*-prod.*\"",
-        "queryValue": "",
-        "skipUrlSync": false,
         "type": "custom"
       }
     ]
@@ -971,22 +923,11 @@
       "1h",
       "2h",
       "1d"
-    ],
-    "time_options": [
-      "5m",
-      "15m",
-      "1h",
-      "6h",
-      "12h",
-      "24h",
-      "2d",
-      "7d",
-      "30d"
     ]
   },
   "timezone": "browser",
   "title": "Kubernetes Resource Requests",
   "uid": "XZ-kM6KMk",
-  "version": 120,
+  "version": 122,
   "weekStart": ""
 }
