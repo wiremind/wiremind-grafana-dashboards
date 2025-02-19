@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.4.0"
+      "version": "11.5.1"
     },
     {
       "type": "datasource",
@@ -234,7 +234,7 @@
           }
         ]
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.1",
       "targets": [
         {
           "datasource": {
@@ -243,7 +243,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "# CPU Requested (we consider price for cpu equal between bare metal and public cloud)\nkube_namespace_labels{label_project=~\"$project\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) (\n    avg_over_time(\n        namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval]\n    )\n    or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)",
+          "expr": "# CPU Requested (we consider price for cpu equal between bare metal and public cloud)\nkube_namespace_labels{label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) (\n    avg_over_time(\n        namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval]\n    )\n    or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -259,7 +259,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "# RAM Requested, public cloud\nkube_namespace_labels{label_project=~\"$project\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) (\n    avg_over_time(namespace_memory:kube_pod_container_resource_requests_not_bare_metal:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\n    or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)",
+          "expr": "# RAM Requested, public cloud\nkube_namespace_labels{label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) (\n    avg_over_time(namespace_memory:kube_pod_container_resource_requests_not_bare_metal:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\n    or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -275,7 +275,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "# RAM Requested, bare metal\nkube_namespace_labels{label_project=~\"$project\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) (\n   avg_over_time(namespace_memory:kube_pod_container_resource_requests_bare_metal:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\n   or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)",
+          "expr": "# RAM Requested, bare metal\nkube_namespace_labels{label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) (\n   avg_over_time(namespace_memory:kube_pod_container_resource_requests_bare_metal:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\n   or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -290,7 +290,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "# Storage Requested\nkube_namespace_labels{label_project=~\"$project\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) (\n  avg_over_time(\n    sum without (storageclass) (\n      namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", namespace=~\"$namespace\", storageclass!~\"csi-topolvm-standard-.*\"}\n    )[$__range:$__interval]\n  ) / 1024^3\n  or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0) # Allow to list even namespaces without PVC\n)",
+          "expr": "# Storage Requested\nkube_namespace_labels{label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) (\n  avg_over_time(\n    sum without (storageclass) (\n      namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", namespace=~\"$namespace\", storageclass!~\"csi-topolvm-standard-.*\"}\n    )[$__range:$__interval]\n  ) / 1024^3\n  or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0) # Allow to list even namespaces without PVC\n)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -306,7 +306,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "# Storage Requested, bare metal\nkube_namespace_labels{label_project=~\"$project\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) (\n  avg_over_time(\n    sum without (storageclass) (\n      namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", namespace=~\"$namespace\", storageclass=~\"csi-topolvm-standard-.*\"}\n    )[$__range:$__interval]\n  ) / 1024^3\n  or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0) # Allow to list even namespaces without PVC\n)",
+          "expr": "# Storage Requested, bare metal\nkube_namespace_labels{label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) (\n  avg_over_time(\n    sum without (storageclass) (\n      namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", namespace=~\"$namespace\", storageclass=~\"csi-topolvm-standard-.*\"}\n    )[$__range:$__interval]\n  ) / 1024^3\n  or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0) # Allow to list even namespaces without PVC\n)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -669,6 +669,28 @@
         "regex": "",
         "sort": 1,
         "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "allowCustomValue": true,
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(kube_namespace_labels,label_environment_kind)",
+        "includeAll": true,
+        "label": "Environment Kind",
+        "name": "kind",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_labels,label_environment_kind)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
       }
     ]
   },
@@ -682,6 +704,6 @@
   "timezone": "browser",
   "title": "Cost Analysis by Cluster",
   "uid": "cost-analysis-by-cluster",
-  "version": 10,
+  "version": 14,
   "weekStart": ""
 }
