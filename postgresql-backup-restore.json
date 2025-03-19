@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "11.3.0"
+      "version": "11.5.2"
     },
     {
       "type": "datasource",
@@ -120,7 +120,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -189,7 +189,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -198,7 +198,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "wal_g_last_backup_finish_time_seconds{namespace=\"$namespace\", job=~\"$postgresql_cluster-walg\"}  - wal_g_last_backup_start_time_seconds{namespace=\"$namespace\", job=~\"$walg\"}",
+          "expr": "wal_g_last_backup_finish_time_seconds{namespace=\"$namespace\", job=~\"$walg\"}  - wal_g_last_backup_start_time_seconds{namespace=\"$namespace\", job=~\"$walg\"}",
           "instant": true,
           "interval": "",
           "legendFormat": "",
@@ -257,7 +257,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -326,7 +326,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -335,11 +335,11 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "",
+          "expr": "wal_g_last_backup_uncompressed_size_bytes{namespace=\"$namespace\", job=~\"$walg\"}",
           "format": "time_series",
           "instant": true,
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "__auto",
           "refId": "A"
         }
       ],
@@ -395,7 +395,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -404,11 +404,11 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "",
+          "expr": "wal_g_last_backup_uncompressed_size_bytes{namespace=\"$namespace\", job=~\"$walg\"} / wal_g_last_backup_compressed_size_bytes{namespace=\"$namespace\", job=~\"$walg\"}",
           "format": "time_series",
           "instant": true,
           "interval": "",
-          "legendFormat": "",
+          "legendFormat": "__auto",
           "refId": "A"
         }
       ],
@@ -464,7 +464,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -550,7 +550,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -620,7 +620,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -693,7 +693,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -702,7 +702,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "pg_stat_archiver_failed_count{namespace=\"$namespace\", job=~\"paxone-staging-demo/paxone-staging-demo-patroni-keycloak-postgresql\"}",
+          "expr": "pg_stat_archiver_failed_count{namespace=\"$namespace\", job=~\"$postgresql_cluster\"}",
           "format": "time_series",
           "instant": true,
           "interval": "",
@@ -777,7 +777,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -859,7 +859,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -928,7 +928,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -997,7 +997,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1066,7 +1066,7 @@
         "textMode": "value",
         "wideLayout": true
       },
-      "pluginVersion": "11.3.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -1087,7 +1087,7 @@
       "type": "stat"
     }
   ],
-  "refresh": "5m",
+  "refresh": "30s",
   "schemaVersion": 40,
   "tags": [],
   "templating": {
@@ -1165,13 +1165,13 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Postgres Backup/Restore",
   "uid": "dbtr_WRnz",
-  "version": 73,
+  "version": 74,
   "weekStart": ""
 }
