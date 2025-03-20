@@ -26,7 +26,6 @@
   "graphTooltip": 0,
   "id": 1746,
   "links": [],
-  "liveNow": false,
   "panels": [
     {
       "collapsed": true,
@@ -55,6 +54,7 @@
                 "axisLabel": "CPU",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 0,
                 "gradientMode": "opacity",
@@ -99,8 +99,7 @@
                   }
                 ]
               },
-              "unit": "none",
-              "unitScale": true
+              "unit": "none"
             },
             "overrides": [
               {
@@ -168,10 +167,12 @@
               "showLegend": true
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "single",
               "sort": "none"
             }
           },
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -180,7 +181,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(kube_node_status_capacity{cluster=\"$cluster\", resource=\"cpu\", node!~\".*master.*\"})",
+              "expr": "sum(kube_node_status_capacity{cluster=\"$cluster\", namespace=~\"$namespace\", resource=\"cpu\", node!~\".*master.*\"})",
               "instant": false,
               "legendFormat": "Cluster capacity",
               "range": true,
@@ -193,7 +194,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}",
+              "expr": "namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\", namespace=~\"$namespace\", }",
               "hide": false,
               "instant": false,
               "legendFormat": "{{namespace}}",
@@ -221,6 +222,7 @@
                 "axisLabel": "CPU",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 0,
                 "gradientMode": "opacity",
@@ -265,8 +267,7 @@
                   }
                 ]
               },
-              "unit": "none",
-              "unitScale": true
+              "unit": "none"
             },
             "overrides": [
               {
@@ -319,7 +320,7 @@
             "h": 23,
             "w": 24,
             "x": 0,
-            "y": 24
+            "y": 53
           },
           "id": 22,
           "options": {
@@ -334,10 +335,12 @@
               "showLegend": true
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "single",
               "sort": "none"
             }
           },
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -346,7 +349,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(kube_node_status_capacity{cluster=\"$cluster\", resource=\"cpu\", node!~\".*master.*\"})",
+              "expr": "sum(kube_node_status_capacity{cluster=\"$cluster\", namespace=~\"$namespace\", resource=\"cpu\", node!~\".*master.*\"})",
               "hide": true,
               "instant": false,
               "legendFormat": "Cluster capacity",
@@ -360,7 +363,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum by (namespace) (\n  namespace_cpu:priority_class:requests:sum{cluster=\"$cluster\", phase=\"$pod_phase\"}\n)",
+              "expr": "sum by (namespace) (\n  namespace_cpu:priority_class:requests:sum{cluster=\"$cluster\", namespace=~\"$namespace\", phase=\"$pod_phase\"}\n)",
               "hide": false,
               "instant": false,
               "legendFormat": "{{namespace}}",
@@ -388,6 +391,7 @@
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 0,
                 "gradientMode": "opacity",
@@ -432,8 +436,7 @@
                   }
                 ]
               },
-              "unit": "bytes",
-              "unitScale": true
+              "unit": "bytes"
             },
             "overrides": [
               {
@@ -486,7 +489,7 @@
             "h": 23,
             "w": 24,
             "x": 0,
-            "y": 47
+            "y": 76
           },
           "id": 5,
           "options": {
@@ -501,10 +504,12 @@
               "showLegend": true
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "single",
               "sort": "none"
             }
           },
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -513,7 +518,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum(kube_node_status_capacity{cluster=\"$cluster\", resource=\"memory\", node!~\".*master.*\"})",
+              "expr": "sum(kube_node_status_capacity{cluster=\"$cluster\", namespace=~\"$namespace\", resource=\"memory\", node!~\".*master.*\"})",
               "instant": false,
               "legendFormat": "Cluster capacity",
               "range": true,
@@ -526,7 +531,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "namespace_memory:kube_pod_container_resource_requests:sum{cluster=\"$cluster\"}",
+              "expr": "namespace_memory:kube_pod_container_resource_requests:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}",
               "hide": false,
               "instant": false,
               "legendFormat": "{{namespace}}",
@@ -568,6 +573,7 @@
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 40,
                 "gradientMode": "opacity",
@@ -609,8 +615,7 @@
                   }
                 ]
               },
-              "unit": "none",
-              "unitScale": true
+              "unit": "none"
             },
             "overrides": []
           },
@@ -618,7 +623,7 @@
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 2
+            "y": 158
           },
           "id": 17,
           "options": {
@@ -633,10 +638,12 @@
               "showLegend": true
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "single",
               "sort": "none"
             }
           },
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -644,7 +651,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum by (phase) (\n  namespace_cpu:priority_class:requests:sum{cluster=\"$cluster\"}\n)",
+              "expr": "sum by (phase) (\n  namespace_cpu:priority_class:requests:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}\n)",
               "legendFormat": "{{phase}}",
               "range": true,
               "refId": "A"
@@ -670,6 +677,7 @@
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 40,
                 "gradientMode": "opacity",
@@ -711,8 +719,7 @@
                   }
                 ]
               },
-              "unit": "none",
-              "unitScale": true
+              "unit": "none"
             },
             "overrides": []
           },
@@ -720,7 +727,7 @@
             "h": 13,
             "w": 24,
             "x": 0,
-            "y": 15
+            "y": 229
           },
           "id": 18,
           "options": {
@@ -735,10 +742,12 @@
               "showLegend": true
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "single",
               "sort": "none"
             }
           },
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -746,7 +755,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum by (namespace) (\n  namespace_cpu:priority_class:requests:sum{cluster=\"$cluster\", phase=\"$pod_phase\"}\n)",
+              "expr": "sum by (namespace) (\n  namespace_cpu:priority_class:requests:sum{cluster=\"$cluster\", namespace=~\"$namespace\", phase=\"$pod_phase\"}\n)",
               "legendFormat": "{{namespace}}",
               "range": true,
               "refId": "A"
@@ -773,6 +782,7 @@
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 40,
                 "gradientMode": "opacity",
@@ -814,8 +824,7 @@
                   }
                 ]
               },
-              "unit": "none",
-              "unitScale": true
+              "unit": "none"
             },
             "overrides": []
           },
@@ -823,7 +832,7 @@
             "h": 15,
             "w": 24,
             "x": 0,
-            "y": 28
+            "y": 242
           },
           "id": 10,
           "options": {
@@ -838,10 +847,12 @@
               "showLegend": true
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "single",
               "sort": "none"
             }
           },
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -849,7 +860,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum by (priority_class) (\n    namespace_cpu:priority_class:requests:sum{cluster=\"$cluster\", phase=\"$pod_phase\"}\n)\n",
+              "expr": "sum by (priority_class) (\n    namespace_cpu:priority_class:requests:sum{cluster=\"$cluster\", namespace=~\"$namespace\", phase=\"$pod_phase\"}\n)\n",
               "legendFormat": "{{priority_class}}",
               "range": true,
               "refId": "A"
@@ -863,7 +874,7 @@
       "type": "row"
     },
     {
-      "collapsed": false,
+      "collapsed": true,
       "gridPos": {
         "h": 1,
         "w": 24,
@@ -871,315 +882,322 @@
         "y": 2
       },
       "id": 12,
-      "panels": [],
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 40,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 159
+          },
+          "id": 14,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "mean",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "11.5.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum by (phase) (kube_pod_status_phase{cluster=\"$cluster\", namespace=~\"$namespace\"} > 0)",
+              "legendFormat": "{{phase}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Pods' phases",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 40,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 230
+          },
+          "id": 9,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "mean",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "11.5.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum by (namespace) (kube_pod_status_phase{cluster=\"$cluster\", namespace=~\"$namespace\", phase=\"$pod_phase\"} > 0)",
+              "legendFormat": "__auto",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "${pod_phase} by namespace",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "palette-classic"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "text",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 40,
+                "gradientMode": "opacity",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "auto",
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "normal"
+                },
+                "thresholdsStyle": {
+                  "mode": "off"
+                }
+              },
+              "decimals": 0,
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 15,
+            "w": 24,
+            "x": 0,
+            "y": 243
+          },
+          "id": 21,
+          "options": {
+            "legend": {
+              "calcs": [
+                "min",
+                "mean",
+                "max"
+              ],
+              "displayMode": "table",
+              "placement": "right",
+              "showLegend": true
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "11.5.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "expr": "sum by (priority_class) (\n    (kube_pod_status_phase{cluster=\"$cluster\", namespace=~\"$namespace\", phase=\"$pod_phase\"} > 0)\n    * on(namespace,pod)\n    group_left(priority_class) kube_pod_info{cluster=\"$cluster\", namespace=~\"$namespace\"}\n)",
+              "legendFormat": "{{priority_class}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "${pod_phase} by priority-class",
+          "type": "timeseries"
+        }
+      ],
       "title": "Pods' phases",
       "type": "row"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 40,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 0,
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 13,
-        "w": 24,
-        "x": 0,
-        "y": 3
-      },
-      "id": 14,
-      "options": {
-        "legend": {
-          "calcs": [
-            "min",
-            "mean",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum by (phase) (kube_pod_status_phase{cluster=\"$cluster\"} > 0)",
-          "legendFormat": "{{phase}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "Pods' phases",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 40,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 0,
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 13,
-        "w": 24,
-        "x": 0,
-        "y": 16
-      },
-      "id": 9,
-      "options": {
-        "legend": {
-          "calcs": [
-            "min",
-            "mean",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum by (namespace) (kube_pod_status_phase{cluster=\"$cluster\", phase=\"$pod_phase\"} > 0)",
-          "legendFormat": "__auto",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "${pod_phase} by namespace",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 40,
-            "gradientMode": "opacity",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "auto",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "normal"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "decimals": 0,
-          "mappings": [],
-          "min": 0,
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          },
-          "unit": "none",
-          "unitScale": true
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 15,
-        "w": 24,
-        "x": 0,
-        "y": 29
-      },
-      "id": 21,
-      "options": {
-        "legend": {
-          "calcs": [
-            "min",
-            "mean",
-            "max"
-          ],
-          "displayMode": "table",
-          "placement": "right",
-          "showLegend": true
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "expr": "sum by (priority_class) (\n    (kube_pod_status_phase{cluster=\"$cluster\", phase=\"$pod_phase\"} > 0)\n    * on(namespace,pod)\n    group_left(priority_class) kube_pod_info{cluster=\"$cluster\"}\n)",
-          "legendFormat": "{{priority_class}}",
-          "range": true,
-          "refId": "A"
-        }
-      ],
-      "title": "${pod_phase} by priority-class",
-      "type": "timeseries"
     },
     {
       "collapsed": true,
@@ -1187,7 +1205,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 44
+        "y": 3
       },
       "id": 16,
       "panels": [
@@ -1208,6 +1226,7 @@
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 40,
                 "gradientMode": "none",
@@ -1249,8 +1268,7 @@
                   }
                 ]
               },
-              "unit": "none",
-              "unitScale": true
+              "unit": "none"
             },
             "overrides": []
           },
@@ -1269,10 +1287,12 @@
               "showLegend": true
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "single",
               "sort": "none"
             }
           },
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -1280,7 +1300,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum by (reason) (kube_pod_status_reason{cluster=\"$cluster\"})",
+              "expr": "sum by (reason) (kube_pod_status_reason{cluster=\"$cluster\", namespace=~\"$namespace\"})",
               "legendFormat": "{{reason}}",
               "range": true,
               "refId": "A"
@@ -1306,6 +1326,7 @@
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 40,
                 "gradientMode": "none",
@@ -1347,8 +1368,7 @@
                   }
                 ]
               },
-              "unit": "none",
-              "unitScale": true
+              "unit": "none"
             },
             "overrides": []
           },
@@ -1367,10 +1387,12 @@
               "showLegend": true
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "single",
               "sort": "none"
             }
           },
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -1378,7 +1400,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum by (namespace) (kube_pod_status_reason{cluster=\"$cluster\", reason=\"$pod_reason\"})",
+              "expr": "sum by (namespace) (kube_pod_status_reason{cluster=\"$cluster\", namespace=~\"$namespace\", reason=\"$pod_reason\"})",
               "legendFormat": "__auto",
               "range": true,
               "refId": "A"
@@ -1404,6 +1426,7 @@
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 40,
                 "gradientMode": "none",
@@ -1445,8 +1468,7 @@
                   }
                 ]
               },
-              "unit": "none",
-              "unitScale": true
+              "unit": "none"
             },
             "overrides": []
           },
@@ -1465,10 +1487,12 @@
               "showLegend": true
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "single",
               "sort": "none"
             }
           },
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -1476,7 +1500,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum by (node) (kube_pod_status_reason{cluster=\"$cluster\", reason=\"$pod_reason\"})",
+              "expr": "sum by (node) (kube_pod_status_reason{cluster=\"$cluster\", namespace=~\"$namespace\", reason=\"$pod_reason\"})",
               "legendFormat": "__auto",
               "range": true,
               "refId": "A"
@@ -1502,6 +1526,7 @@
                 "axisLabel": "",
                 "axisPlacement": "auto",
                 "barAlignment": 0,
+                "barWidthFactor": 0.6,
                 "drawStyle": "line",
                 "fillOpacity": 40,
                 "gradientMode": "opacity",
@@ -1543,8 +1568,7 @@
                   }
                 ]
               },
-              "unit": "none",
-              "unitScale": true
+              "unit": "none"
             },
             "overrides": []
           },
@@ -1563,10 +1587,12 @@
               "showLegend": true
             },
             "tooltip": {
+              "hideZeros": false,
               "mode": "single",
               "sort": "none"
             }
           },
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -1574,7 +1600,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum by (priority_class) (\n    kube_pod_status_reason{cluster=\"$cluster\", reason=\"$pod_reason\"}\n    * on(namespace,pod)\n    group_left(priority_class) kube_pod_info{cluster=\"$cluster\"}\n)",
+              "expr": "sum by (priority_class) (\n    kube_pod_status_reason{cluster=\"$cluster\", namespace=~\"$namespace\", reason=\"$pod_reason\"}\n    * on(namespace,pod)\n    group_left(priority_class) kube_pod_info{cluster=\"$cluster\", namespace=~\"$namespace\"}\n)",
               "legendFormat": "{{priority_class}}",
               "range": true,
               "refId": "A"
@@ -1588,40 +1614,37 @@
       "type": "row"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 39,
+  "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": [
       {
         "current": {
-          "selected": false,
           "text": "default",
           "value": "default"
         },
-        "hide": 0,
         "includeAll": false,
         "label": "Data Source",
-        "multi": false,
         "name": "datasource",
         "options": [],
         "query": "prometheus",
-        "queryValue": "",
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "type": "datasource"
       },
       {
-        "current": {},
+        "current": {
+          "text": "ovh-main-gra11-prod",
+          "value": "ovh-main-gra11-prod"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
         },
         "definition": "label_values(up{job=\"kube-state-metrics\"}, cluster)",
-        "hide": 0,
         "includeAll": false,
-        "multi": false,
         "name": "cluster",
         "options": [],
         "query": {
@@ -1630,13 +1653,29 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
         "current": {
-          "selected": false,
+          "text": "track-review",
+          "value": "track-review"
+        },
+        "definition": "label_values(kube_namespace_status_phase{job=\"kube-state-metrics\", cluster=\"$cluster\"},namespace)",
+        "label": "Namespace",
+        "name": "namespace",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_status_phase{job=\"kube-state-metrics\", cluster=\"$cluster\"},namespace)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
           "text": "Pending",
           "value": "Pending"
         },
@@ -1645,10 +1684,8 @@
           "uid": "${datasource}"
         },
         "definition": "label_values(kube_pod_status_phase{cluster=\"$cluster\"}, phase)",
-        "hide": 0,
         "includeAll": false,
         "label": "Pods' phase",
-        "multi": false,
         "name": "pod_phase",
         "options": [],
         "query": {
@@ -1657,13 +1694,11 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       },
       {
         "current": {
-          "selected": false,
           "text": "Evicted",
           "value": "Evicted"
         },
@@ -1672,10 +1707,8 @@
           "uid": "${datasource}"
         },
         "definition": "label_values(kube_pod_status_reason{cluster=\"$cluster\"}, reason)",
-        "hide": 0,
         "includeAll": false,
         "label": "Pods' reason",
-        "multi": false,
         "name": "pod_reason",
         "options": [],
         "query": {
@@ -1684,20 +1717,19 @@
         },
         "refresh": 1,
         "regex": "",
-        "skipUrlSync": false,
         "sort": 1,
         "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-5m",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Cluster requests and pods failure",
   "uid": "oAqtspY4z",
-  "version": 10,
+  "version": 12,
   "weekStart": ""
 }
