@@ -1,53 +1,4 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_THANOS",
-      "label": "Thanos",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "panel",
-      "id": "gauge",
-      "name": "Gauge",
-      "version": ""
-    },
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "11.4.0"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "text",
-      "name": "Text",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "timeseries",
-      "name": "Time series",
-      "version": ""
-    }
-  ],
   "annotations": {
     "list": [
       {
@@ -74,7 +25,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 485,
   "links": [],
   "panels": [
     {
@@ -146,7 +97,7 @@
         "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -237,7 +188,7 @@
         "sizing": "auto",
         "text": {}
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -260,6 +211,10 @@
       "type": "gauge"
     },
     {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 6,
         "w": 6,
@@ -276,7 +231,7 @@
         "content": "Please keep in sync he variable \"Node Selector\" & \"Priority Class Selector\" in order to have meaningful values:\n- For the whole cluster\n- For prod only\n- For non-prod only",
         "mode": "markdown"
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "title": "Guide",
       "type": "text"
     },
@@ -361,11 +316,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -374,12 +330,12 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "min(sum(\n  kube_node_labels{cluster=~\"$cluster.*\", $node_selector}\n  * on (node)\n  kube_node_status_allocatable{cluster=~\"$cluster.*\", resource=\"cpu\"}\n) by (instance))",
+          "expr": "min(sum(\n  kube_node_labels{cluster=~\"$cluster\", $node_selector}\n  * on (node)\n  kube_node_status_allocatable{cluster=~\"$cluster.*\", resource=\"cpu\"}\n) by (instance))",
           "format": "time_series",
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Allocatable CPU Cores",
+          "legendFormat": "Allocatable node CPUs (filtered by node selector)",
           "range": true,
           "refId": "A",
           "step": 20
@@ -396,10 +352,23 @@
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Requested CPUs",
+          "legendFormat": "Requested pod CPUs (filtered by pod priority class)",
           "range": true,
           "refId": "B",
           "step": 20
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (cluster) (\n  sum by (cluster, namespace, node, pod) (\n    cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=~\"$cluster\"}\n    * on (node) group_left()\n    kube_node_labels{cluster=~\"$cluster\", $node_selector}\n  )\n  * on (pod, namespace, node) group_left()\n    kube_pod_info{cluster=~\"$cluster\", ${priority_class_selector:raw}}\n)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Requested pod CPUs (filtered by node label and pod priority class)",
+          "range": true,
+          "refId": "C"
         }
       ],
       "title": "CPU Cores",
@@ -486,11 +455,12 @@
           "showLegend": true
         },
         "tooltip": {
+          "hideZeros": false,
           "mode": "single",
           "sort": "none"
         }
       },
-      "pluginVersion": "11.4.0",
+      "pluginVersion": "11.5.2",
       "targets": [
         {
           "datasource": {
@@ -504,7 +474,7 @@
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Allocatable Memory",
+          "legendFormat": "Allocatable node memory (filtered by node selector)",
           "range": true,
           "refId": "A",
           "step": 20
@@ -521,10 +491,23 @@
           "hide": false,
           "interval": "",
           "intervalFactor": 1,
-          "legendFormat": "Requested Memory",
+          "legendFormat": "Requested pod memory (filtered by pod priority class)",
           "range": true,
           "refId": "B",
           "step": 20
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by (cluster) (\n  sum by (cluster, namespace, node, pod) (\n    cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=~\"$cluster\"}\n    * on (node) group_left()\n    kube_node_labels{cluster=~\"$cluster\", $node_selector}\n  )\n  * on (pod, namespace, node) group_left()\n    kube_pod_info{cluster=~\"$cluster\", ${priority_class_selector:raw}}\n)",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Requested pod memory (filtered by node label and pod priority class)",
+          "range": true,
+          "refId": "C"
         }
       ],
       "title": "Memory",
@@ -563,7 +546,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": null
                   },
                   {
                     "color": "red",
@@ -606,7 +590,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "rgba(245, 54, 54, 0.9)"
+                          "color": "rgba(245, 54, 54, 0.9)",
+                          "value": null
                         },
                         {
                           "color": "rgba(50, 172, 45, 0.97)",
@@ -700,7 +685,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "rgba(245, 54, 54, 0.9)"
+                          "color": "rgba(245, 54, 54, 0.9)",
+                          "value": null
                         },
                         {
                           "color": "rgba(50, 172, 45, 0.97)",
@@ -733,7 +719,7 @@
             "h": 16,
             "w": 24,
             "x": 0,
-            "y": 18
+            "y": 23
           },
           "id": 6,
           "interval": "30",
@@ -756,7 +742,7 @@
               }
             ]
           },
-          "pluginVersion": "10.2.3",
+          "pluginVersion": "11.5.2",
           "targets": [
             {
               "datasource": {
@@ -821,13 +807,17 @@
       "type": "row"
     }
   ],
+  "preload": false,
   "refresh": "",
   "schemaVersion": 40,
   "tags": [],
   "templating": {
     "list": [
       {
-        "current": {},
+        "current": {
+          "text": "Thanos",
+          "value": "P5DCFC7561CCDE821"
+        },
         "includeAll": false,
         "label": "Datasource",
         "name": "datasource",
@@ -838,7 +828,10 @@
         "type": "datasource"
       },
       {
-        "current": {},
+        "current": {
+          "text": "ovh-main-gra11-prod",
+          "value": "ovh-main-gra11-prod"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -861,15 +854,15 @@
       {
         "allValue": " ",
         "current": {
-          "text": "$__all",
-          "value": "$__all"
+          "text": "label_node_role_kubernetes_io_production!=\"true\"",
+          "value": "label_node_role_kubernetes_io_production!=\"true\""
         },
         "includeAll": true,
         "label": "Node Selector",
         "name": "node_selector",
         "options": [
           {
-            "selected": false,
+            "selected": true,
             "text": "label_node_role_kubernetes_io_production!=\"true\"",
             "value": "label_node_role_kubernetes_io_production!=\"true\""
           },
@@ -885,8 +878,8 @@
       {
         "allValue": " ",
         "current": {
-          "text": "$__all",
-          "value": "$__all"
+          "text": "priority_class=~\".*-prod.*\"",
+          "value": "priority_class=~\".*-prod.*\""
         },
         "includeAll": true,
         "label": "Priority Class Selector",
@@ -898,12 +891,17 @@
             "value": "priority_class!~\".*-prod.*\""
           },
           {
-            "selected": false,
+            "selected": true,
             "text": "priority_class=~\".*-prod.*\"",
             "value": "priority_class=~\".*-prod.*\""
+          },
+          {
+            "selected": false,
+            "text": "priority_class!~\".*(-prod|platform).*\"",
+            "value": "priority_class!~\".*(-prod|platform).*\""
           }
         ],
-        "query": "priority_class!~\".*-prod.*\", priority_class=~\".*-prod.*\"",
+        "query": "priority_class!~\".*-prod.*\", priority_class=~\".*-prod.*\", \npriority_class!~\".*(-prod|platform).*\"",
         "type": "custom"
       }
     ]
@@ -928,6 +926,6 @@
   "timezone": "browser",
   "title": "Kubernetes Resource Requests",
   "uid": "XZ-kM6KMk",
-  "version": 122,
+  "version": 128,
   "weekStart": ""
 }
