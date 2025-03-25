@@ -363,10 +363,10 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (cluster) (\n  sum by (cluster, namespace, node, pod) (\n    cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=~\"$cluster\"}\n    * on (node) group_left()\n    kube_node_labels{cluster=~\"$cluster\", $node_selector}\n  )\n  * on (pod, namespace, node) group_left()\n    kube_pod_info{cluster=~\"$cluster\", ${priority_class_selector:raw}}\n)",
+          "expr": "sum by (cluster) (\n  sum by (cluster, namespace, node, pod) (\n    cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    * on (node) group_left()\n    kube_node_labels{cluster=~\"$cluster\", $node_selector}\n  )\n  * on (pod, namespace, node) group_left()\n    kube_pod_info{cluster=~\"$cluster\", namespace=~\"$namespace\", ${priority_class_selector:raw}}\n)",
           "hide": false,
           "instant": false,
-          "legendFormat": "Requested pod CPUs (filtered by node label and pod priority class)",
+          "legendFormat": "Requested pod CPUs (filtered by node label, namespace and pod priority class)",
           "range": true,
           "refId": "C"
         }
@@ -502,10 +502,10 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (cluster) (\n  sum by (cluster, namespace, node, pod) (\n    cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=~\"$cluster\"}\n    * on (node) group_left()\n    kube_node_labels{cluster=~\"$cluster\", $node_selector}\n  )\n  * on (pod, namespace, node) group_left()\n    kube_pod_info{cluster=~\"$cluster\", ${priority_class_selector:raw}}\n)",
+          "expr": "sum by (cluster) (\n  sum by (cluster, namespace, node, pod) (\n    cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    * on (node) group_left()\n    kube_node_labels{cluster=~\"$cluster\", $node_selector}\n  )\n  * on (pod, namespace, node) group_left()\n    kube_pod_info{cluster=~\"$cluster\", namespace=~\"$namespace\", ${priority_class_selector:raw}}\n)",
           "hide": false,
           "instant": false,
-          "legendFormat": "Requested pod memory (filtered by node label and pod priority class)",
+          "legendFormat": "Requested pod memory (filtered by node label, namespace and pod priority class)",
           "range": true,
           "refId": "C"
         }
@@ -876,6 +876,27 @@
         "type": "custom"
       },
       {
+        "allValue": "",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "definition": "label_values(kube_namespace_status_phase{job=\"kube-state-metrics\", cluster=\"$cluster\"},namespace)",
+        "description": "",
+        "includeAll": true,
+        "label": "Namespace",
+        "name": "namespace",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_status_phase{job=\"kube-state-metrics\", cluster=\"$cluster\"},namespace)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
         "allValue": " ",
         "current": {
           "text": "priority_class=~\".*-prod.*\"",
@@ -926,6 +947,6 @@
   "timezone": "browser",
   "title": "Kubernetes Resource Requests",
   "uid": "XZ-kM6KMk",
-  "version": 128,
+  "version": 131,
   "weekStart": ""
 }
