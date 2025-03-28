@@ -88,7 +88,7 @@
         },
         {
             "columns": [],
-            "datasource": "${DS_PROMETHEUS}",
+            "datasource": "${datasource}",
             "fontSize": "100%",
             "gridPos": {
                 "h": 8,
@@ -170,7 +170,7 @@
             "cacheTimeout": null,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "${DS_PROMETHEUS}",
+            "datasource": "${datasource}",
             "fieldConfig": {
                 "defaults": {
                     "links": []
@@ -270,7 +270,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "${DS_PROMETHEUS}",
+            "datasource": "${datasource}",
             "fieldConfig": {
                 "defaults": {
                     "links": []
@@ -386,7 +386,7 @@
             "bars": false,
             "dashLength": 10,
             "dashes": false,
-            "datasource": "${DS_PROMETHEUS}",
+            "datasource": "${datasource}",
             "fieldConfig": {
                 "defaults": {
                     "links": []
@@ -477,7 +477,7 @@
         },
         {
             "cacheTimeout": null,
-            "datasource": "${DS_PROMETHEUS}",
+            "datasource": "${datasource}",
             "fieldConfig": {
                 "defaults": {
                     "color": {
@@ -607,7 +607,7 @@
             {
                 "allValue": ".*",
                 "current": {},
-                "datasource": "${DS_PROMETHEUS}",
+                "datasource": "${datasource}",
                 "definition": "label_values(certmanager_certificate_expiration_timestamp_seconds{exported_namespace=~\"$Namespace\"},name) ",
                 "description": null,
                 "error": null,

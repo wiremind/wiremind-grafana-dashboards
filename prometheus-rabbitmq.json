@@ -70,7 +70,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -152,7 +152,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "exemplar": false,
           "expr": "rabbitmq_running{namespace=\"$namespace\", job=\"$job\"}",
@@ -172,7 +172,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -269,7 +269,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "rabbitmq_running{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
@@ -287,7 +287,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -372,7 +372,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "rabbitmq_connectionsTotal{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
@@ -385,7 +385,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "rabbitmq_channelsTotal{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
@@ -396,7 +396,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "rabbitmq_consumersTotal{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
@@ -411,7 +411,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -495,7 +495,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "rabbitmq_queue_messages{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
@@ -512,7 +512,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -594,7 +594,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "sum by (queue)(rabbitmq_queue_messages_ready{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
@@ -607,7 +607,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "sum by (queue)(rabbitmq_queue_messages_published_total{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
@@ -620,7 +620,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "sum by (queue)(rabbitmq_queue_messages_delivered_total{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
@@ -633,7 +633,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "sum by (queue)(rabbitmq_queue_messages_unacknowledged{namespace=\"$namespace\", job=\"$job\"})",
           "format": "time_series",
@@ -650,7 +650,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -732,7 +732,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "rabbitmq_node_disk_free{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
@@ -745,7 +745,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "rabbitmq_node_disk_free_limit{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
@@ -762,7 +762,7 @@
     {
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -844,7 +844,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "rabbitmq_node_mem_used{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
@@ -857,7 +857,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "rabbitmq_node_mem_limit{namespace=\"$namespace\", job=\"$job\"}",
           "format": "time_series",
@@ -903,7 +903,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "${datasource}"
         },
         "definition": "label_values(rabbitmq_running,namespace)",
         "hide": 0,
@@ -926,7 +926,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS}"
+          "uid": "${datasource}"
         },
         "definition": "label_values(rabbitmq_running{namespace=\"$namespace\"},job)",
         "hide": 0,

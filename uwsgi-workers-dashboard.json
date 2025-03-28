@@ -104,7 +104,7 @@
       ],
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_THANOS}"
+        "uid": "${datasource}"
       },
       "description": "",
       "gridPos": {
@@ -195,7 +195,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_THANOS}"
+            "uid": "${datasource}"
           },
           "expr": "uwsgi_worker_busy{namespace=\"$namespace\", pod=\"$Pod\"}",
           "instant": true,
@@ -248,7 +248,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -296,7 +296,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "irate(uwsgi_worker_app_requests_total{pod=\"$Pod\", namespace=\"$namespace\"} [5m])",
           "intervalFactor": 2,
@@ -342,7 +342,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -391,7 +391,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "uwsgi_worker_average_response_time_seconds{pod=\"$Pod\", namespace=\"$namespace\"}",
           "interval": "",
@@ -439,7 +439,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "description": "Physically Resident Memory",
       "fieldConfig": {
@@ -488,7 +488,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "uwsgi_worker_rss_bytes{pod=\"$Pod\", namespace=\"$namespace\"}",
           "hide": false,
@@ -537,7 +537,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "description": "Virtual Memory Size",
       "fieldConfig": {
@@ -586,7 +586,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "uwsgi_worker_vsz_bytes{pod=\"$Pod\", namespace=\"$namespace\"}",
           "interval": "",
@@ -634,7 +634,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "description": "Virtual Memory Size",
       "fieldConfig": {
@@ -683,7 +683,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "uwsgi_worker_transmitted_bytes_total{pod=\"$Pod\", namespace=\"$namespace\"}",
           "interval": "",
@@ -757,7 +757,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "description": "",
       "fieldConfig": {
@@ -803,7 +803,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "increase(uwsgi_worker_respawn_count_total{pod=\"$Pod\", namespace=\"$namespace\"}[5m])",
           "interval": "",
@@ -853,7 +853,7 @@
       "dashes": false,
       "datasource": {
         "type": "prometheus",
-        "uid": "${DS_PROMETHEUS}"
+        "uid": "${datasource}"
       },
       "fieldConfig": {
         "defaults": {
@@ -898,7 +898,7 @@
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS}"
+            "uid": "${datasource}"
           },
           "expr": "increase(uwsgi_worker_exceptions_total{pod=\"$Pod\", namespace=\"$namespace\"}[5m])",
           "interval": "",
