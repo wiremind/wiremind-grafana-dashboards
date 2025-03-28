@@ -728,7 +728,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_THANOS}"
+          "uid": "${datasource}"
         },
         "definition": "label_values(kube_namespace_status_phase{job=\"kube-state-metrics\", cluster=\"$cluster\"},namespace)",
         "hide": 0,
@@ -776,7 +776,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_THANOS}"
+          "uid": "${datasource}"
         },
         "definition": "label_values({__name__=~ \"kube_pod_container_info|kube_pod_init_container_info\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"},container)",
         "hide": 0,
