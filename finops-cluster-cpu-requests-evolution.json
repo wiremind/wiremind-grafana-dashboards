@@ -152,7 +152,7 @@
       },
       "gridPos": {
         "h": 22,
-        "w": 3,
+        "w": 4,
         "x": 0,
         "y": 0
       },
@@ -312,8 +312,8 @@
       },
       "gridPos": {
         "h": 22,
-        "w": 5,
-        "x": 3,
+        "w": 6,
+        "x": 4,
         "y": 0
       },
       "id": 111,
@@ -563,8 +563,8 @@
       },
       "gridPos": {
         "h": 22,
-        "w": 10,
-        "x": 8,
+        "w": 14,
+        "x": 10,
         "y": 0
       },
       "id": 112,
@@ -785,6 +785,6 @@
   "timezone": "",
   "title": "FinOps - Cluster CPU Requests Evolution",
   "uid": "feh6yl03smfi8b",
-  "version": 10,
+  "version": 11,
   "weekStart": ""
 }
