@@ -5,10 +5,12 @@ STAGED_FILES=$(git diff --cached --name-only)
 
 # Check if the target file is staged
 for TARGET_FILE in $STAGED_FILES; do
-  # Replace occurrences of ${datasource} with ${datasource}
-  sed -i 's/\${datasource}/\${datasource}/g' "$TARGET_FILE"
-  sed -i 's/\${datasource}/\${datasource}/g' "$TARGET_FILE"
+  # Only process YAML files
+  if [[ "$TARGET_FILE" == *.yaml || "$TARGET_FILE" == *.json ]]; then
+    # Replace occurrences of ${datasource} with ${datasource}
+    sed -i 's/\${DS_PROMETHEUS}/\${datasource}/g' "$TARGET_FILE"
+    sed -i 's/\${DS_THANOS}/\${datasource}/g' "$TARGET_FILE"
 
-  git add "$TARGET_FILE"
-
+    git add "$TARGET_FILE"
+  fi
 done
