@@ -375,6 +375,19 @@
       "type": "timeseries"
     },
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "id": 13,
+      "panels": [],
+      "title": "Memory",
+      "type": "row"
+    },
+    {
       "datasource": {
         "type": "prometheus",
         "uid": "${datasource}"
@@ -442,7 +455,7 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 15
       },
       "id": 3,
       "interval": "30s",
@@ -519,7 +532,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 23
       },
       "id": 8,
       "panels": [
@@ -546,8 +559,7 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green",
-                    "value": null
+                    "color": "green"
                   },
                   {
                     "color": "red",
@@ -590,8 +602,7 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "rgba(245, 54, 54, 0.9)",
-                          "value": null
+                          "color": "rgba(245, 54, 54, 0.9)"
                         },
                         {
                           "color": "rgba(50, 172, 45, 0.97)",
@@ -685,8 +696,7 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "rgba(245, 54, 54, 0.9)",
-                          "value": null
+                          "color": "rgba(245, 54, 54, 0.9)"
                         },
                         {
                           "color": "rgba(50, 172, 45, 0.97)",
@@ -719,7 +729,7 @@
             "h": 16,
             "w": 24,
             "x": 0,
-            "y": 23
+            "y": 75
           },
           "id": 6,
           "interval": "30",
@@ -854,15 +864,15 @@
       {
         "allValue": " ",
         "current": {
-          "text": "label_node_role_kubernetes_io_production!=\"true\"",
-          "value": "label_node_role_kubernetes_io_production!=\"true\""
+          "text": "$__all",
+          "value": "$__all"
         },
         "includeAll": true,
         "label": "Node Selector",
         "name": "node_selector",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "label_node_role_kubernetes_io_production!=\"true\"",
             "value": "label_node_role_kubernetes_io_production!=\"true\""
           },
@@ -876,7 +886,6 @@
         "type": "custom"
       },
       {
-        "allValue": "",
         "current": {
           "text": "All",
           "value": "$__all"
@@ -899,8 +908,8 @@
       {
         "allValue": " ",
         "current": {
-          "text": "priority_class=~\".*-prod.*\"",
-          "value": "priority_class=~\".*-prod.*\""
+          "text": "$__all",
+          "value": "$__all"
         },
         "includeAll": true,
         "label": "Priority Class Selector",
@@ -912,7 +921,7 @@
             "value": "priority_class!~\".*-prod.*\""
           },
           {
-            "selected": true,
+            "selected": false,
             "text": "priority_class=~\".*-prod.*\"",
             "value": "priority_class=~\".*-prod.*\""
           },
@@ -945,8 +954,8 @@
     ]
   },
   "timezone": "browser",
-  "title": "Kubernetes Resource Requests",
+  "title": "FinOps: Kubernetes Resource Requests",
   "uid": "XZ-kM6KMk",
-  "version": 131,
+  "version": 133,
   "weekStart": ""
 }
