@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_PROMETHEUS",
-      "label": "Prometheus",
+      "name": "DS_THANOS",
+      "label": "Thanos",
       "description": "",
       "type": "datasource",
       "pluginId": "prometheus",
@@ -209,7 +209,7 @@
         ]
       },
       "gridPos": {
-        "h": 25,
+        "h": 20,
         "w": 24,
         "x": 0,
         "y": 0
@@ -224,7 +224,7 @@
           "reducer": [
             "sum"
           ],
-          "show": false
+          "show": true
         },
         "showHeader": true,
         "sortBy": [
@@ -607,6 +607,613 @@
         }
       ],
       "type": "table"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 20
+      },
+      "id": 75,
+      "panels": [],
+      "title": "Cost Evolution",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "green",
+                "value": -1000
+              },
+              {
+                "color": "#6ED0E0",
+                "value": -100
+              },
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "#EAB839",
+                "value": 10
+              },
+              {
+                "color": "orange",
+                "value": 100
+              },
+              {
+                "color": "red",
+                "value": 1000
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "namespace"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Namespace"
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": false,
+                    "title": "View namespace cost analysis",
+                    "url": "d/at-cost-analysis-namespace/cost-analysis-by-namespace?&var-namespace=$__cell"
+                  }
+                ]
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 180
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #cpu_requested"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #memory_requested"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #storage_requested"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              },
+              {
+                "id": "decimals"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Cost"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyUSD"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #storage_requested_baremetal"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "percent"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #storage_requested_baremetal"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #memory_requested_bare_metal"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cost increase"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "color-text"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 25,
+        "w": 24,
+        "x": 0,
+        "y": 21
+      },
+      "id": 74,
+      "maxDataPoints": 800,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Cost increase"
+          }
+        ]
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "# CPU Requested (we consider price for cpu equal between bare metal and public cloud)\nkube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n    avg_over_time(\n        namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval]\n    )\n    or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)\n\n- on (cluster, namespace, label_product, label_project, label_client, label_environment_kind)\n\nkube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n    avg_over_time(\n        namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval] offset 30d\n    )\n    or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "__auto",
+          "refId": "cpu_requested"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "# RAM Requested, public cloud\nkube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n    avg_over_time(namespace_memory:kube_pod_container_resource_requests_not_bare_metal:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\n    or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)\n\n- on (cluster, namespace, label_product, label_project, label_client, label_environment_kind)\n\nkube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n    avg_over_time(namespace_memory:kube_pod_container_resource_requests_not_bare_metal:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval] offset 30d) / (1024 * 1024 * 1024)\n    or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "__auto",
+          "refId": "memory_requested"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "# RAM Requested, bare metal\nkube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n   avg_over_time(namespace_memory:kube_pod_container_resource_requests_bare_metal:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\n   or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)\n\n- on (cluster, namespace, label_product, label_project, label_client, label_environment_kind)\n\nkube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n   avg_over_time(namespace_memory:kube_pod_container_resource_requests_bare_metal:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval] offset 30d) / (1024 * 1024 * 1024)\n   or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "memory_requested_bare_metal"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": true,
+          "expr": "# Storage Requested\nkube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n  avg_over_time(\n    sum without (storageclass) (\n      namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", namespace=~\"$namespace\", storageclass!~\"csi-topolvm-standard-.*\"}\n    )[$__range:$__interval]\n  ) / 1024^3\n  or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0) # Allow to list even namespaces without PVC\n)\n\n- on (cluster, namespace, label_product, label_project, label_client, label_environment_kind)\n\nkube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n  avg_over_time(\n    sum without (storageclass) (\n      namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", namespace=~\"$namespace\", storageclass!~\"csi-topolvm-standard-.*\"}\n    )[$__range:$__interval]  offset 30d\n  ) / 1024^3\n  or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0) # Allow to list even namespaces without PVC\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "__auto",
+          "refId": "storage_requested"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "# Storage Requested, bare metal\nkube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n  avg_over_time(\n    sum without (storageclass) (\n      namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", namespace=~\"$namespace\", storageclass=~\"csi-topolvm-standard-.*\"}\n    )[$__range:$__interval]\n  ) / 1024^3\n  or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0) # Allow to list even namespaces without PVC\n)\n\n- on (cluster, namespace, label_product, label_project, label_client, label_environment_kind)\n\nkube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n  avg_over_time(\n    sum without (storageclass) (\n      namespace_persistentvolumeclaim:kube_persistentvolumeclaim_storageclass_resource_requests_storage_bytes:sum{cluster=\"$cluster\", namespace=~\"$namespace\", storageclass=~\"csi-topolvm-standard-.*\"}\n    )[$__range:$__interval] offset 30d\n  ) / 1024^3\n  or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0) # Allow to list even namespaces without PVC\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "storage_requested_baremetal"
+        }
+      ],
+      "title": "Namespace Cost Evolution compared to previous month",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {
+            "reducers": []
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "CPU Cost",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #cpu_requested"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "7"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Memory Cost Public Cloud",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #memory_requested"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "2.5"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Memory Cost Bare Metal",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #memory_requested_bare_metal"
+                }
+              },
+              "right": {
+                "fixed": "0.4"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Memory Cost",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #memory_requested"
+                }
+              },
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #memory_requested_bare_metal"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Storage Cost, Public Cloud",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #storage_requested"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "0.12"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Storage Cost, bare metal",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #storage_requested_baremetal"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "0.025"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "include": [],
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Storage Cost",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Storage Cost, Public Cloud"
+                }
+              },
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Storage Cost, bare metal"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CPU Cost"
+                }
+              },
+              "operator": "+",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Memory Cost"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Total Cost",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CPU Cost + Memory Cost"
+                }
+              },
+              "operator": "+",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Storage Cost"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "CPU Cost + Memory Cost": true,
+              "Memory Cost Bare Metal": true,
+              "Memory Cost Public Cloud": true,
+              "Storage Cost, Public Cloud": true,
+              "Storage Cost, bare metal": true,
+              "Time": true,
+              "Value #storage_requested_baremetal": false,
+              "cluster": false,
+              "prometheus": true,
+              "prometheus_replica": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "CPU Cost": 13,
+              "CPU Cost + Memory Cost": 17,
+              "Memory Cost": 16,
+              "Memory Cost Bare Metal": 14,
+              "Memory Cost Public Cloud": 15,
+              "Storage Cost": 20,
+              "Storage Cost, Public Cloud": 18,
+              "Storage Cost, bare metal": 19,
+              "Time": 0,
+              "Total Cost": 7,
+              "Value #cpu_requested": 8,
+              "Value #memory_requested": 9,
+              "Value #memory_requested_bare_metal": 10,
+              "Value #storage_requested": 11,
+              "Value #storage_requested_baremetal": 12,
+              "cluster": 6,
+              "label_client": 4,
+              "label_environment_kind": 5,
+              "label_product": 2,
+              "label_project": 3,
+              "namespace": 1,
+              "prometheus": 21
+            },
+            "renameByName": {
+              "CPU Cost + Memory Cost": "",
+              "Total Cost": "Cost increase",
+              "Value #cpu_requested": "Requested CPU",
+              "Value #memory_requested": "Requested RAM",
+              "Value #memory_requested_bare_metal": "Request RAM, bare metal",
+              "Value #storage_requested": "Requested Storage",
+              "Value #storage_requested_baremetal": "Requested storage, bare metal",
+              "cluster": "Cluster",
+              "label_client": "Client",
+              "label_environment_kind": "Environment Kind",
+              "label_product": "Product",
+              "label_project": "Project",
+              "namespace": "Namespace"
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "lower",
+                  "options": {
+                    "value": 5
+                  }
+                },
+                "fieldName": "Total Cost"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        }
+      ],
+      "type": "table"
     }
   ],
   "refresh": "",
@@ -733,6 +1340,6 @@
   "timezone": "browser",
   "title": "FinOps: Cost Analysis by Cluster",
   "uid": "cost-analysis-by-cluster",
-  "version": 22,
+  "version": 27,
   "weekStart": ""
 }
