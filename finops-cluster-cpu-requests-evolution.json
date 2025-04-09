@@ -28,6 +28,12 @@
       "id": "table",
       "name": "Table",
       "version": ""
+    },
+    {
+      "type": "panel",
+      "id": "text",
+      "name": "Text",
+      "version": ""
     }
   ],
   "annotations": {
@@ -58,6 +64,26 @@
   "id": null,
   "links": [],
   "panels": [
+    {
+      "gridPos": {
+        "h": 4,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 114,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "This dashboards takes:\n- average for the last 7 days\n- average for 7 days, $OFFSET ago (4 weeks by default)\n- shows the difference.",
+        "mode": "markdown"
+      },
+      "pluginVersion": "11.5.2",
+      "type": "text"
+    },
     {
       "datasource": {
         "type": "prometheus",
@@ -154,7 +180,7 @@
         "h": 22,
         "w": 4,
         "x": 0,
-        "y": 0
+        "y": 4
       },
       "id": 113,
       "options": {
@@ -314,7 +340,7 @@
         "h": 22,
         "w": 6,
         "x": 4,
-        "y": 0
+        "y": 4
       },
       "id": 111,
       "options": {
@@ -565,7 +591,7 @@
         "h": 22,
         "w": 14,
         "x": 10,
-        "y": 0
+        "y": 4
       },
       "id": 112,
       "options": {
@@ -781,10 +807,12 @@
     "from": "now-24h",
     "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "hidden": true
+  },
   "timezone": "",
   "title": "FinOps - Cluster CPU Requests Evolution",
   "uid": "feh6yl03smfi8b",
-  "version": 11,
+  "version": 13,
   "weekStart": ""
 }
