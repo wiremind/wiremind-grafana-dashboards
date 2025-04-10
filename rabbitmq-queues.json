@@ -1,0 +1,496 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "description": "Overview of all queues in a RabbitMQ Cluster",
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 2,
+  "id": 6491,
+  "links": [
+    {
+      "asDropdown": true,
+      "icon": "external link",
+      "includeVars": true,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Open Dashboard",
+      "tooltip": "",
+      "type": "dashboards",
+      "url": ""
+    }
+  ],
+  "panels": [
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 8,
+      "panels": [],
+      "repeat": "rabbitmq_vhost",
+      "title": "List of queues",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false,
+            "minWidth": 100
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "/(.*rate)|Get|[Dd]eliver/"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "mps"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Queue"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 156
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 12,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 7,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": [],
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "frameIndex": 0,
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": " sum by (cluster, namespace, rabbitmq_cluster, vhost, queue) (rabbitmq_queue_messages{vhost=~\"$rabbitmq_vhost\", queue=~\"$rabbitmq_queue\"} * on(instance, job) group_left(rabbitmq_cluster, rabbitmq_node) rabbitmq_identity_info{rabbitmq_cluster=~\"$rabbitmq_cluster\", cluster=~\"$cluster\", namespace=~\"$namespace\"})",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "",
+          "range": true,
+          "refId": "messages"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "disableTextWrap": false,
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (cluster, namespace, rabbitmq_cluster, vhost, queue) (rabbitmq_queue_consumers{vhost=~\"$rabbitmq_vhost\", queue=~\"$rabbitmq_queue\"} * on(instance, job) group_left(rabbitmq_cluster, rabbitmq_node) rabbitmq_identity_info{rabbitmq_cluster=~\"$rabbitmq_cluster\", cluster=~\"$cluster\", namespace=~\"$namespace\"})",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "",
+          "range": true,
+          "refId": "consumers",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (rabbitmq_cluster, vhost, queue) ((irate(rabbitmq_channel_messages_acked_total{vhost=~\"$rabbitmq_vhost\", queue=~\"$rabbitmq_queue\"}[30s]) or rabbitmq_queue_consumers{vhost=~\"$rabbitmq_vhost\", queue=~\"$rabbitmq_queue\"} * 0) * on(instance, job) group_left(rabbitmq_cluster, rabbitmq_node) rabbitmq_identity_info{rabbitmq_cluster=~\"$rabbitmq_cluster\", cluster=~\"$cluster\", namespace=~\"$namespace\"})",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "ack"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (cluster, namespace, rabbitmq_cluster, vhost, queue) ((label_replace(irate(rabbitmq_queue_messages_published_total{queue_vhost=~\"$rabbitmq_vhost\", queue=~\"$rabbitmq_queue\"}[30s]), \"vhost\", \"$1\", \"queue_vhost\", \"(.*)\") or rabbitmq_queue_consumers{vhost=~\"$rabbitmq_vhost\", queue=~\"$rabbitmq_queue\"} * 0) * on(instance, job) group_left(rabbitmq_cluster, rabbitmq_node) rabbitmq_identity_info{rabbitmq_cluster=~\"$rabbitmq_cluster\", cluster=~\"$cluster\", namespace=~\"$namespace\"})",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "publish"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (cluster, namespace, rabbitmq_cluster, vhost, queue) ((irate(rabbitmq_channel_messages_delivered_total{vhost=~\"$rabbitmq_vhost\", queue=~\"$rabbitmq_queue\"}[30s]) or rabbitmq_queue_consumers{vhost=~\"$rabbitmq_vhost\", queue=~\"$rabbitmq_queue\"} * 0) * on(instance, job) group_left(rabbitmq_cluster, rabbitmq_node) rabbitmq_identity_info{rabbitmq_cluster=~\"$rabbitmq_cluster\", cluster=~\"$cluster\", namespace=~\"$namespace\"})",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "deliver_auto_ack"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (cluster, namespace, rabbitmq_cluster, vhost, queue) ((irate(rabbitmq_channel_get_total{vhost=~\"$rabbitmq_vhost\", queue=~\"$rabbitmq_queue\"}[30s]) or rabbitmq_queue_consumers{vhost=~\"$rabbitmq_vhost\", queue=~\"$rabbitmq_queue\"} * 0) * on(instance, job) group_left(rabbitmq_cluster, rabbitmq_node) rabbitmq_identity_info{rabbitmq_cluster=~\"$rabbitmq_cluster\", cluster=~\"$cluster\", namespace=~\"$namespace\"})",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "get_auto_ack"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (cluster, namespace, rabbitmq_cluster, vhost, queue) ((irate(rabbitmq_channel_get_ack_total{vhost=~\"$rabbitmq_vhost\", queue=~\"$rabbitmq_queue\"}[30s]) or rabbitmq_queue_consumers{vhost=~\"$rabbitmq_vhost\", queue=~\"$rabbitmq_queue\"} * 0) * on(instance, job) group_left(rabbitmq_cluster, rabbitmq_node) rabbitmq_identity_info{rabbitmq_cluster=~\"$rabbitmq_cluster\", cluster=~\"$cluster\", namespace=~\"$namespace\"})",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "get_ack"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (cluster, namespace, rabbitmq_cluster, vhost, queue) ((irate(rabbitmq_channel_messages_redelivered_total{vhost=~\"$rabbitmq_vhost\", queue=~\"$rabbitmq_queue\"}[30s]) or rabbitmq_queue_consumers{vhost=~\"$rabbitmq_vhost\", queue=~\"$rabbitmq_queue\"} * 0) * on(instance, job) group_left(rabbitmq_cluster, rabbitmq_node) rabbitmq_identity_info{rabbitmq_cluster=~\"$rabbitmq_cluster\", cluster=~\"$cluster\", namespace=~\"$namespace\"})",
+          "format": "time_series",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "__auto",
+          "range": true,
+          "refId": "redelivered"
+        }
+      ],
+      "title": "Queues",
+      "transformations": [
+        {
+          "id": "timeSeriesTable",
+          "options": {}
+        },
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "filterFieldsByName",
+          "options": {
+            "include": {
+              "names": [
+                "cluster",
+                "queue",
+                "rabbitmq_cluster",
+                "vhost",
+                "Trend #messages",
+                "Trend #consumers",
+                "Trend #ack",
+                "Trend #publish",
+                "Trend #deliver_auto_ack",
+                "Trend #get_auto_ack",
+                "Trend #get_ack",
+                "Trend #redelivered",
+                "namespace"
+              ]
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "Trend #ack": 7,
+              "Trend #consumers": 6,
+              "Trend #deliver_auto_ack": 9,
+              "Trend #get_ack": 11,
+              "Trend #get_auto_ack": 10,
+              "Trend #messages": 5,
+              "Trend #publish": 8,
+              "Trend #redelivered": 12,
+              "cluster": 0,
+              "namespace": 1,
+              "queue": 4,
+              "rabbitmq_cluster": 2,
+              "vhost": 3
+            },
+            "renameByName": {
+              "Trend #ack": "Ack rate",
+              "Trend #consumers": "Consumers",
+              "Trend #deliver_auto_ack": "Deliver (auto-ack)",
+              "Trend #get_ack": "Get (ack)",
+              "Trend #get_auto_ack": "Get (auto-ack)",
+              "Trend #messages": "Messages",
+              "Trend #publish": "Publish rate",
+              "Trend #redelivered": "Redelivered",
+              "cluster": "Cluster",
+              "namespace": "Namespace",
+              "queue": "Queue",
+              "rabbitmq_cluster": "RabbitMQ Cluster",
+              "vhost": "Vhost"
+            }
+          }
+        }
+      ],
+      "type": "table"
+    }
+  ],
+  "preload": false,
+  "refresh": "10s",
+  "schemaVersion": 40,
+  "tags": [
+    "rabbitmq-prometheus"
+  ],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "Thanos",
+          "value": "P5DCFC7561CCDE821"
+        },
+        "label": "Data Source",
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "ovh-main-gra11-prod",
+          "value": "ovh-main-gra11-prod"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"},cluster)",
+        "description": "",
+        "includeAll": true,
+        "label": "Cluster",
+        "name": "cluster",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"},cluster)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "sample-review",
+          "value": "sample-review"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(rabbitmq_identity_info{cluster=~\"$cluster\"},namespace)",
+        "includeAll": true,
+        "label": "Namespace",
+        "name": "namespace",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(rabbitmq_identity_info{cluster=~\"$cluster\"},namespace)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "review-chore-bump-rszrmq-rabbitmq",
+          "value": "review-chore-bump-rszrmq-rabbitmq"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(rabbitmq_identity_info{cluster=~\"$cluster\", namespace=~\"$namespace\"},rabbitmq_cluster)",
+        "description": "",
+        "includeAll": true,
+        "label": "RabbitMQ Cluster",
+        "name": "rabbitmq_cluster",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(rabbitmq_identity_info{cluster=~\"$cluster\", namespace=~\"$namespace\"},rabbitmq_cluster)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "query_result(rabbitmq_queue_messages  * on(instance, job) group_left(rabbitmq_cluster, rabbitmq_node) rabbitmq_identity_info{cluster=~\"$cluster\", namespace=~\"$namespace\", rabbitmq_cluster=~\"$rabbitmq_cluster\"})",
+        "includeAll": true,
+        "label": "Vhost",
+        "name": "rabbitmq_vhost",
+        "options": [],
+        "query": {
+          "qryType": 3,
+          "query": "query_result(rabbitmq_queue_messages  * on(instance, job) group_left(rabbitmq_cluster, rabbitmq_node) rabbitmq_identity_info{cluster=~\"$cluster\", namespace=~\"$namespace\", rabbitmq_cluster=~\"$rabbitmq_cluster\"})",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "/vhost=\"(?<value>[^\"]+)/g",
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(rabbitmq_queue_messages{cluster=~\"$cluster\", namespace=~\"$namespace\", vhost=~\"$rabbitmq_vhost\"},queue)",
+        "description": "",
+        "includeAll": true,
+        "label": "RabbitMQ Queue",
+        "name": "rabbitmq_queue",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(rabbitmq_queue_messages{cluster=~\"$cluster\", namespace=~\"$namespace\", vhost=~\"$rabbitmq_vhost\"},queue)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "",
+  "title": "RabbitMQ queues",
+  "uid": "rabbitmq-queues-overview",
+  "version": 12,
+  "weekStart": ""
+}
