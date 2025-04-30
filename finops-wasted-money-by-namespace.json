@@ -1,0 +1,1203 @@
+{
+  "__inputs": [
+    {
+      "name": "DS_THANOS",
+      "label": "Thanos",
+      "description": "",
+      "type": "datasource",
+      "pluginId": "prometheus",
+      "pluginName": "Prometheus"
+    }
+  ],
+  "__elements": {},
+  "__requires": [
+    {
+      "type": "grafana",
+      "id": "grafana",
+      "name": "Grafana",
+      "version": "11.5.2"
+    },
+    {
+      "type": "datasource",
+      "id": "prometheus",
+      "name": "Prometheus",
+      "version": "1.0.0"
+    },
+    {
+      "type": "panel",
+      "id": "table",
+      "name": "Table",
+      "version": ""
+    }
+  ],
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "decimals": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "none"
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "namespace"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "View namespace cost analysis",
+                    "url": "/d/12141241231232/used-7c-wasted-resources-7c-reworked?orgId=1&from=now-2d&to=now&timezone=browser&${datasource:queryparam}&${cluster:queryparam}&var-namespace=${__value.text}&var-type=$__all&var-workload=$__all&refresh=15m\n\n"
+                  }
+                ]
+              },
+              {
+                "id": "custom.minWidth",
+                "value": 180
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Value #cpu_requested"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Wasted Money on CPU "
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyEUR"
+              },
+              {
+                "id": "custom.width",
+                "value": 186
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "CPU Usage"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 127
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Wasted CPU"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 108
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Request"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Memory Usage"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Wasted Memory"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "decgbytes"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Requested CPU"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 144
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Wasted Money On memory"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyEUR"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Total Wasted Money"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "currencyEUR"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Wasted Money on CPU "
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "fixedColor": "red",
+                  "mode": "fixed"
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 13,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 3,
+      "maxDataPoints": 800,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": true
+        },
+        "showHeader": true,
+        "sortBy": [
+          {
+            "desc": true,
+            "displayName": "Total Wasted Money"
+          }
+        ]
+      },
+      "pluginVersion": "11.5.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "# CPU Requested (we consider price for cpu equal between bare metal and public cloud)\nkube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n    avg_over_time(\n        namespace_cpu:kube_pod_container_resource_requests:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval]\n    )\n    or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "interval": "",
+          "intervalFactor": 1,
+          "legendFormat": "__auto",
+          "refId": "cpu_requested"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"}\n* on (namespace) group_right(label_environment_kind, label_project)\nsum by (namespace) (\n  rate(container_cpu_usage_seconds_total{image!=\"\", container_name!=\"POD\", cluster=\"$cluster\"}[5m])\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "cpu_usage"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "# RAM Requested, bare metal\nkube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n   avg_over_time(namespace_memory:kube_pod_container_resource_requests_bare_metal:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\n   or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)\n+\n# RAM Requested, public cloud\nkube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"} * on (namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n    avg_over_time(namespace_memory:kube_pod_container_resource_requests_not_bare_metal:sum{cluster=\"$cluster\", namespace=~\"$namespace\"}[$__range:$__interval]) / (1024 * 1024 * 1024)\n    or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=\"$cluster\", namespace=~\"$namespace\"} * 0)\n)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "memory_request"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"}\n* on (namespace) group_right(label_environment_kind, label_project)\nsum by (namespace) (\n  container_memory_working_set_bytes{container!=\"POD\", container!=\"\"}\n) / (1024 * 1024 * 1024)",
+          "format": "table",
+          "hide": false,
+          "instant": true,
+          "legendFormat": "__auto",
+          "range": false,
+          "refId": "memory_usage"
+        }
+      ],
+      "title": "Namespaced analysis of wasted money on cpu and memory ",
+      "transformations": [
+        {
+          "id": "merge",
+          "options": {}
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "CPU Cost + Memory Cost": true,
+              "Memory Cost Bare Metal": true,
+              "Memory Cost Public Cloud": true,
+              "Storage Cost, Public Cloud": true,
+              "Storage Cost, bare metal": true,
+              "Time": true,
+              "Value #storage_requested_baremetal": false,
+              "cluster": true,
+              "label_client": true,
+              "label_environment_kind": true,
+              "label_project": true,
+              "prometheus": true,
+              "prometheus_replica": true
+            },
+            "includeByName": {},
+            "indexByName": {
+              "CPU Cost": 8,
+              "Time": 0,
+              "Value": 7,
+              "cluster": 5,
+              "label_client": 3,
+              "label_environment_kind": 4,
+              "label_project": 2,
+              "namespace": 1,
+              "prometheus": 6
+            },
+            "renameByName": {
+              "CPU Cost + Memory Cost": "",
+              "Value": "Requested Cpu",
+              "Value #cpu_requested": "Requested CPU",
+              "Value #cpu_usage": "CPU Usage",
+              "Value #memory_request": "Memory Request",
+              "Value #memory_requested": "",
+              "Value #memory_requested_bare_metal": "",
+              "Value #memory_usage": "Memory Usage",
+              "Value #storage_requested": "Requested Storage",
+              "Value #storage_requested_baremetal": "Requested storage, bare metal",
+              "cluster": "Cluster",
+              "label_client": "Client",
+              "label_environment_kind": "Environment Kind",
+              "label_product": "Product",
+              "label_project": "Project",
+              "namespace": "Namespace",
+              "prometheus": ""
+            }
+          }
+        },
+        {
+          "id": "filterByValue",
+          "options": {
+            "filters": [
+              {
+                "config": {
+                  "id": "lower",
+                  "options": {
+                    "value": 5
+                  }
+                },
+                "fieldName": "Total Cost"
+              }
+            ],
+            "match": "any",
+            "type": "exclude"
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Wasted CPU",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Requested CPU"
+                }
+              },
+              "operator": "-",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CPU Usage"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Wasted Money on CPU ",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Wasted CPU"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "7"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            },
+            "replaceFields": false
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Wasted Memory",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Memory Request"
+                }
+              },
+              "operator": "-",
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Memory Usage"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Wasted Money On memory",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Wasted Memory"
+                }
+              },
+              "operator": "*",
+              "right": {
+                "fixed": "1"
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        },
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {},
+            "includeByName": {},
+            "indexByName": {
+              "CPU Usage": 2,
+              "Memory Request": 5,
+              "Memory Usage": 6,
+              "Namespace": 0,
+              "Requested CPU": 1,
+              "Wasted CPU": 3,
+              "Wasted Memory": 7,
+              "Wasted Money On memory": 8,
+              "Wasted Money on CPU ": 4
+            },
+            "renameByName": {}
+          }
+        },
+        {
+          "id": "calculateField",
+          "options": {
+            "alias": "Total Wasted Money",
+            "binary": {
+              "left": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Wasted Money on CPU "
+                }
+              },
+              "right": {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Wasted Money On memory"
+                }
+              }
+            },
+            "mode": "binary",
+            "reduce": {
+              "reducer": "sum"
+            }
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "table"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 13
+      },
+      "id": 4,
+      "panels": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "fixed"
+              },
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": true,
+                "inspect": false
+              },
+              "decimals": 0,
+              "links": [],
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": null
+                  }
+                ]
+              },
+              "unit": "none"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Container"
+                },
+                "properties": [
+                  {
+                    "id": "links",
+                    "value": [
+                      {
+                        "targetBlank": true,
+                        "title": "Show aggregated view over time",
+                        "url": "/d/pods-aggregated-view/pods-aggregated-view?from=now-24hvar-cluster=${cluster}&var-namespace=${namespace}&var-container_name=${__value.string}\n"
+                      }
+                    ]
+                  },
+                  {
+                    "id": "custom.minWidth",
+                    "value": 180
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #cpu_requested"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "short"
+                  },
+                  {
+                    "id": "decimals",
+                    "value": 1
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Wasted Money on CPU "
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "currencyEUR"
+                  },
+                  {
+                    "id": "custom.width",
+                    "value": 186
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CPU Usage"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 127
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Wasted CPU"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 108
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Memory Request"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "decbytes"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Memory Usage"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "decbytes"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Wasted Memory"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "decbytes"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Requested CPU"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 144
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Wasted Money On memory"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "currencyEUR"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Total Wasted Money"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": "currencyEUR"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Wasted Money on CPU "
+                },
+                "properties": [
+                  {
+                    "id": "color",
+                    "value": {
+                      "fixedColor": "red",
+                      "mode": "fixed"
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 13,
+            "w": 24,
+            "x": 0,
+            "y": 14
+          },
+          "id": 5,
+          "maxDataPoints": 800,
+          "options": {
+            "cellHeight": "sm",
+            "footer": {
+              "countRows": false,
+              "fields": "",
+              "reducer": [
+                "sum"
+              ],
+              "show": true
+            },
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Total Wasted Money"
+              }
+            ]
+          },
+          "pluginVersion": "11.5.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum by (container) (\n  kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"}\n  * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product)\n  sum by (cluster, namespace, container) (\n    cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=~\"$namespace\", container!=\"POD\", container!=\"\"}\n  )\n) > 0",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "interval": "",
+              "intervalFactor": 1,
+              "legendFormat": "__auto",
+              "refId": "cpu_requested"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum by (container) (\n  kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"}\n  * on (namespace) group_right(label_environment_kind, label_project, label_product)\n  sum by (namespace, container) (\n    rate(container_cpu_usage_seconds_total{namespace=~\"$namespace\", image!=\"\", container_name!=\"POD\", cluster=\"$cluster\"}[1d])\n  )\n) > 0",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "cpu_usage"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum by (container) (\n  kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"}\n  * on (namespace) group_right(label_environment_kind, label_project, label_product)\n  sum by (namespace, container) (\n    cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=\"$cluster\", namespace=~\"$namespace\", container!=\"POD\", container!=\"\"}\n  )\n) > 0\n",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "memory_request"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum by (container) (\n  kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"}\n  * on (namespace) group_right(label_environment_kind, label_project, label_product)\n  sum by (namespace, container) (\n    container_memory_working_set_bytes{cluster=\"$cluster\", namespace=~\"$namespace\", container!=\"POD\", container!=\"\"}\n  )\n) > 0",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "memory_usage"
+            }
+          ],
+          "title": "Analysis by container name, rough average for cpu, current usage for memory",
+          "transformations": [
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {
+                  "CPU Cost + Memory Cost": true,
+                  "Memory Cost Bare Metal": true,
+                  "Memory Cost Public Cloud": true,
+                  "Storage Cost, Public Cloud": true,
+                  "Storage Cost, bare metal": true,
+                  "Time": true,
+                  "Value #storage_requested_baremetal": false,
+                  "cluster": true,
+                  "label_client": true,
+                  "label_environment_kind": true,
+                  "label_project": true,
+                  "prometheus": true,
+                  "prometheus_replica": true
+                },
+                "includeByName": {},
+                "indexByName": {
+                  "Time": 0,
+                  "Value #cpu_requested": 2,
+                  "Value #cpu_usage": 3,
+                  "Value #memory_request": 4,
+                  "Value #memory_usage": 5,
+                  "container": 1
+                },
+                "renameByName": {
+                  "CPU Cost + Memory Cost": "",
+                  "Value": "Requested Cpu",
+                  "Value #cpu_requested": "Requested CPU",
+                  "Value #cpu_usage": "CPU Usage",
+                  "Value #memory_request": "Memory Request",
+                  "Value #memory_requested": "",
+                  "Value #memory_requested_bare_metal": "",
+                  "Value #memory_usage": "Memory Usage",
+                  "Value #storage_requested": "Requested Storage",
+                  "Value #storage_requested_baremetal": "Requested storage, bare metal",
+                  "cluster": "Cluster",
+                  "container": "Container",
+                  "label_client": "Client",
+                  "label_environment_kind": "Environment Kind",
+                  "label_product": "Product",
+                  "label_project": "Project",
+                  "namespace": "Namespace",
+                  "prometheus": ""
+                }
+              }
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "config": {
+                      "id": "lower",
+                      "options": {
+                        "value": 5
+                      }
+                    },
+                    "fieldName": "Total Cost"
+                  }
+                ],
+                "match": "any",
+                "type": "exclude"
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "Wasted CPU",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Requested CPU"
+                    }
+                  },
+                  "operator": "-",
+                  "right": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "CPU Usage"
+                    }
+                  }
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "Wasted Money on CPU ",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Wasted CPU"
+                    }
+                  },
+                  "operator": "*",
+                  "right": {
+                    "fixed": "7"
+                  }
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                },
+                "replaceFields": false
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "Wasted Memory",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Memory Request"
+                    }
+                  },
+                  "operator": "-",
+                  "right": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Memory Usage"
+                    }
+                  }
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "Wasted Money On memory",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Wasted Memory"
+                    }
+                  },
+                  "operator": "*",
+                  "right": {
+                    "fixed": "0.000000002"
+                  }
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "organize",
+              "options": {
+                "excludeByName": {},
+                "includeByName": {},
+                "indexByName": {
+                  "CPU Usage": 2,
+                  "Container": 0,
+                  "Memory Request": 5,
+                  "Memory Usage": 6,
+                  "Requested CPU": 1,
+                  "Wasted CPU": 3,
+                  "Wasted Memory": 7,
+                  "Wasted Money On memory": 8,
+                  "Wasted Money on CPU ": 4
+                },
+                "renameByName": {}
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "Total Wasted Money",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Wasted Money on CPU "
+                    }
+                  },
+                  "right": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Wasted Money On memory"
+                    }
+                  }
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            }
+          ],
+          "transparent": true,
+          "type": "table"
+        }
+      ],
+      "title": "Analysis by container name (heavy computation, select at least a project before opening)",
+      "type": "row"
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 40,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "allowCustomValue": true,
+        "current": {},
+        "label": "Data source",
+        "name": "datasource",
+        "options": [],
+        "query": "prometheus",
+        "refresh": 1,
+        "regex": "",
+        "type": "datasource"
+      },
+      {
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(up{job=\"kube-state-metrics\"},cluster)",
+        "description": "",
+        "label": "cluster",
+        "name": "cluster",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(up{job=\"kube-state-metrics\"},cluster)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "allowCustomValue": false,
+        "current": {},
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(kube_namespace_labels,label_product)",
+        "includeAll": true,
+        "label": "Product",
+        "name": "product",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_labels,label_product)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {},
+        "definition": "label_values(kube_namespace_labels,label_project)",
+        "includeAll": true,
+        "label": "Project",
+        "name": "project",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_labels,label_project)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "current": {},
+        "definition": "label_values(kube_namespace_labels,label_environment_kind)",
+        "includeAll": true,
+        "label": "Environment Kind",
+        "name": "kind",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_labels,label_environment_kind)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": ".*",
+          "value": ".*"
+        },
+        "description": "",
+        "label": "Namespace",
+        "name": "namespace",
+        "options": [
+          {
+            "selected": true,
+            "text": ".*",
+            "value": ".*"
+          }
+        ],
+        "query": ".*",
+        "type": "textbox"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-15m",
+    "to": "now"
+  },
+  "timepicker": {
+    "hidden": true
+  },
+  "timezone": "browser",
+  "title": "FinOps - Wasted money by namespace - The Tops",
+  "uid": "beib5ip2ep91cd",
+  "version": 27,
+  "weekStart": ""
+}
