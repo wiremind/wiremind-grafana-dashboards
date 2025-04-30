@@ -78,7 +78,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "This dashboards takes:\n- average for the last 7 days\n- average for 7 days, $OFFSET=${offset} ago\n- shows the difference.",
+        "content": "This dashboards computes:\n- average for the last $range\n- average for $range from ${offset} ago\n- shows the difference.",
         "mode": "markdown"
       },
       "pluginVersion": "11.5.2",
@@ -210,7 +210,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "(\n  sum by (label_product) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[7d:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (label_product)\n\n  sum by (label_product) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[7d:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)\n",
+          "expr": "(\n  sum by (label_product) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (label_product)\n\n  sum by (label_product) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)\n",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -370,7 +370,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "(\n  sum by (label_product, label_project) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[7d:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (label_product, label_project)\n\n  sum by (label_product, label_project) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[7d:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)\n",
+          "expr": "(\n  sum by (label_product, label_project) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (label_product, label_project)\n\n  sum by (label_product, label_project) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)\n",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -621,7 +621,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "(\n  (\n    kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[7d:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (cluster, namespace, label_product, label_project, label_client, label_environment_kind)\n\n  (\n    kube_namespace_labels{label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[7d:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)",
+          "expr": "(\n  (\n    kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (cluster, namespace, label_product, label_project, label_client, label_environment_kind)\n\n  (\n    kube_namespace_labels{label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)",
           "format": "table",
           "hide": false,
           "instant": true,
@@ -790,6 +790,8 @@
           "text": "4w",
           "value": "4w"
         },
+        "description": "Compares current average from \"$offset time ago\" average",
+        "label": "Offset",
         "name": "offset",
         "options": [
           {
@@ -799,6 +801,24 @@
           }
         ],
         "query": "4w",
+        "type": "textbox"
+      },
+      {
+        "current": {
+          "text": "7d",
+          "value": "7d"
+        },
+        "description": "Window to which calculate the average. Decrease to have more precise value for specific time",
+        "label": "Range",
+        "name": "range",
+        "options": [
+          {
+            "selected": true,
+            "text": "7d",
+            "value": "7d"
+          }
+        ],
+        "query": "7d",
         "type": "textbox"
       }
     ]
@@ -813,6 +833,6 @@
   "timezone": "",
   "title": "FinOps - Cluster CPU Requests Evolution",
   "uid": "feh6yl03smfi8b",
-  "version": 15,
+  "version": 17,
   "weekStart": ""
 }
