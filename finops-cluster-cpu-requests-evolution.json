@@ -112,27 +112,27 @@
                 "value": null
               },
               {
-                "color": "dark-red",
+                "color": "blue",
                 "value": -50
               },
               {
-                "color": "dark-red",
+                "color": "dark-green",
                 "value": -30
               },
               {
-                "color": "red",
+                "color": "semi-dark-green",
                 "value": -15
               },
               {
-                "color": "#ff0000",
-                "value": -10
-              },
-              {
-                "color": "orange",
-                "value": -10
-              },
-              {
                 "color": "green",
+                "value": -10
+              },
+              {
+                "color": "light-green",
+                "value": -10
+              },
+              {
+                "color": "super-light-green",
                 "value": 0
               },
               {
@@ -272,27 +272,27 @@
                 "value": null
               },
               {
-                "color": "dark-red",
+                "color": "blue",
                 "value": -50
               },
               {
-                "color": "dark-red",
+                "color": "dark-green",
                 "value": -30
               },
               {
-                "color": "red",
+                "color": "semi-dark-green",
                 "value": -15
               },
               {
-                "color": "#ff0000",
-                "value": -10
-              },
-              {
-                "color": "orange",
-                "value": -10
-              },
-              {
                 "color": "green",
+                "value": -10
+              },
+              {
+                "color": "light-green",
+                "value": -10
+              },
+              {
+                "color": "super-light-green",
                 "value": 0
               },
               {
@@ -451,27 +451,27 @@
                 "value": null
               },
               {
-                "color": "dark-red",
+                "color": "blue",
                 "value": -50
               },
               {
-                "color": "dark-red",
+                "color": "dark-green",
                 "value": -30
               },
               {
-                "color": "red",
+                "color": "semi-dark-green",
                 "value": -15
               },
               {
-                "color": "#ff0000",
-                "value": -10
-              },
-              {
-                "color": "orange",
-                "value": -10
-              },
-              {
                 "color": "green",
+                "value": -10
+              },
+              {
+                "color": "light-green",
+                "value": -10
+              },
+              {
+                "color": "super-light-green",
                 "value": 0
               },
               {
@@ -833,6 +833,6 @@
   "timezone": "",
   "title": "FinOps - Cluster CPU Requests Evolution",
   "uid": "feh6yl03smfi8b",
-  "version": 17,
+  "version": 18,
   "weekStart": ""
 }
