@@ -1,8 +1,8 @@
 {
   "__inputs": [
     {
-      "name": "DS_PROMETHEUS",
-      "label": "Prometheus",
+      "name": "DS_THANOS",
+      "label": "Thanos",
       "description": "",
       "type": "datasource",
       "pluginId": "prometheus",
@@ -15,7 +15,7 @@
       "type": "grafana",
       "id": "grafana",
       "name": "Grafana",
-      "version": "12.0.2"
+      "version": "12.1.1"
     },
     {
       "type": "panel",
@@ -113,7 +113,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#37872D"
+                "color": "#37872D",
+                "value": 0
               },
               {
                 "color": "#1F60C4",
@@ -148,7 +149,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -194,7 +195,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#C4162A"
+                "color": "#C4162A",
+                "value": 0
               },
               {
                 "color": "#1F60C4",
@@ -235,7 +237,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -280,7 +282,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#C4162A"
+                "color": "#C4162A",
+                "value": 0
               },
               {
                 "color": "#1F60C4",
@@ -321,7 +324,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -365,7 +368,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#C4162A"
+                "color": "#C4162A",
+                "value": 0
               },
               {
                 "color": "#1F60C4",
@@ -406,7 +410,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -451,7 +455,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#C4162A"
+                "color": "#C4162A",
+                "value": 0
               },
               {
                 "color": "#1F60C4",
@@ -492,7 +497,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -536,7 +541,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#37872D"
+                "color": "#37872D",
+                "value": 0
               },
               {
                 "color": "#1F60C4",
@@ -577,7 +583,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -622,7 +628,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#C4162A"
+                "color": "#C4162A",
+                "value": 0
               },
               {
                 "color": "#1F60C4",
@@ -663,7 +670,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -708,7 +715,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#C4162A"
+                "color": "#C4162A",
+                "value": 0
               },
               {
                 "color": "#1F60C4",
@@ -749,7 +757,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -793,7 +801,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#C4162A"
+                "color": "#C4162A",
+                "value": 0
               },
               {
                 "color": "#1F60C4",
@@ -834,7 +843,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -878,7 +887,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "#1F60C4"
+                "color": "#1F60C4",
+                "value": 0
               },
               {
                 "color": "#37872D",
@@ -919,7 +929,7 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -999,7 +1009,7 @@
           "unit": "bytes"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -1065,7 +1075,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1097,7 +1108,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -1116,12 +1127,123 @@
       "type": "timeseries"
     },
     {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "barWidthFactor": 0.6,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "decbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 13
+      },
+      "id": 72,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "12.1.1",
+      "targets": [
+        {
+          "editorMode": "code",
+          "expr": "rabbitmq_process_resident_memory_bytes{namespace=\"$namespace\"}",
+          "legendFormat": "{{pod}}",
+          "range": true,
+          "refId": "A",
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          }
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "min(rabbitmq_resident_memory_limit_bytes{namespace=\"$namespace\"})",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "Memory Limit",
+          "range": true,
+          "refId": "B"
+        }
+      ],
+      "title": "RabbitMQ Memory Usage",
+      "type": "timeseries"
+    },
+    {
       "collapsed": false,
       "gridPos": {
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 13
+        "y": 21
       },
       "id": 4,
       "panels": [],
@@ -1150,7 +1272,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -1183,7 +1306,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "rgba(50, 172, 45, 0.97)"
+                      "color": "rgba(50, 172, 45, 0.97)",
+                      "value": 0
                     },
                     {
                       "color": "rgba(237, 129, 40, 0.89)"
@@ -1220,7 +1344,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "rgba(245, 54, 54, 0.9)"
+                      "color": "rgba(245, 54, 54, 0.9)",
+                      "value": 0
                     },
                     {
                       "color": "rgba(237, 129, 40, 0.89)"
@@ -1280,7 +1405,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "rgba(245, 54, 54, 0.9)"
+                      "color": "rgba(245, 54, 54, 0.9)",
+                      "value": 0
                     },
                     {
                       "color": "rgba(237, 129, 40, 0.89)"
@@ -1422,7 +1548,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 14
+        "y": 22
       },
       "id": 69,
       "options": {
@@ -1437,7 +1563,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -1515,7 +1641,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -1686,7 +1813,7 @@
         "h": 8,
         "w": 12,
         "x": 0,
-        "y": 18
+        "y": 26
       },
       "id": 7,
       "options": {
@@ -1706,7 +1833,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -1775,7 +1902,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -1946,7 +2074,7 @@
         "h": 8,
         "w": 8,
         "x": 12,
-        "y": 18
+        "y": 26
       },
       "id": 8,
       "options": {
@@ -1966,7 +2094,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -2034,7 +2162,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -2205,7 +2334,7 @@
         "h": 4,
         "w": 4,
         "x": 20,
-        "y": 18
+        "y": 26
       },
       "id": 2,
       "options": {
@@ -2225,7 +2354,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -2293,7 +2422,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red"
+                "color": "red",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -2464,7 +2594,7 @@
         "h": 4,
         "w": 4,
         "x": 20,
-        "y": 22
+        "y": 30
       },
       "id": 5,
       "options": {
@@ -2484,7 +2614,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -2508,7 +2638,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 26
+        "y": 34
       },
       "id": 27,
       "panels": [],
@@ -2567,7 +2697,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -2734,7 +2865,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 27
+        "y": 35
       },
       "id": 9,
       "options": {
@@ -2754,7 +2885,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -2824,7 +2955,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -2991,7 +3123,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 27
+        "y": 35
       },
       "id": 19,
       "options": {
@@ -3011,7 +3143,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -3035,7 +3167,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 32
+        "y": 40
       },
       "id": 11,
       "panels": [],
@@ -3094,7 +3226,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -3261,7 +3394,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 33
+        "y": 41
       },
       "id": 13,
       "options": {
@@ -3281,7 +3414,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -3351,7 +3484,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -3518,7 +3652,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 33
+        "y": 41
       },
       "id": 18,
       "options": {
@@ -3538,7 +3672,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -3608,7 +3742,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -3775,7 +3910,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 38
+        "y": 46
       },
       "id": 61,
       "options": {
@@ -3795,7 +3930,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -3865,7 +4000,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -4032,7 +4168,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 38
+        "y": 46
       },
       "id": 12,
       "options": {
@@ -4052,7 +4188,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -4121,7 +4257,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "red",
@@ -4153,7 +4290,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 43
+        "y": 51
       },
       "id": 34,
       "options": {
@@ -4173,7 +4310,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -4242,7 +4379,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "red",
@@ -4274,7 +4412,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 43
+        "y": 51
       },
       "id": 16,
       "options": {
@@ -4294,7 +4432,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -4318,7 +4456,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 48
+        "y": 56
       },
       "id": 29,
       "panels": [],
@@ -4377,7 +4515,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -4544,7 +4683,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 49
+        "y": 57
       },
       "id": 14,
       "options": {
@@ -4564,7 +4703,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -4633,7 +4772,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -4804,7 +4944,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 49
+        "y": 57
       },
       "id": 15,
       "options": {
@@ -4824,7 +4964,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -4894,7 +5034,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -5061,7 +5202,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 54
+        "y": 62
       },
       "id": 20,
       "options": {
@@ -5081,7 +5222,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -5151,7 +5292,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -5318,7 +5460,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 54
+        "y": 62
       },
       "id": 21,
       "options": {
@@ -5338,7 +5480,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -5408,7 +5550,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -5575,7 +5718,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 59
+        "y": 67
       },
       "id": 22,
       "options": {
@@ -5595,7 +5738,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -5664,7 +5807,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "red",
@@ -5696,7 +5840,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 59
+        "y": 67
       },
       "id": 24,
       "options": {
@@ -5716,7 +5860,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -5785,7 +5929,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "red",
@@ -5817,7 +5962,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 64
+        "y": 72
       },
       "id": 25,
       "options": {
@@ -5837,7 +5982,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -5906,7 +6051,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "red",
@@ -5938,7 +6084,7 @@
         "h": 5,
         "w": 12,
         "x": 12,
-        "y": 64
+        "y": 72
       },
       "id": 23,
       "options": {
@@ -5958,7 +6104,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -5982,7 +6128,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 69
+        "y": 77
       },
       "id": 53,
       "panels": [],
@@ -6040,7 +6186,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -6207,7 +6354,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 70
+        "y": 78
       },
       "id": 57,
       "options": {
@@ -6227,7 +6374,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -6297,7 +6444,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -6468,7 +6616,7 @@
         "h": 5,
         "w": 4,
         "x": 12,
-        "y": 70
+        "y": 78
       },
       "id": 58,
       "options": {
@@ -6488,7 +6636,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -6557,7 +6705,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -6728,7 +6877,7 @@
         "h": 5,
         "w": 4,
         "x": 16,
-        "y": 70
+        "y": 78
       },
       "id": 60,
       "options": {
@@ -6748,7 +6897,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -6817,7 +6966,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -6988,7 +7138,7 @@
         "h": 5,
         "w": 4,
         "x": 20,
-        "y": 70
+        "y": 78
       },
       "id": 59,
       "options": {
@@ -7008,7 +7158,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -7032,7 +7182,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 75
+        "y": 83
       },
       "id": 51,
       "panels": [],
@@ -7090,7 +7240,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -7257,7 +7408,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 76
+        "y": 84
       },
       "id": 54,
       "options": {
@@ -7277,7 +7428,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -7346,7 +7497,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -7517,7 +7669,7 @@
         "h": 5,
         "w": 6,
         "x": 12,
-        "y": 76
+        "y": 84
       },
       "id": 55,
       "options": {
@@ -7537,7 +7689,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -7606,7 +7758,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -7777,7 +7930,7 @@
         "h": 5,
         "w": 6,
         "x": 18,
-        "y": 76
+        "y": 84
       },
       "id": 56,
       "options": {
@@ -7797,7 +7950,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -7821,7 +7974,7 @@
         "h": 1,
         "w": 24,
         "x": 0,
-        "y": 81
+        "y": 89
       },
       "id": 46,
       "panels": [],
@@ -7879,7 +8032,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -8046,7 +8200,7 @@
         "h": 5,
         "w": 12,
         "x": 0,
-        "y": 82
+        "y": 90
       },
       "id": 47,
       "options": {
@@ -8066,7 +8220,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -8135,7 +8289,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -8306,7 +8461,7 @@
         "h": 5,
         "w": 6,
         "x": 12,
-        "y": 82
+        "y": 90
       },
       "id": 48,
       "options": {
@@ -8326,7 +8481,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -8396,7 +8551,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "transparent"
+                "color": "transparent",
+                "value": 0
               },
               {
                 "color": "orange",
@@ -8567,7 +8723,7 @@
         "h": 5,
         "w": 6,
         "x": 18,
-        "y": 82
+        "y": 90
       },
       "id": 49,
       "options": {
@@ -8587,7 +8743,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.2",
+      "pluginVersion": "12.1.1",
       "targets": [
         {
           "datasource": {
@@ -8614,6 +8770,7 @@
   "templating": {
     "list": [
       {
+        "allowCustomValue": false,
         "current": {},
         "includeAll": false,
         "label": "datasource",
@@ -8625,6 +8782,7 @@
         "type": "datasource"
       },
       {
+        "allowCustomValue": false,
         "current": {},
         "datasource": {
           "type": "prometheus",
@@ -8632,9 +8790,8 @@
         },
         "definition": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"},cluster)",
         "description": "",
-        "includeAll": true,
+        "includeAll": false,
         "label": "Cluster",
-        "multi": true,
         "name": "cluster",
         "options": [],
         "query": {
@@ -8647,6 +8804,7 @@
         "type": "query"
       },
       {
+        "allowCustomValue": false,
         "current": {},
         "datasource": {
           "type": "prometheus",
@@ -8654,9 +8812,8 @@
         },
         "definition": "label_values(rabbitmq_identity_info{cluster=~\"$cluster\"},namespace)",
         "description": "",
-        "includeAll": true,
+        "includeAll": false,
         "label": "Namespace",
-        "multi": true,
         "name": "namespace",
         "options": [],
         "query": {
@@ -8670,15 +8827,15 @@
         "type": "query"
       },
       {
+        "allowCustomValue": false,
         "current": {},
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
         },
         "definition": "label_values(rabbitmq_identity_info{cluster=~\"$cluster\", namespace=~\"$namespace\"},rabbitmq_cluster)",
-        "includeAll": true,
+        "includeAll": false,
         "label": "RabbitMQ Cluster",
-        "multi": true,
         "name": "rabbitmq_cluster",
         "options": [],
         "query": {
@@ -8694,7 +8851,7 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {
@@ -8709,6 +8866,6 @@
   "timezone": "",
   "title": "RabbitMQ clusters",
   "uid": "Kn5xm-gZk",
-  "version": 6,
+  "version": 9,
   "weekStart": ""
 }
