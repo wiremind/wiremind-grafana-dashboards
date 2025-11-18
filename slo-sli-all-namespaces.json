@@ -3,7 +3,7 @@
   "kind": "Dashboard",
   "metadata": {
     "name": "cdd2jhh",
-    "generation": 17,
+    "generation": 20,
     "creationTimestamp": "2025-10-31T15:21:20Z",
     "labels": {},
     "annotations": {}
@@ -50,15 +50,39 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "avg by (namespace) (avg_over_time(slo:avg_over_time_probe_success_1h{namespace=~\".*-prod.*\", namespace!~\".*demo.*\"}[$__range]) * 100)",
+                        "expr": "min by (namespace) (avg_over_time(slo:avg_over_time_probe_success_1h{namespace=~\".*-prod.*\", namespace!~\".*demo.*\"}[$__range]) * 100)",
                         "format": "table",
                         "instant": true,
-                        "legendFormat": "{{namespace}}",
+                        "legendFormat": "__auto",
                         "range": false
                       },
                       "version": "v0"
                     },
-                    "refId": "A"
+                    "refId": "uptime"
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "hidden": false,
+                    "query": {
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "group": "prometheus",
+                      "kind": "DataQuery",
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "min by (namespace) (\n(1 - avg_over_time(\n  slo:avg_over_time_probe_success_1h{namespace=~\".*-prod.*\", namespace!~\".*demo.*\"}[$__range]\n))\n* $__range_s\n)",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "__auto",
+                        "range": false
+                      },
+                      "version": "v0"
+                    },
+                    "refId": "downtime"
                   }
                 }
               ],
@@ -72,10 +96,18 @@
                       "include": {
                         "names": [
                           "namespace",
-                          "Value"
+                          "Value #uptime",
+                          "Value #downtime"
                         ]
                       }
                     }
+                  }
+                },
+                {
+                  "kind": "merge",
+                  "spec": {
+                    "id": "merge",
+                    "options": {}
                   }
                 }
               ]
@@ -84,7 +116,7 @@
           "description": "",
           "id": 1,
           "links": [],
-          "title": "SLI over 365 days",
+          "title": "SLI for the period",
           "vizConfig": {
             "group": "table",
             "kind": "VizConfig",
@@ -149,7 +181,7 @@
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "Value"
+                      "options": "Value #uptime"
                     },
                     "properties": [
                       {
@@ -159,11 +191,24 @@
                         }
                       }
                     ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Value #downtime"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "s"
+                      }
+                    ]
                   }
                 ]
               },
               "options": {
                 "cellHeight": "sm",
+                "frameIndex": 0,
                 "showHeader": false,
                 "sortBy": [
                   {
