@@ -61,10 +61,14 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 1261,
   "links": [],
   "panels": [
     {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "h": 3,
         "w": 24,
@@ -81,7 +85,8 @@
         "content": "# Report for ${target}\nData from ${__from:date:YYYY-MM-DD} to ${__to:date:YYYY-MM-DD} for ${target}           ",
         "mode": "markdown"
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
+      "title": "",
       "type": "text"
     },
     {
@@ -145,12 +150,12 @@
         "textMode": "auto",
         "wideLayout": true
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS_SLO}"
+            "uid": "${datasource}"
           },
           "exemplar": false,
           "expr": "avg_over_time(slo:avg_over_time_probe_success_1h{namespace=~\"$namespace\", target=\"$target\"}[$__range])\n",
@@ -198,6 +203,7 @@
               "type": "linear"
             },
             "showPoints": "auto",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -245,12 +251,12 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.1.1",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
             "type": "prometheus",
-            "uid": "${DS_PROMETHEUS_SLO}"
+            "uid": "${datasource}"
           },
           "editorMode": "code",
           "exemplar": true,
@@ -265,8 +271,9 @@
       "type": "timeseries"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [],
   "templating": {
     "list": [
@@ -304,7 +311,7 @@
         "current": {},
         "datasource": {
           "type": "prometheus",
-          "uid": "${DS_PROMETHEUS_SLO}"
+          "uid": "${datasource}"
         },
         "definition": "label_values(slo:avg_over_time_probe_success_1h{namespace=~\"$namespace\"}, target)",
         "includeAll": false,
@@ -329,6 +336,5 @@
   "timezone": "",
   "title": "SLI dashboard",
   "uid": "fvVTURink",
-  "version": 38,
-  "weekStart": ""
+  "version": 42
 }
