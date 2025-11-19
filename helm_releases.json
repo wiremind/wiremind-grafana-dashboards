@@ -55,7 +55,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": null,
+  "id": 7762,
   "links": [],
   "panels": [
     {
@@ -74,6 +74,9 @@
               "type": "auto"
             },
             "filterable": true,
+            "footer": {
+              "reducers": []
+            },
             "inspect": false
           },
           "mappings": [],
@@ -81,7 +84,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -239,7 +243,8 @@
                   "mode": "absolute",
                   "steps": [
                     {
-                      "color": "green"
+                      "color": "green",
+                      "value": 0
                     },
                     {
                       "color": "#EAB839",
@@ -476,19 +481,11 @@
       "id": 2,
       "options": {
         "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "enablePagination": true,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": false
-        },
+        "enablePagination": true,
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "12.0.0+security-01",
+      "pluginVersion": "12.2.1",
       "targets": [
         {
           "datasource": {
@@ -598,6 +595,9 @@
                   "type": "auto"
                 },
                 "filterable": true,
+                "footer": {
+                  "reducers": []
+                },
                 "inspect": false
               },
               "mappings": [],
@@ -605,7 +605,8 @@
                 "mode": "absolute",
                 "steps": [
                   {
-                    "color": "green"
+                    "color": "green",
+                    "value": 0
                   },
                   {
                     "color": "red",
@@ -763,7 +764,8 @@
                       "mode": "absolute",
                       "steps": [
                         {
-                          "color": "green"
+                          "color": "green",
+                          "value": 0
                         },
                         {
                           "color": "#EAB839",
@@ -921,18 +923,12 @@
           },
           "id": 3,
           "options": {
-            "footer": {
-              "enablePagination": true,
-              "fields": "",
-              "reducer": [
-                "sum"
-              ],
-              "show": false
-            },
+            "cellHeight": "sm",
+            "enablePagination": true,
             "showHeader": true,
             "sortBy": []
           },
-          "pluginVersion": "9.3.8",
+          "pluginVersion": "12.2.1",
           "targets": [
             {
               "datasource": {
@@ -1001,8 +997,9 @@
       "type": "row"
     }
   ],
+  "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [],
   "templating": {
     "list": [
@@ -1028,7 +1025,14 @@
         "type": "adhoc"
       },
       {
-        "current": {},
+        "current": {
+          "text": [
+            "All"
+          ],
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -1048,7 +1052,11 @@
         "type": "query"
       },
       {
-        "current": {},
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -1069,7 +1077,12 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -1088,7 +1101,12 @@
         "type": "query"
       },
       {
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": [
+            "$__all"
+          ]
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -1151,7 +1169,10 @@
         "type": "custom"
       },
       {
-        "current": {},
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${datasource}"
@@ -1174,13 +1195,11 @@
       {
         "current": {
           "text": [
-            "deployed",
             "failed",
             "pending-install",
             "uninstalling"
           ],
           "value": [
-            "deployed",
             "failed",
             "pending-install",
             "uninstalling"
@@ -1192,7 +1211,7 @@
         "name": "status",
         "options": [
           {
-            "selected": true,
+            "selected": false,
             "text": "deployed",
             "value": "deployed"
           },
@@ -1226,10 +1245,11 @@
     "from": "now-1h",
     "to": "now"
   },
-  "timepicker": {},
+  "timepicker": {
+    "hidden": true
+  },
   "timezone": "",
   "title": "Helm releases",
   "uid": "cT18hxZVz",
-  "version": 82,
-  "weekStart": ""
+  "version": 83
 }
