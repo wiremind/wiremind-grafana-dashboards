@@ -34,20 +34,7 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 1,
   "id": 0,
-  "links": [
-    {
-      "asDropdown": false,
-      "icon": "external link",
-      "includeVars": false,
-      "keepTime": false,
-      "tags": [],
-      "targetBlank": true,
-      "title": "ClickHouse monitoring docs",
-      "tooltip": "",
-      "type": "link",
-      "url": "https://clickhouse.tech/docs/en/operations/monitoring/"
-    }
-  ],
+  "links": [],
   "panels": [
     {
       "collapsed": false,
@@ -653,7 +640,7 @@
             "h": 10,
             "w": 12,
             "x": 0,
-            "y": 21
+            "y": 29
           },
           "id": 135,
           "options": {
@@ -765,7 +752,7 @@
             "h": 10,
             "w": 12,
             "x": 12,
-            "y": 21
+            "y": 29
           },
           "id": 133,
           "options": {
@@ -879,7 +866,7 @@
             "h": 8,
             "w": 12,
             "x": 0,
-            "y": 22
+            "y": 40
           },
           "id": 2,
           "maxDataPoints": 200,
@@ -996,7 +983,7 @@
             "h": 8,
             "w": 12,
             "x": 12,
-            "y": 22
+            "y": 40
           },
           "id": 5,
           "maxDataPoints": 200,
@@ -1078,8 +1065,8 @@
       {
         "allowCustomValue": true,
         "current": {
-          "text": "eu-cayzn-elpis",
-          "value": "eu-cayzn-elpis"
+          "text": "ovh-main-gra11-prod",
+          "value": "ovh-main-gra11-prod"
         },
         "datasource": {
           "type": "prometheus",
@@ -1102,8 +1089,8 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "platform",
-          "value": "platform"
+          "text": "All",
+          "value": "$__all"
         },
         "datasource": {
           "type": "prometheus",
@@ -1126,8 +1113,8 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "sample",
-          "value": "sample"
+          "text": "",
+          "value": ""
         },
         "datasource": {
           "type": "prometheus",
@@ -1150,8 +1137,8 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "review",
-          "value": "review"
+          "text": "",
+          "value": ""
         },
         "datasource": {
           "type": "prometheus",
@@ -1174,8 +1161,8 @@
       {
         "allowCustomValue": false,
         "current": {
-          "text": "sample-review",
-          "value": "sample-review"
+          "text": "ca-cayzn-boreas",
+          "value": "ca-cayzn-boreas"
         },
         "datasource": {
           "type": "prometheus",
@@ -1245,12 +1232,12 @@
     ]
   },
   "time": {
-    "from": "now-30m",
+    "from": "now-1h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Cluster analysis",
   "uid": "thEkJB_Mz",
-  "version": 108
+  "version": 109
 }
