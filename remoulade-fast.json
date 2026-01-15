@@ -64,6 +64,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": 3600000,
             "stacking": {
               "group": "A",
@@ -79,7 +80,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -129,7 +131,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -198,6 +200,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -213,7 +216,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -246,7 +250,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -338,7 +342,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -383,7 +388,7 @@
         "text": {},
         "valueMode": "color"
       },
-      "pluginVersion": "12.0.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "$$hashKey": "object:995",
@@ -464,6 +469,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -479,7 +485,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -511,7 +518,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -564,6 +571,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -578,7 +586,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -611,7 +620,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -679,6 +688,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": true,
             "stacking": {
               "group": "A",
@@ -695,7 +705,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -727,7 +738,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -736,7 +747,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by(deployment)(kube_deployment_status_replicas{namespace=\"$namespace\", deployment=~\"($namespace-.*-normal)|($namespace-internal)|($namespace-workers-.*)|($namespace-skypallet-.*)\", deployment!=\"$namespace-scheduler-normal\"})",
+          "expr": "sum by(queue)(label_replace(\n  kube_deployment_status_replicas{namespace=\"$namespace\"},\n  \"queue\",           \n  \"$1\",\n  \"deployment\",\n  \"$namespace-(.*)\"\n) and on(queue)\nlabel_replace(\n  rabbitmq_queue_messages{namespace=\"$namespace\"},\n  \"queue\",           \n  \"$1-$2\",\n  \"queue\",\n  \"(.*)\\\\.(.*)\"\n))\n\nor \n\nsum by(deployment)(kube_deployment_status_replicas{namespace=\"$namespace\", deployment=~\"($namespace-.*-normal)|($namespace-internal)|($namespace-workers-.*)|($namespace-skypallet-.*)\", deployment!=\"$namespace-scheduler-normal\"})",
           "instant": false,
           "interval": "",
           "legendFormat": "__auto",
@@ -796,6 +807,7 @@
               "type": "linear"
             },
             "showPoints": "never",
+            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
@@ -810,7 +822,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": 0
               },
               {
                 "color": "red",
@@ -843,7 +856,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.0.1",
+      "pluginVersion": "12.3.1",
       "targets": [
         {
           "datasource": {
@@ -880,7 +893,7 @@
   ],
   "preload": false,
   "refresh": "",
-  "schemaVersion": 41,
+  "schemaVersion": 42,
   "tags": [],
   "templating": {
     "list": [
@@ -954,5 +967,5 @@
   "timezone": "browser",
   "title": "Remoulade (Fast)",
   "uid": "2d434941-67cb-4f66-af71-6a9881aae674",
-  "version": 3
+  "version": 4
 }
