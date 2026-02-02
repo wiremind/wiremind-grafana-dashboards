@@ -747,11 +747,24 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by(queue)(label_replace(\n  kube_deployment_status_replicas{namespace=\"$namespace\"},\n  \"queue\",           \n  \"$1\",\n  \"deployment\",\n  \"$namespace-(.*)\"\n) and on(queue)\nlabel_replace(\n  rabbitmq_queue_messages{namespace=\"$namespace\"},\n  \"queue\",           \n  \"$1-$2\",\n  \"queue\",\n  \"(.*)\\\\.(.*)\"\n))\n\nor \n\nsum by(deployment)(kube_deployment_status_replicas{namespace=\"$namespace\", deployment=~\"($namespace-.*-normal)|($namespace-internal)|($namespace-workers-.*)|($namespace-skypallet-.*)\", deployment!=\"$namespace-scheduler-normal\"})",
+          "expr": "sum by(deployment)(kube_deployment_status_replicas{namespace=\"$namespace\", deployment=~\"($namespace-.*-normal)|($namespace-internal)|($namespace-workers-.*)|($namespace-skypallet-.*)\", deployment!=\"$namespace-scheduler-normal\"})",
           "instant": false,
           "interval": "",
           "legendFormat": "__auto",
           "refId": "B"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "expr": "sum by(queue)(label_replace(\n  kube_deployment_status_replicas{namespace=\"$namespace\"},\n  \"queue\",           \n  \"$1\",\n  \"deployment\",\n  \"$namespace-(.*)\"\n) and on(queue)\nlabel_replace(\n  rabbitmq_queue_messages{namespace=\"$namespace\"},\n  \"queue\",           \n  \"$1-$2\",\n  \"queue\",\n  \"(.*)\\\\.(.*)\"\n))",
+          "hide": false,
+          "instant": false,
+          "legendFormat": "{{queue}}",
+          "range": true,
+          "refId": "A"
         }
       ],
       "title": "Worker count",
@@ -967,5 +980,5 @@
   "timezone": "browser",
   "title": "Remoulade (Fast)",
   "uid": "2d434941-67cb-4f66-af71-6a9881aae674",
-  "version": 4
+  "version": 5
 }
