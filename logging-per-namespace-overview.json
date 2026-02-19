@@ -22,6 +22,253 @@
   "links": [],
   "panels": [
     {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 9,
+      "panels": [
+        {
+          "datasource": {
+            "default": false,
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": false,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 10000
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #Size"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "Size"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "label_project"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Project"
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #Logs"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Logs"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "Logs"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #CPUs"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "CPUs"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "CPUs"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Project"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 134
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 22,
+            "w": 24,
+            "x": 0,
+            "y": 1
+          },
+          "id": 7,
+          "options": {
+            "cellHeight": "sm",
+            "enablePagination": false,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Size"
+              }
+            ]
+          },
+          "pluginVersion": "12.3.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "max by (namespace, label_project) (\n  kube_namespace_labels\n)",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "namespace_label"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum by (namespace) (\n  avg_over_time(\n    namespace_cpu:kube_pod_container_resource_requests:sum[$__range]\n  )\n) > 0",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "CPUs"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum by (namespace) (\n  label_replace(\n    increase(vector_log_counter[$__range])\n  , \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\"\n  )\n) > 0",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "Logs"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "label_replace(\n  sum by (exported_namespace) (\n      increase(vector_message_len_bytes_sum[1d])\n  )\n  / on (exported_namespace) (\n    sum by (exported_namespace) (\n      increase(vector_log_counter[1d])\n    ) > 100000\n  )\n, \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\")\n> 0",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "Size"
+            }
+          ],
+          "title": "Average size of logs, 7-days average",
+          "transformations": [
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "label_project",
+                    "namespace",
+                    "Value #Logs",
+                    "Value #Size",
+                    "Value #CPUs"
+                  ]
+                }
+              }
+            },
+            {
+              "id": "merge",
+              "options": {}
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "Log average size",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 1
+      },
+      "id": 8,
+      "panels": [],
+      "title": "Log amount",
+      "type": "row"
+    },
+    {
       "fieldConfig": {
         "defaults": {},
         "overrides": []
@@ -30,7 +277,7 @@
         "h": 4,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 2
       },
       "id": 5,
       "options": {
@@ -39,10 +286,10 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "This dashboard helps you vizualizing:\n- Namespace exceeding amount of logs per day agreed upon\n- Namespaces exceeding absolute value putting infrastructure in danger\nGreen is ok, red and orange is not ok.",
+        "content": "This dashboard helps you vizualizing:\n- Namespaces exceeding absolute value putting infrastructure in danger\n- Namespace exceeding amount of logs per week per cpu agreed upon\nGreen is ok, red and orange is not ok.",
         "mode": "markdown"
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "12.3.3",
       "title": "Explanations",
       "type": "text"
     },
@@ -115,7 +362,7 @@
         "h": 11,
         "w": 24,
         "x": 0,
-        "y": 4
+        "y": 6
       },
       "id": 3,
       "interval": "3h",
@@ -132,7 +379,7 @@
           "sort": "none"
         }
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -291,9 +538,9 @@
       },
       "gridPos": {
         "h": 22,
-        "w": 13,
+        "w": 24,
         "x": 0,
-        "y": 15
+        "y": 17
       },
       "id": 2,
       "options": {
@@ -303,11 +550,11 @@
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Logs per CPU / 1000000"
+            "displayName": "Logs"
           }
         ]
       },
-      "pluginVersion": "12.3.2",
+      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -451,226 +698,6 @@
         }
       ],
       "type": "table"
-    },
-    {
-      "datasource": {
-        "default": false,
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": false,
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 10000
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value #Size"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-text"
-                }
-              },
-              {
-                "id": "displayName",
-                "value": "Size"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "label_project"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Project"
-              },
-              {
-                "id": "custom.filterable",
-                "value": true
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value #Logs"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Logs"
-              },
-              {
-                "id": "unit",
-                "value": "Logs"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value #CPUs"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "CPUs"
-              },
-              {
-                "id": "unit",
-                "value": "CPUs"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Project"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 134
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 22,
-        "w": 11,
-        "x": 13,
-        "y": 15
-      },
-      "id": 7,
-      "options": {
-        "cellHeight": "sm",
-        "enablePagination": false,
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Size"
-          }
-        ]
-      },
-      "pluginVersion": "12.3.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "max by (namespace, label_project) (\n  kube_namespace_labels\n)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "namespace_label"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "sum by (namespace) (\n  avg_over_time(\n    namespace_cpu:kube_pod_container_resource_requests:sum[$__range]\n  )\n) > 0",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "CPUs"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "sum by (namespace) (\n  label_replace(\n    increase(vector_log_counter[$__range])\n  , \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\"\n  )\n) > 0",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "Logs"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "label_replace(\n  sum by (exported_namespace) (\n      increase(vector_message_len_bytes_sum[1d])\n  )\n  / on (exported_namespace) (\n    sum by (exported_namespace) (\n      increase(vector_log_counter[1d])\n    ) > 100000\n  )\n, \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\")\n> 0",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "Size"
-        }
-      ],
-      "title": "Average size of logs, 7-days average",
-      "transformations": [
-        {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "label_project",
-                "namespace",
-                "Value #Logs",
-                "Value #Size",
-                "Value #CPUs"
-              ]
-            }
-          }
-        },
-        {
-          "id": "merge",
-          "options": {}
-        }
-      ],
-      "type": "table"
     }
   ],
   "preload": false,
@@ -746,5 +773,5 @@
   "timezone": "browser",
   "title": "Logging per namespace overview",
   "uid": "ddlo6noih0ni8b",
-  "version": 11
+  "version": 12
 }
