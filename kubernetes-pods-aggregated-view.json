@@ -134,7 +134,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(irate(container_cpu_usage_seconds_total{pod=~\"$pod_name\", namespace=~\"$namespace\", cluster=~\"$cluster\", node=~\"$node_name\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"$container_name\"}[5m]))",
+          "expr": "sum(irate(container_cpu_usage_seconds_total{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[5m]))",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -150,7 +150,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{pod=~\"$pod_name\", namespace=~\"${namespace:raw}\", cluster=~\"$cluster\", node=~\"$node_name\", container!=\"POD\", container!=\"\", container=~\"$container_name\"})",
+          "expr": "sum(cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"})",
           "format": "time_series",
           "interval": "",
           "legendFormat": "Requests",
@@ -264,7 +264,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(container_memory_working_set_bytes{pod=~\"$pod_name\", namespace=~\"${namespace:raw}\", cluster=~\"$cluster\", node=~\"$node_name\", image!=\"\", pod!=\"\", pod=~\"$pod_name\", container!=\"POD\", container!=\"\", container=~\"$container_name\"})",
+          "expr": "sum(container_memory_working_set_bytes{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod!=\"\", pod=~\"${pod_name:raw}\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"})",
           "format": "time_series",
           "instant": false,
           "interval": "",
@@ -280,7 +280,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{pod=~\"$pod_name\", namespace=~\"${namespace:raw}\", cluster=~\"$cluster\", node=~\"$node_name\",  pod=~\"$pod_name\", container!=\"POD\", container!=\"\", container=~\"$container_name\"})",
+          "expr": "sum(cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\",  pod=~\"${pod_name:raw}\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"})",
           "format": "time_series",
           "interval": "",
           "legendFormat": "Requests",
@@ -381,7 +381,7 @@
           },
           "editorMode": "code",
           "exemplar": true,
-          "expr": "sum by (image) (container_threads{pod=~\"$pod_name\", namespace=~\"${namespace:raw}\", cluster=~\"$cluster\", node=~\"$node_name\",  pod=~\"$pod_name\", image!=\"\", container!=\"\", container=~\"$container_name\"})",
+          "expr": "sum by (image) (container_threads{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\",  pod=~\"${pod_name:raw}\", image!=\"\", container!=\"\", container=~\"${container_name:raw}\"})",
           "format": "time_series",
           "interval": "",
           "legendFormat": "{{image}}",
@@ -491,7 +491,7 @@
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "sum by (namespace) (namespace_cpu:priority_class:requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\", phase=\"Running\"})",
+              "expr": "sum by (namespace) (namespace_cpu:priority_class:requests:sum{cluster=~\"${cluster:raw}\", namespace=~\"${namespace:raw}\", phase=\"Running\"})",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -590,7 +590,7 @@
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "sum by (priority_class) (namespace_cpu:priority_class:requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\", phase=\"Running\"})",
+              "expr": "sum by (priority_class) (namespace_cpu:priority_class:requests:sum{cluster=~\"${cluster:raw}\", namespace=~\"${namespace:raw}\", phase=\"Running\"})",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -690,7 +690,7 @@
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "sum by (namespace) (namespace_memory:priority_class:requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\", phase=\"Running\"})",
+              "expr": "sum by (namespace) (namespace_memory:priority_class:requests:sum{cluster=~\"${cluster:raw}\", namespace=~\"${namespace:raw}\", phase=\"Running\"})",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -790,7 +790,7 @@
                 "uid": "${DS_PROMETHEUS}"
               },
               "editorMode": "code",
-              "expr": "sum by (priority_class) (namespace_memory:priority_class:requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\", phase=\"Running\"})",
+              "expr": "sum by (priority_class) (namespace_memory:priority_class:requests:sum{cluster=~\"${cluster:raw}\", namespace=~\"${namespace:raw}\", phase=\"Running\"})",
               "instant": false,
               "legendFormat": "__auto",
               "range": true,
@@ -907,7 +907,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum by (node) (rate(container_cpu_usage_seconds_total{pod=~\"$pod_name\", namespace=~\"${namespace:raw}\", cluster=~\"$cluster\", node=~\"$node_name\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"$container_name\"}[5m]))",
+              "expr": "sum by (node) (rate(container_cpu_usage_seconds_total{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[5m]))",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -1013,7 +1013,7 @@
               },
               "editorMode": "code",
               "exemplar": false,
-              "expr": "sum by (node) (cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{pod=~\"$pod_name\", namespace=~\"${namespace:raw}\", cluster=~\"$cluster\", node=~\"$node_name\", container!=\"POD\", container!=\"\", container=~\"$container_name\"})",
+              "expr": "sum by (node) (cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"})",
               "format": "time_series",
               "interval": "",
               "legendFormat": "__auto",
@@ -1126,7 +1126,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "(\n  sum by (container) (\n    rate(container_cpu_usage_seconds_total{namespace=~\"${namespace:raw}\", cluster=~\"$cluster\", pod=~\"$pod_name\", node=~\"$node_name\", image!=\"\", pod=~\"$pod_name\", container!=\"POD\", container!=\"\", container=~\"$container_name\"}[5m])\n  ) > 0.5\n) \n/\n(\n  sum by (container) (\n    cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{namespace=~\"${namespace:raw}\", cluster=~\"$cluster\", pod=~\"$pod_name.*\", node=~\"$node_name\", container!=\"POD\", container!=\"\", container=~\"$container_name\"}\n  )\n) > 1",
+              "expr": "(\n  sum by (container) (\n    rate(container_cpu_usage_seconds_total{namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", pod=~\"${pod_name:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod=~\"${pod_name:raw}\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[5m])\n  ) > 0.5\n) \n/\n(\n  sum by (container) (\n    cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", pod=~\"${pod_name:raw}.*\", node=~\"${node_name:raw}\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}\n  )\n) > 1",
               "format": "time_series",
               "instant": false,
               "interval": "",
@@ -1236,7 +1236,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "rate(container_cpu_usage_seconds_total{pod=~\"$pod_name\", namespace=~\"${namespace:raw}\", cluster=~\"$cluster\", node=~\"$node_name\", image!=\"\", pod=~\"$pod_name\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"$container_name\"}[5m])",
+              "expr": "rate(container_cpu_usage_seconds_total{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod=~\"${pod_name:raw}\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[5m])",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 4,
@@ -1352,7 +1352,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "sum (irate(container_cpu_cfs_throttled_periods_total{ pod=~\"$pod_name.*\", container!=\"POD\", container!=\"\", container=~\"$container_name\",namespace=~\"${namespace:raw}\", cluster=~\"$cluster\", node=~\"$node_name\"}[5m]))\n/\nsum (irate(container_cpu_cfs_periods_total{ pod=~\"$pod_name.*\", container!=\"POD\", container!=\"\", container=~\"$container_name\", namespace=~\"${namespace:raw}\", cluster=~\"$cluster\", node=~\"$node_name\"}[5m]))",
+              "expr": "sum (irate(container_cpu_cfs_throttled_periods_total{ pod=~\"${pod_name:raw}.*\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\",namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\"}[5m]))\n/\nsum (irate(container_cpu_cfs_periods_total{ pod=~\"${pod_name:raw}.*\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\"}[5m]))",
               "interval": "",
               "legendFormat": "Sum",
               "range": true,
@@ -1468,7 +1468,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "container_memory_working_set_bytes{pod=~\"$pod_name.*\", container!=\"POD\", container!=\"\", container=~\"$container_name\", namespace=~\"${namespace:raw}\", cluster=~\"$cluster\", node=~\"$node_name\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}\n",
+              "expr": "container_memory_working_set_bytes{pod=~\"${pod_name:raw}.*\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\"}\n",
               "interval": "",
               "legendFormat": "{{ pod }}",
               "range": true,
@@ -1570,7 +1570,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "irate(container_cpu_usage_seconds_total{pod=~\"$pod_name\", namespace=~\"${namespace:raw}\", cluster=~\"$cluster\", node=~\"$node_name\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"$container_name\"}[5m])",
+              "expr": "irate(container_cpu_usage_seconds_total{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[5m])",
               "interval": "",
               "legendFormat": "{{ pod }}",
               "range": true,
@@ -1690,7 +1690,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "rate(container_network_receive_bytes_total{ pod=~\"$pod_name.*\", namespace=~\"${namespace:raw}\", cluster=~\"$cluster\"}[5m])",
+              "expr": "rate(container_network_receive_bytes_total{ pod=~\"${pod_name:raw}.*\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\"}[5m])",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 4,
@@ -1798,7 +1798,7 @@
               },
               "editorMode": "code",
               "exemplar": true,
-              "expr": "rate(container_network_transmit_bytes_total{pod=~\"$pod_name.*\", namespace=~\"${namespace:raw}\", cluster=~\"$cluster\", interface!=\"tunl0\"}[5m])",
+              "expr": "rate(container_network_transmit_bytes_total{pod=~\"${pod_name:raw}.*\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", interface!=\"tunl0\"}[5m])",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 4,
@@ -1822,10 +1822,7 @@
   "templating": {
     "list": [
       {
-        "current": {
-          "text": "Thanos",
-          "value": "P5DCFC7561CCDE821"
-        },
+        "current": {},
         "includeAll": false,
         "name": "DS_PROMETHEUS",
         "options": [],
@@ -1857,7 +1854,10 @@
       },
       {
         "allValue": ".*",
-        "current": {},
+        "current": {
+          "text": ["All"],
+          "value": ["$__all"]
+        },
         "datasource": {
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
@@ -1873,7 +1873,7 @@
         },
         "refresh": 1,
         "regex": "",
-        "regexApplyTo": "value",
+        "regexApplyTo": "text",
         "sort": 1,
         "type": "query"
       },
@@ -1907,7 +1907,7 @@
       {
         "allValue": ".*",
         "current": {
-          "text": "All",
+          "text": ["All"],
           "value": ["$__all"]
         },
         "datasource": {
@@ -1925,9 +1925,9 @@
           "query": "label_values(kube_pod_info{cluster=\"$cluster\", namespace=~\"$namespace\"},pod)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
-        "regexApplyTo": "value",
+        "regexApplyTo": "text",
         "sort": 1,
         "type": "query"
       },
@@ -1941,7 +1941,7 @@
           "type": "prometheus",
           "uid": "${DS_PROMETHEUS}"
         },
-        "definition": "label_values(kube_pod_container_info{cluster=\"$cluster\", namespace=~\"$namespace\", pod=~\"$pod_name\"},container)",
+        "definition": "label_values(kube_pod_container_info{cluster=\"${cluster:raw}\", namespace=~\"${namespace:raw}\", pod=~\"${pod_name:raw}\"},container)",
         "includeAll": true,
         "label": "Container(s) name",
         "multi": true,
@@ -1949,10 +1949,10 @@
         "options": [],
         "query": {
           "qryType": 1,
-          "query": "label_values(kube_pod_container_info{cluster=\"$cluster\", namespace=~\"$namespace\", pod=~\"$pod_name\"},container)",
+          "query": "label_values(kube_pod_container_info{cluster=\"${cluster:raw}\", namespace=~\"${namespace:raw}\", pod=~\"${pod_name:raw}\"},container)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
-        "refresh": 1,
+        "refresh": 2,
         "regex": "",
         "regexApplyTo": "value",
         "sort": 1,
@@ -1980,6 +1980,6 @@
   "timezone": "browser",
   "title": "Pods (Aggregated view)",
   "uid": "pods-aggregated-view",
-  "version": 158,
+  "version": 161,
   "weekStart": ""
 }
