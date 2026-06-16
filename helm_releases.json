@@ -1,1255 +1,1366 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_THANOS",
-      "label": "Thanos",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "12.0.0+security-01"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    }
-  ],
-  "annotations": {
-    "list": [
-      {
-        "builtIn": 1,
-        "datasource": {
-          "type": "grafana",
-          "uid": "-- Grafana --"
-        },
-        "enable": true,
-        "hide": true,
-        "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
-        "type": "dashboard"
-      }
-    ]
+  "apiVersion": "dashboard.grafana.app/v2",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "cT18hxZVz",
+    "generation": 7,
+    "creationTimestamp": "2025-06-06T14:52:34Z",
+    "labels": {},
+    "annotations": {}
   },
-  "editable": true,
-  "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
-  "id": 7762,
-  "links": [],
-  "panels": [
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
+  "spec": {
+    "annotations": [
+      {
+        "kind": "AnnotationQuery",
+        "spec": {
+          "query": {
+            "kind": "DataQuery",
+            "group": "grafana",
+            "version": "v0",
+            "spec": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
+            },
+            "labels": {
+              "grafana.app/export-label": "grafana-1"
+            }
           },
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": 0
-              },
-              {
-                "color": "red",
-                "value": 80
-              }
-            ]
-          }
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "last_modified"
-            },
-            "properties": [
-              {
-                "id": "unit",
-                "value": "dateTimeAsIso"
-              },
-              {
-                "id": "custom.width",
-                "value": 154
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "deploy_job_url"
-            },
-            "properties": [
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "pattern": "https://.*",
-                      "result": {
-                        "index": 0,
-                        "text": "go to"
-                      }
-                    },
-                    "type": "regex"
-                  }
-                ]
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "${__value.raw}",
-                    "url": "${__value.raw}"
-                  }
-                ]
-              },
-              {
-                "id": "custom.width",
-                "value": 139
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "helmfile_configuration_file"
-            },
-            "properties": [
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "pattern": "https://.*",
-                      "result": {
-                        "index": 0,
-                        "text": "go to"
-                      }
-                    },
-                    "type": "regex"
-                  }
-                ]
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "${__value.raw}",
-                    "url": "${__value.raw}"
-                  }
-                ]
-              },
-              {
-                "id": "custom.width",
-                "value": 210
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "status"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-text"
-                }
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "deployed": {
-                        "color": "green",
-                        "index": 0
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "builtIn": true
+        }
+      }
+    ],
+    "cursorSync": "Off",
+    "editable": true,
+    "elements": {
+      "panel-2": {
+        "kind": "Panel",
+        "spec": {
+          "id": 2,
+          "title": "releases",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
                       },
-                      "failed": {
-                        "color": "red",
-                        "index": 1
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\", release_namespace=~\"$namespace\", release_namespace=~\"$project.*\", release_namespace=~\".*$type.*\", release_name=~\"$release\", chart_name=~\"$chart\", status=~\"$status\"} * 1000",
+                        "format": "table",
+                        "instant": true,
+                        "range": false
                       }
                     },
-                    "type": "value"
+                    "refId": "B",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Time": true,
+                        "chart_latest_version": true,
+                        "container": true,
+                        "endpoint": true,
+                        "gitlab_ci_common_version": true,
+                        "gitlab_ci_pipeline_url": true,
+                        "helmfile_configuration_file": true,
+                        "helmfile_version": true,
+                        "instance": true,
+                        "job": true,
+                        "namespace": true,
+                        "pod": true,
+                        "prometheus": true,
+                        "prometheus_replica": true,
+                        "python_version": true,
+                        "wiremind_flask_version": true
+                      },
+                      "includeByName": {},
+                      "indexByName": {
+                        "Time": 0,
+                        "Value": 10,
+                        "chart_latest_version": 12,
+                        "chart_name": 2,
+                        "chart_version": 7,
+                        "chartreuse": 25,
+                        "cluster": 1,
+                        "common": 26,
+                        "container": 13,
+                        "deploy_job_url": 14,
+                        "domain": 9,
+                        "elasticsearch_cluster": 27,
+                        "endpoint": 15,
+                        "etcd_patroni": 28,
+                        "git_sha": 22,
+                        "git_tag": 8,
+                        "gitlab_ci_pipeline_url": 20,
+                        "helmfile_configuration_file": 24,
+                        "helmfile_version": 23,
+                        "instance": 16,
+                        "job": 17,
+                        "keycloak": 29,
+                        "latest_releaser": 11,
+                        "metabase": 30,
+                        "namespace": 18,
+                        "overwhelm_version": 6,
+                        "pod": 19,
+                        "postgres_operator": 31,
+                        "prometheus": 21,
+                        "prometheus_blackbox_exporter": 32,
+                        "prometheus_safety_exporter": 33,
+                        "rabbitmq": 34,
+                        "redis": 35,
+                        "release_name": 4,
+                        "release_namespace": 3,
+                        "releaser": 36,
+                        "status": 5
+                      },
+                      "renameByName": {
+                        "Time": "",
+                        "Value": "last_modified",
+                        "chart_name": "Chart",
+                        "chart_version": "Chart version",
+                        "cluster": "Cluster",
+                        "domain": "URL",
+                        "git_tag": "Git Tag",
+                        "overwhelm_version": "Overwhelm Version",
+                        "release_name": "Release Name",
+                        "release_namespace": "Namespace",
+                        "status": "Status"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.0.1+security-01",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "enablePagination": true,
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "helmfile_configuration_file"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": true,
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "last_modified"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "dateTimeAsIso"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 154
+                      }
+                    ]
                   },
                   {
-                    "options": {
-                      "pattern": ".*",
-                      "result": {
-                        "color": "orange",
-                        "index": 2
-                      }
+                    "matcher": {
+                      "id": "byName",
+                      "options": "deploy_job_url"
                     },
-                    "type": "regex"
+                    "properties": [
+                      {
+                        "id": "mappings",
+                        "value": [
+                          {
+                            "options": {
+                              "pattern": "https://.*",
+                              "result": {
+                                "index": 0,
+                                "text": "go to"
+                              }
+                            },
+                            "type": "regex"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "links",
+                        "value": [
+                          {
+                            "targetBlank": true,
+                            "title": "${__value.raw}",
+                            "url": "${__value.raw}"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 139
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "helmfile_configuration_file"
+                    },
+                    "properties": [
+                      {
+                        "id": "mappings",
+                        "value": [
+                          {
+                            "options": {
+                              "pattern": "https://.*",
+                              "result": {
+                                "index": 0,
+                                "text": "go to"
+                              }
+                            },
+                            "type": "regex"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "links",
+                        "value": [
+                          {
+                            "targetBlank": true,
+                            "title": "${__value.raw}",
+                            "url": "${__value.raw}"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 210
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "status"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-text"
+                        }
+                      },
+                      {
+                        "id": "mappings",
+                        "value": [
+                          {
+                            "options": {
+                              "deployed": {
+                                "color": "green",
+                                "index": 0
+                              },
+                              "failed": {
+                                "color": "red",
+                                "index": 1
+                              }
+                            },
+                            "type": "value"
+                          },
+                          {
+                            "options": {
+                              "pattern": ".*",
+                              "result": {
+                                "color": "orange",
+                                "index": 2
+                              }
+                            },
+                            "type": "regex"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 154
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Chart V"
+                    },
+                    "properties": [
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "green",
+                              "value": 0
+                            },
+                            {
+                              "color": "#EAB839",
+                              "value": ""
+                            },
+                            {
+                              "color": "red",
+                              "value": 80
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 94
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "gitlab_ci_pipeline_url"
+                    },
+                    "properties": [
+                      {
+                        "id": "mappings",
+                        "value": [
+                          {
+                            "options": {
+                              "pattern": "https://.*",
+                              "result": {
+                                "index": 0,
+                                "text": "URL"
+                              }
+                            },
+                            "type": "regex"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "links",
+                        "value": [
+                          {
+                            "targetBlank": true,
+                            "title": "${__value.raw}",
+                            "url": "${__value.raw}"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "chart_latest_version"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 183
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "wiremind_flask_version"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 198
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "release_name"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 297
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "frontend_commit_sha"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 249
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "release_namespace"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 195
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "domain"
+                    },
+                    "properties": [
+                      {
+                        "id": "links",
+                        "value": [
+                          {
+                            "targetBlank": true,
+                            "title": "${__value.raw}",
+                            "url": "https://${__value.raw}"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "chart_name"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 118
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "cluster"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 161
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Git Tag"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 98
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "URL"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 213
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "mayo_version"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 133
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "git_sha"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 257
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Status"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 109
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Release Name"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 219
+                      }
+                    ]
                   }
                 ]
-              },
-              {
-                "id": "custom.width",
-                "value": 154
               }
-            ]
+            }
+          }
+        }
+      },
+      "panel-3": {
+        "kind": "Panel",
+        "spec": {
+          "id": 3,
+          "title": "chart dependencies",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "cluster_manager_releases_chart_dependency{cluster=~\"$cluster\", release_namespace=~\"$namespace\", release_name=~\"$release\"}",
+                        "format": "table",
+                        "instant": true,
+                        "range": false
+                      }
+                    },
+                    "refId": "B",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Time": true,
+                        "Value": true,
+                        "__name__": true,
+                        "container": true,
+                        "endpoint": true,
+                        "instance": true,
+                        "job": true,
+                        "namespace": true,
+                        "pod": true,
+                        "prometheus": true,
+                        "prometheus_replica": true
+                      },
+                      "indexByName": {
+                        "Time": 0,
+                        "Value": 18,
+                        "__name__": 17,
+                        "alias": 5,
+                        "chart_name": 4,
+                        "cluster": 1,
+                        "container": 9,
+                        "endpoint": 10,
+                        "instance": 11,
+                        "job": 12,
+                        "latest_version": 7,
+                        "namespace": 13,
+                        "pod": 14,
+                        "prometheus": 15,
+                        "prometheus_replica": 16,
+                        "release_name": 3,
+                        "release_namespace": 2,
+                        "repository": 8,
+                        "version": 6
+                      },
+                      "renameByName": {
+                        "Value": ""
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
           },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "12.2.1",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "enablePagination": true,
+                "showHeader": true,
+                "sortBy": []
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": 80,
+                        "color": "red"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "auto",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": true,
+                    "footer": {
+                      "reducers": []
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "last_modified"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "dateTimeAsIso"
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 154
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "deploy_job_url"
+                    },
+                    "properties": [
+                      {
+                        "id": "mappings",
+                        "value": [
+                          {
+                            "options": {
+                              "pattern": "https://.*",
+                              "result": {
+                                "index": 0,
+                                "text": "go to"
+                              }
+                            },
+                            "type": "regex"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "links",
+                        "value": [
+                          {
+                            "targetBlank": true,
+                            "title": "${__value.raw}",
+                            "url": "${__value.raw}"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 139
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "helmfile_configuration_file"
+                    },
+                    "properties": [
+                      {
+                        "id": "mappings",
+                        "value": [
+                          {
+                            "options": {
+                              "pattern": "https://.*",
+                              "result": {
+                                "index": 0,
+                                "text": "go to"
+                              }
+                            },
+                            "type": "regex"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "links",
+                        "value": [
+                          {
+                            "targetBlank": true,
+                            "title": "${__value.raw}",
+                            "url": "${__value.raw}"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 190
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "status"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-text"
+                        }
+                      },
+                      {
+                        "id": "mappings",
+                        "value": [
+                          {
+                            "options": {
+                              "deployed": {
+                                "color": "green",
+                                "index": 0
+                              },
+                              "failed": {
+                                "color": "red",
+                                "index": 1
+                              }
+                            },
+                            "type": "value"
+                          },
+                          {
+                            "options": {
+                              "pattern": ".*",
+                              "result": {
+                                "color": "orange",
+                                "index": 2
+                              }
+                            },
+                            "type": "regex"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 133
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Chart V"
+                    },
+                    "properties": [
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "green",
+                              "value": 0
+                            },
+                            {
+                              "color": "#EAB839",
+                              "value": ""
+                            },
+                            {
+                              "color": "red",
+                              "value": 80
+                            }
+                          ]
+                        }
+                      },
+                      {
+                        "id": "custom.width",
+                        "value": 94
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "gitlab_ci_pipeline_url"
+                    },
+                    "properties": [
+                      {
+                        "id": "mappings",
+                        "value": [
+                          {
+                            "options": {
+                              "pattern": "https://.*",
+                              "result": {
+                                "index": 0,
+                                "text": "go to"
+                              }
+                            },
+                            "type": "regex"
+                          }
+                        ]
+                      },
+                      {
+                        "id": "links",
+                        "value": [
+                          {
+                            "targetBlank": true,
+                            "title": "${__value.raw}",
+                            "url": "${__value.raw}"
+                          }
+                        ]
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "chart_latest_version"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 147
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "latest_version"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 136
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "version"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 90
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "alias"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 141
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "cluster"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 138
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "release_namespace"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 189
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "release_name"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 187
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "chart_name"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 245
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "layout": {
+      "kind": "RowsLayout",
+      "spec": {
+        "rows": [
           {
-            "matcher": {
-              "id": "byName",
-              "options": "Chart V"
-            },
-            "properties": [
-              {
-                "id": "thresholds",
-                "value": {
-                  "mode": "absolute",
-                  "steps": [
+            "kind": "RowsLayoutRow",
+            "spec": {
+              "title": "",
+              "collapse": false,
+              "hideHeader": true,
+              "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                  "items": [
                     {
-                      "color": "green",
-                      "value": 0
-                    },
-                    {
-                      "color": "#EAB839",
-                      "value": ""
-                    },
-                    {
-                      "color": "red",
-                      "value": 80
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 24,
+                        "height": 16,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-2"
+                        }
+                      }
                     }
                   ]
                 }
-              },
-              {
-                "id": "custom.width",
-                "value": 94
               }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "gitlab_ci_pipeline_url"
-            },
-            "properties": [
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "options": {
-                      "pattern": "https://.*",
-                      "result": {
-                        "index": 0,
-                        "text": "URL"
-                      }
-                    },
-                    "type": "regex"
-                  }
-                ]
-              },
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "${__value.raw}",
-                    "url": "${__value.raw}"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "chart_latest_version"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 183
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "wiremind_flask_version"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 198
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "release_name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 297
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "frontend_commit_sha"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 249
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "release_namespace"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 195
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "domain"
-            },
-            "properties": [
-              {
-                "id": "links",
-                "value": [
-                  {
-                    "targetBlank": true,
-                    "title": "${__value.raw}",
-                    "url": "https://${__value.raw}"
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "chart_name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 118
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "cluster"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 161
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Git Tag"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 98
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "URL"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 213
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "mayo_version"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 133
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "git_sha"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 257
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Status"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 109
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Release Name"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 219
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 16,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 2,
-      "options": {
-        "cellHeight": "sm",
-        "enablePagination": true,
-        "showHeader": true,
-        "sortBy": []
-      },
-      "pluginVersion": "12.2.1",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\", release_namespace=~\"$namespace\", release_namespace=~\"$project.*\", release_namespace=~\".*$type.*\", release_name=~\"$release\", chart_name=~\"$chart\", status=~\"$status\"} * 1000",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "range": false,
-          "refId": "B"
-        }
-      ],
-      "title": "releases",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true,
-              "chart_latest_version": true,
-              "container": true,
-              "endpoint": true,
-              "gitlab_ci_pipeline_url": true,
-              "instance": true,
-              "job": true,
-              "namespace": true,
-              "pod": true,
-              "prometheus": true,
-              "prometheus_replica": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "Time": 0,
-              "Value": 9,
-              "chart_latest_version": 11,
-              "chart_name": 2,
-              "chart_version": 6,
-              "cluster": 1,
-              "container": 12,
-              "deploy_job_url": 13,
-              "domain": 8,
-              "endpoint": 14,
-              "frontend_commit_sha": 15,
-              "git_sha": 24,
-              "git_tag": 7,
-              "gitlab_ci_common_version": 25,
-              "gitlab_ci_pipeline_url": 22,
-              "helmfile_configuration_file": 27,
-              "helmfile_version": 26,
-              "instance": 18,
-              "job": 19,
-              "latest_releaser": 10,
-              "mayo_version": 16,
-              "namespace": 20,
-              "pod": 21,
-              "prometheus": 23,
-              "python_version": 28,
-              "release_name": 4,
-              "release_namespace": 3,
-              "status": 5,
-              "wiremind_flask_version": 17
-            },
-            "renameByName": {
-              "Time": "",
-              "Value": "last_modified",
-              "chart_name": "Chart",
-              "chart_version": "Chart version",
-              "cluster": "Cluster",
-              "domain": "URL",
-              "git_tag": "Git Tag",
-              "release_name": "Release Name",
-              "release_namespace": "Namespace",
-              "status": "Status"
             }
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "collapsed": true,
-      "gridPos": {
-        "h": 1,
-        "w": 24,
-        "x": 0,
-        "y": 16
-      },
-      "id": 5,
-      "panels": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
           },
-          "fieldConfig": {
-            "defaults": {
-              "color": {
-                "mode": "thresholds"
-              },
-              "custom": {
-                "align": "auto",
-                "cellOptions": {
-                  "type": "auto"
-                },
-                "filterable": true,
-                "footer": {
-                  "reducers": []
-                },
-                "inspect": false
-              },
-              "mappings": [],
-              "thresholds": {
-                "mode": "absolute",
-                "steps": [
-                  {
-                    "color": "green",
-                    "value": 0
-                  },
-                  {
-                    "color": "red",
-                    "value": 80
-                  }
-                ]
-              }
-            },
-            "overrides": [
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "last_modified"
-                },
-                "properties": [
-                  {
-                    "id": "unit",
-                    "value": "dateTimeAsIso"
-                  },
-                  {
-                    "id": "custom.width",
-                    "value": 154
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "deploy_job_url"
-                },
-                "properties": [
-                  {
-                    "id": "mappings",
-                    "value": [
-                      {
-                        "options": {
-                          "pattern": "https://.*",
-                          "result": {
-                            "index": 0,
-                            "text": "go to"
-                          }
-                        },
-                        "type": "regex"
-                      }
-                    ]
-                  },
-                  {
-                    "id": "links",
-                    "value": [
-                      {
-                        "targetBlank": true,
-                        "title": "${__value.raw}",
-                        "url": "${__value.raw}"
-                      }
-                    ]
-                  },
-                  {
-                    "id": "custom.width",
-                    "value": 139
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "helmfile_configuration_file"
-                },
-                "properties": [
-                  {
-                    "id": "mappings",
-                    "value": [
-                      {
-                        "options": {
-                          "pattern": "https://.*",
-                          "result": {
-                            "index": 0,
-                            "text": "go to"
-                          }
-                        },
-                        "type": "regex"
-                      }
-                    ]
-                  },
-                  {
-                    "id": "links",
-                    "value": [
-                      {
-                        "targetBlank": true,
-                        "title": "${__value.raw}",
-                        "url": "${__value.raw}"
-                      }
-                    ]
-                  },
-                  {
-                    "id": "custom.width",
-                    "value": 190
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "status"
-                },
-                "properties": [
-                  {
-                    "id": "custom.cellOptions",
-                    "value": {
-                      "type": "color-text"
-                    }
-                  },
-                  {
-                    "id": "mappings",
-                    "value": [
-                      {
-                        "options": {
-                          "deployed": {
-                            "color": "green",
-                            "index": 0
-                          },
-                          "failed": {
-                            "color": "red",
-                            "index": 1
-                          }
-                        },
-                        "type": "value"
-                      },
-                      {
-                        "options": {
-                          "pattern": ".*",
-                          "result": {
-                            "color": "orange",
-                            "index": 2
-                          }
-                        },
-                        "type": "regex"
-                      }
-                    ]
-                  },
-                  {
-                    "id": "custom.width",
-                    "value": 133
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Chart V"
-                },
-                "properties": [
-                  {
-                    "id": "thresholds",
-                    "value": {
-                      "mode": "absolute",
-                      "steps": [
-                        {
-                          "color": "green",
-                          "value": 0
-                        },
-                        {
-                          "color": "#EAB839",
-                          "value": ""
-                        },
-                        {
-                          "color": "red",
-                          "value": 80
+          {
+            "kind": "RowsLayoutRow",
+            "spec": {
+              "title": "Release Chart Dependencies",
+              "collapse": true,
+              "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                  "items": [
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 24,
+                        "height": 14,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-3"
                         }
-                      ]
+                      }
                     }
-                  },
-                  {
-                    "id": "custom.width",
-                    "value": 94
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "gitlab_ci_pipeline_url"
-                },
-                "properties": [
-                  {
-                    "id": "mappings",
-                    "value": [
-                      {
-                        "options": {
-                          "pattern": "https://.*",
-                          "result": {
-                            "index": 0,
-                            "text": "go to"
-                          }
-                        },
-                        "type": "regex"
-                      }
-                    ]
-                  },
-                  {
-                    "id": "links",
-                    "value": [
-                      {
-                        "targetBlank": true,
-                        "title": "${__value.raw}",
-                        "url": "${__value.raw}"
-                      }
-                    ]
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "chart_latest_version"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 147
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "latest_version"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 136
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "version"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 90
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "alias"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 141
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "cluster"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 138
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "release_namespace"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 189
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "release_name"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 187
-                  }
-                ]
-              },
-              {
-                "matcher": {
-                  "id": "byName",
-                  "options": "chart_name"
-                },
-                "properties": [
-                  {
-                    "id": "custom.width",
-                    "value": 245
-                  }
-                ]
-              }
-            ]
-          },
-          "gridPos": {
-            "h": 14,
-            "w": 24,
-            "x": 0,
-            "y": 17
-          },
-          "id": 3,
-          "options": {
-            "cellHeight": "sm",
-            "enablePagination": true,
-            "showHeader": true,
-            "sortBy": []
-          },
-          "pluginVersion": "12.2.1",
-          "targets": [
-            {
-              "datasource": {
-                "type": "prometheus",
-                "uid": "${datasource}"
-              },
-              "editorMode": "code",
-              "exemplar": false,
-              "expr": "cluster_manager_releases_chart_dependency{cluster=~\"$cluster\", release_namespace=~\"$namespace\", release_name=~\"$release\"}",
-              "format": "table",
-              "hide": false,
-              "instant": true,
-              "range": false,
-              "refId": "B"
-            }
-          ],
-          "title": "chart dependencies",
-          "transformations": [
-            {
-              "id": "organize",
-              "options": {
-                "excludeByName": {
-                  "Time": true,
-                  "Value": true,
-                  "__name__": true,
-                  "container": true,
-                  "endpoint": true,
-                  "instance": true,
-                  "job": true,
-                  "namespace": true,
-                  "pod": true,
-                  "prometheus": true,
-                  "prometheus_replica": true
-                },
-                "indexByName": {
-                  "Time": 0,
-                  "Value": 18,
-                  "__name__": 17,
-                  "alias": 5,
-                  "chart_name": 4,
-                  "cluster": 1,
-                  "container": 9,
-                  "endpoint": 10,
-                  "instance": 11,
-                  "job": 12,
-                  "latest_version": 7,
-                  "namespace": 13,
-                  "pod": 14,
-                  "prometheus": 15,
-                  "prometheus_replica": 16,
-                  "release_name": 3,
-                  "release_namespace": 2,
-                  "repository": 8,
-                  "version": 6
-                },
-                "renameByName": {
-                  "Value": ""
+                  ]
                 }
               }
             }
-          ],
-          "type": "table"
-        }
+          }
+        ]
+      }
+    },
+    "links": [],
+    "liveNow": false,
+    "preload": false,
+    "tags": [],
+    "timeSettings": {
+      "timezone": "browser",
+      "from": "now-1h",
+      "to": "now",
+      "autoRefresh": "30s",
+      "autoRefreshIntervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
       ],
-      "title": "Release Chart Dependencies",
-      "type": "row"
-    }
-  ],
-  "preload": false,
-  "refresh": "",
-  "schemaVersion": 42,
-  "tags": [],
-  "templating": {
-    "list": [
+      "hideTimepicker": true,
+      "fiscalYearStartMonth": 0
+    },
+    "title": "Helm releases",
+    "variables": [
       {
-        "allowCustomValue": false,
-        "current": {},
-        "name": "datasource",
-        "options": [],
-        "query": "prometheus",
-        "refresh": 1,
-        "regex": "",
-        "type": "datasource"
+        "kind": "DatasourceVariable",
+        "spec": {
+          "name": "datasource",
+          "pluginId": "prometheus",
+          "refresh": "onDashboardLoad",
+          "regex": "",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "hide": "dontHide",
+          "skipUrlSync": false,
+          "allowCustomValue": false
+        }
       },
       {
-        "baseFilters": [],
-        "datasource": {
-          "type": "prometheus",
-          "uid": "P5DCFC7561CCDE821"
+        "kind": "AdhocVariable",
+        "group": "prometheus",
+        "spec": {
+          "name": "Filters",
+          "baseFilters": [],
+          "filters": [],
+          "defaultKeys": [],
+          "hide": "hideLabel",
+          "skipUrlSync": false,
+          "allowCustomValue": true,
+          "enableGroupBy": false
         },
-        "filters": [],
-        "hide": 1,
-        "name": "Filters",
-        "type": "adhoc"
+        "labels": {
+          "grafana.app/export-label": "prometheus-1"
+        }
       },
       {
-        "current": {
-          "text": [
-            "All"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${datasource}"
-        },
-        "definition": "label_values(cluster_manager_releases_modified_at_timestamp, cluster)",
-        "description": "Kubernetes cluster",
-        "includeAll": true,
-        "multi": true,
-        "name": "cluster",
-        "options": [],
-        "query": {
-          "query": "label_values(cluster_manager_releases_modified_at_timestamp, cluster)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "type": "query"
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "cluster",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "description": "Kubernetes cluster",
+          "query": {
+            "kind": "DataQuery",
+            "group": "prometheus",
+            "version": "v0",
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "spec": {
+              "query": "label_values(cluster_manager_releases_modified_at_timestamp, cluster)",
+              "refId": "StandardVariableQuery"
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "label_values(cluster_manager_releases_modified_at_timestamp, cluster)",
+          "options": [],
+          "multi": true,
+          "includeAll": true,
+          "allowCustomValue": true
+        }
       },
       {
-        "allValue": ".*",
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${datasource}"
-        },
-        "definition": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\"}, chart_name)",
-        "description": "Helm Chart name",
-        "includeAll": true,
-        "label": "Helm Chart Name",
-        "name": "chart",
-        "options": [],
-        "query": {
-          "query": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\"}, chart_name)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "chart",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "label": "Helm Chart Name",
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "description": "Helm Chart name",
+          "query": {
+            "kind": "DataQuery",
+            "group": "prometheus",
+            "version": "v0",
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "spec": {
+              "query": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\"}, chart_name)",
+              "refId": "StandardVariableQuery"
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "alphabeticalAsc",
+          "definition": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\"}, chart_name)",
+          "options": [],
+          "multi": false,
+          "includeAll": true,
+          "allValue": ".*",
+          "allowCustomValue": true
+        }
       },
       {
-        "current": {
-          "text": "All",
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${datasource}"
-        },
-        "definition": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\"}, release_namespace)",
-        "includeAll": true,
-        "multi": true,
-        "name": "project",
-        "options": [],
-        "query": {
-          "query": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\"}, release_namespace)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "(\\w*)-.*",
-        "type": "query"
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "project",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "query": {
+            "kind": "DataQuery",
+            "group": "prometheus",
+            "version": "v0",
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "spec": {
+              "query": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\"}, release_namespace)",
+              "refId": "StandardVariableQuery"
+            }
+          },
+          "regex": "(\\w*)-.*",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\"}, release_namespace)",
+          "options": [],
+          "multi": true,
+          "includeAll": true,
+          "allowCustomValue": true
+        }
       },
       {
-        "current": {
-          "text": "All",
-          "value": [
-            "$__all"
-          ]
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${datasource}"
-        },
-        "definition": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\", release_namespace=~\"$project.*\"}, release_namespace)",
-        "description": "Kubernetes namespace",
-        "includeAll": true,
-        "multi": true,
-        "name": "namespace",
-        "options": [],
-        "query": {
-          "query": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\", release_namespace=~\"$project.*\"}, release_namespace)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "type": "query"
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "namespace",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "description": "Kubernetes namespace",
+          "query": {
+            "kind": "DataQuery",
+            "group": "prometheus",
+            "version": "v0",
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "spec": {
+              "query": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\", release_namespace=~\"$project.*\"}, release_namespace)",
+              "refId": "StandardVariableQuery"
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\", release_namespace=~\"$project.*\"}, release_namespace)",
+          "options": [],
+          "multi": true,
+          "includeAll": true,
+          "allowCustomValue": true
+        }
       },
       {
-        "current": {
-          "text": [
-            "$__all"
-          ],
-          "value": [
-            "$__all"
-          ]
-        },
-        "includeAll": true,
-        "label": "Environment Kind",
-        "multi": true,
-        "name": "type",
-        "options": [
-          {
-            "selected": false,
-            "text": "review",
-            "value": "review"
+        "kind": "CustomVariable",
+        "spec": {
+          "name": "type",
+          "query": "review,staging,acc,preprod,prod",
+          "current": {
+            "text": "All",
+            "value": [
+              "$__all"
+            ]
           },
-          {
-            "selected": false,
-            "text": "staging",
-            "value": "staging"
-          },
-          {
-            "selected": false,
-            "text": "acc",
-            "value": "acc"
-          },
-          {
-            "selected": false,
-            "text": "preprod",
-            "value": "preprod"
-          },
-          {
-            "selected": false,
-            "text": "prod",
-            "value": "prod"
-          }
-        ],
-        "query": "review,staging,acc,preprod,prod",
-        "type": "custom"
+          "options": [],
+          "multi": true,
+          "includeAll": true,
+          "label": "Environment Kind",
+          "hide": "dontHide",
+          "skipUrlSync": false,
+          "allowCustomValue": true,
+          "valuesFormat": "csv"
+        }
       },
       {
-        "current": {
-          "text": "All",
-          "value": "$__all"
-        },
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${datasource}"
-        },
-        "definition": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\", release_namespace=~\"$namespace\", chart_name=~\"$chart\"}, release_name)",
-        "description": "Helm release name",
-        "includeAll": true,
-        "multi": true,
-        "name": "release",
-        "options": [],
-        "query": {
-          "query": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\", release_namespace=~\"$namespace\", chart_name=~\"$chart\"}, release_name)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "release",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "description": "Helm release name",
+          "query": {
+            "kind": "DataQuery",
+            "group": "prometheus",
+            "version": "v0",
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "spec": {
+              "query": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\", release_namespace=~\"$namespace\", chart_name=~\"$chart\"}, release_name)",
+              "refId": "StandardVariableQuery"
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "alphabeticalAsc",
+          "definition": "label_values(cluster_manager_releases_modified_at_timestamp{cluster=~\"$cluster\", release_namespace=~\"$namespace\", chart_name=~\"$chart\"}, release_name)",
+          "options": [],
+          "multi": true,
+          "includeAll": true,
+          "allowCustomValue": true
+        }
       },
       {
-        "current": {
-          "text": [
-            "failed",
-            "pending-install",
-            "uninstalling"
-          ],
-          "value": [
-            "failed",
-            "pending-install",
-            "uninstalling"
-          ]
-        },
-        "includeAll": true,
-        "label": "Status",
-        "multi": true,
-        "name": "status",
-        "options": [
-          {
-            "selected": false,
-            "text": "deployed",
-            "value": "deployed"
+        "kind": "CustomVariable",
+        "spec": {
+          "name": "status",
+          "query": "deployed, failed, pending-install, uninstalling, -",
+          "current": {
+            "text": [
+              "failed",
+              "pending-install",
+              "uninstalling",
+              "deployed"
+            ],
+            "value": [
+              "failed",
+              "pending-install",
+              "uninstalling",
+              "deployed"
+            ]
           },
-          {
-            "selected": true,
-            "text": "failed",
-            "value": "failed"
-          },
-          {
-            "selected": true,
-            "text": "pending-install",
-            "value": "pending-install"
-          },
-          {
-            "selected": true,
-            "text": "uninstalling",
-            "value": "uninstalling"
-          },
-          {
-            "selected": false,
-            "text": "-",
-            "value": "-"
-          }
-        ],
-        "query": "deployed, failed, pending-install, uninstalling, -",
-        "type": "custom"
+          "options": [],
+          "multi": true,
+          "includeAll": true,
+          "label": "Status",
+          "hide": "dontHide",
+          "skipUrlSync": false,
+          "allowCustomValue": true,
+          "valuesFormat": "csv"
+        }
       }
     ]
-  },
-  "time": {
-    "from": "now-1h",
-    "to": "now"
-  },
-  "timepicker": {
-    "hidden": true
-  },
-  "timezone": "",
-  "title": "Helm releases",
-  "uid": "cT18hxZVz",
-  "version": 83
+  }
 }
