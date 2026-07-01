@@ -5,20 +5,20 @@
     "name": "cbzhlms",
     "namespace": "default",
     "uid": "09cf5e92-29c5-4aed-91df-0545e8610ead",
-    "resourceVersion": "1782895008894007",
-    "generation": 122,
+    "resourceVersion": "1782900058936983",
+    "generation": 124,
     "creationTimestamp": "2026-06-15T15:58:12Z",
     "labels": {
       "grafana.app/deprecatedInternalID": "3902224150614016"
     },
     "annotations": {
       "grafana.app/createdBy": "user:efdj2us0de8lce",
-      "grafana.app/folder": "8_hTKdLMk",
+      "grafana.app/folder": "wiremind-platform",
       "grafana.app/saved-from-ui": "Grafana v13.0.2 (3fcdbc5a)",
       "grafana.app/updatedBy": "user:efdj2us0de8lce",
-      "grafana.app/updatedTimestamp": "2026-07-01T08:36:48Z",
+      "grafana.app/updatedTimestamp": "2026-07-01T10:00:58Z",
       "grafana.app/folderTitle": "Wiremind - Platform Team",
-      "grafana.app/folderUrl": "/dashboards/f/8_hTKdLMk/wiremind-platform-team-wip"
+      "grafana.app/folderUrl": "/dashboards/f/wiremind-platform/wiremind-platform-team"
     }
   },
   "spec": {
