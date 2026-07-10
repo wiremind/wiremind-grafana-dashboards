@@ -1,838 +1,1348 @@
 {
-  "__inputs": [
-    {
-      "name": "DS_THANOS",
-      "label": "Thanos",
-      "description": "",
-      "type": "datasource",
-      "pluginId": "prometheus",
-      "pluginName": "Prometheus"
-    }
-  ],
-  "__elements": {},
-  "__requires": [
-    {
-      "type": "grafana",
-      "id": "grafana",
-      "name": "Grafana",
-      "version": "11.5.2"
-    },
-    {
-      "type": "datasource",
-      "id": "prometheus",
-      "name": "Prometheus",
-      "version": "1.0.0"
-    },
-    {
-      "type": "panel",
-      "id": "table",
-      "name": "Table",
-      "version": ""
-    },
-    {
-      "type": "panel",
-      "id": "text",
-      "name": "Text",
-      "version": ""
-    }
-  ],
-  "annotations": {
-    "list": [
-      {
-        "builtIn": 1,
-        "datasource": {
-          "type": "grafana",
-          "uid": "-- Grafana --"
-        },
-        "enable": true,
-        "hide": true,
-        "iconColor": "rgba(0, 211, 255, 1)",
-        "name": "Annotations & Alerts",
-        "target": {
-          "limit": 100,
-          "matchAny": false,
-          "tags": [],
-          "type": "dashboard"
-        },
-        "type": "dashboard"
-      }
-    ]
+  "apiVersion": "dashboard.grafana.app/v2",
+  "kind": "Dashboard",
+  "metadata": {
+    "name": "feh6yl03smfi8b",
+    "generation": 2,
+    "creationTimestamp": "2026-07-10T07:28:09Z",
+    "labels": {},
+    "annotations": {}
   },
-  "editable": true,
-  "fiscalYearStartMonth": 0,
-  "graphTooltip": 0,
-  "id": null,
-  "links": [],
-  "panels": [
-    {
-      "gridPos": {
-        "h": 4,
-        "w": 24,
-        "x": 0,
-        "y": 0
-      },
-      "id": 114,
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "This dashboards computes:\n- average for the last $range\n- average for $range from ${offset} ago\n- shows the difference.",
-        "mode": "markdown"
-      },
-      "pluginVersion": "11.5.2",
-      "type": "text"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "left",
-            "cellOptions": {
-              "type": "auto"
+  "spec": {
+    "annotations": [
+      {
+        "kind": "AnnotationQuery",
+        "spec": {
+          "query": {
+            "kind": "DataQuery",
+            "group": "grafana",
+            "version": "v0",
+            "spec": {
+              "limit": 100,
+              "matchAny": false,
+              "tags": [],
+              "type": "dashboard"
             },
-            "filterable": false,
-            "inspect": false
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "blue",
-                "value": -50
-              },
-              {
-                "color": "dark-green",
-                "value": -30
-              },
-              {
-                "color": "semi-dark-green",
-                "value": -15
-              },
-              {
-                "color": "green",
-                "value": -10
-              },
-              {
-                "color": "light-green",
-                "value": -10
-              },
-              {
-                "color": "super-light-green",
-                "value": 0
-              },
-              {
-                "color": "#EAB839",
-                "value": 10
-              },
-              {
-                "color": "orange",
-                "value": 15
-              },
-              {
-                "color": "red",
-                "value": 30
-              },
-              {
-                "color": "dark-red",
-                "value": 50
-              },
-              {
-                "color": "#ff0000",
-                "value": 100
-              }
-            ]
-          },
-          "unit": "cpu"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Increase"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-text"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 22,
-        "w": 4,
-        "x": 0,
-        "y": 4
-      },
-      "id": 113,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": true
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Increase"
-          }
-        ]
-      },
-      "pluginVersion": "11.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "(\n  sum by (label_product) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (label_product)\n\n  sum by (label_product) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)\n",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "{{namespace}}",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Request difference by product since $offset ago, avg for one week",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "Time": 0,
-              "Value": 3,
-              "label_product": 1,
-              "label_project": 2
-            },
-            "renameByName": {
-              "Value": "Increase",
-              "label_product": "Product",
-              "label_project": "Project"
+            "labels": {
+              "grafana.app/export-label": "grafana-1"
             }
-          }
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "builtIn": true
         }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "left",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": false,
-            "inspect": false
-          },
-          "decimals": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "blue",
-                "value": -50
-              },
-              {
-                "color": "dark-green",
-                "value": -30
-              },
-              {
-                "color": "semi-dark-green",
-                "value": -15
-              },
-              {
-                "color": "green",
-                "value": -10
-              },
-              {
-                "color": "light-green",
-                "value": -10
-              },
-              {
-                "color": "super-light-green",
-                "value": 0
-              },
-              {
-                "color": "#EAB839",
-                "value": 10
-              },
-              {
-                "color": "orange",
-                "value": 15
-              },
-              {
-                "color": "red",
-                "value": 30
-              },
-              {
-                "color": "dark-red",
-                "value": 50
-              },
-              {
-                "color": "#ff0000",
-                "value": 100
-              }
-            ]
-          },
-          "unit": "cpu"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Increase"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-text"
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 22,
-        "w": 6,
-        "x": 4,
-        "y": 4
-      },
-      "id": 111,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": true
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Increase"
-          }
-        ]
-      },
-      "pluginVersion": "11.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "(\n  sum by (label_product, label_project) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (label_product, label_project)\n\n  sum by (label_product, label_project) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)\n",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "{{namespace}}",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Request difference by project since $offset ago, avg for one week",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "Time": 0,
-              "Value": 3,
-              "label_product": 1,
-              "label_project": 2
-            },
-            "renameByName": {
-              "Value": "Increase",
-              "label_product": "Product",
-              "label_project": "Project"
-            }
-          }
-        },
-        {
-          "id": "filterByValue",
-          "options": {
-            "filters": [
-              {
-                "config": {
-                  "id": "equal",
-                  "options": {
-                    "value": ""
+      }
+    ],
+    "cursorSync": "Off",
+    "editable": true,
+    "elements": {
+      "panel-111": {
+        "kind": "Panel",
+        "spec": {
+          "id": 111,
+          "title": "Request difference by project since $offset ago, avg for one week",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "(\n  sum by (label_product, label_project) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (label_product, label_project)\n\n  sum by (label_product, label_project) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)\n",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{namespace}}",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
                   }
                 },
-                "fieldName": "Product"
-              }
-            ],
-            "match": "any",
-            "type": "exclude"
-          }
-        }
-      ],
-      "type": "table"
-    },
-    {
-      "datasource": {
-        "type": "prometheus",
-        "uid": "${datasource}"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "custom": {
-            "align": "left",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": true,
-            "inspect": false
-          },
-          "decimals": 0,
-          "fieldMinMax": false,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "blue",
-                "value": -50
-              },
-              {
-                "color": "dark-green",
-                "value": -30
-              },
-              {
-                "color": "semi-dark-green",
-                "value": -15
-              },
-              {
-                "color": "green",
-                "value": -10
-              },
-              {
-                "color": "light-green",
-                "value": -10
-              },
-              {
-                "color": "super-light-green",
-                "value": 0
-              },
-              {
-                "color": "#EAB839",
-                "value": 10
-              },
-              {
-                "color": "orange",
-                "value": 15
-              },
-              {
-                "color": "red",
-                "value": 30
-              },
-              {
-                "color": "dark-red",
-                "value": 50
-              },
-              {
-                "color": "#ff0000",
-                "value": 100
-              }
-            ]
-          },
-          "unit": "cpu"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Increase"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-text"
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "(\n  sum by (label_product, label_project) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_memory:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (label_product, label_project)\n\n  sum by (label_product, label_project) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_memory:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)\n",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{namespace}}",
+                        "range": false
+                      }
+                    },
+                    "refId": "B",
+                    "hidden": false
+                  }
                 }
-              }
-            ]
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "merge",
+                  "spec": {
+                    "options": {}
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Time": true
+                      },
+                      "includeByName": {},
+                      "indexByName": {
+                        "Time": 0,
+                        "Value #A": 3,
+                        "Value #B": 4,
+                        "label_product": 1,
+                        "label_project": 2
+                      },
+                      "renameByName": {
+                        "Value #A": "CPU Increase",
+                        "Value #B": "Memory Increase",
+                        "label_product": "Product",
+                        "label_project": "Project"
+                      }
+                    }
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "filterByValue",
+                  "spec": {
+                    "options": {
+                      "filters": [
+                        {
+                          "config": {
+                            "id": "equal",
+                            "options": {
+                              "value": ""
+                            }
+                          },
+                          "fieldName": "Product"
+                        }
+                      ],
+                      "match": "any",
+                      "type": "exclude"
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
           },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Namespace"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 241
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.1.0",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "CPU Increase"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "cpu",
+                  "decimals": 0,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": -50,
+                        "color": "blue"
+                      },
+                      {
+                        "value": -30,
+                        "color": "dark-green"
+                      },
+                      {
+                        "value": -15,
+                        "color": "semi-dark-green"
+                      },
+                      {
+                        "value": -10,
+                        "color": "green"
+                      },
+                      {
+                        "value": -10,
+                        "color": "light-green"
+                      },
+                      {
+                        "value": 0,
+                        "color": "super-light-green"
+                      },
+                      {
+                        "value": 10,
+                        "color": "#EAB839"
+                      },
+                      {
+                        "value": 15,
+                        "color": "orange"
+                      },
+                      {
+                        "value": 30,
+                        "color": "red"
+                      },
+                      {
+                        "value": 50,
+                        "color": "dark-red"
+                      },
+                      {
+                        "value": 100,
+                        "color": "#ff0000"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "left",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": false,
+                    "footer": {
+                      "reducers": [
+                        "sum"
+                      ]
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "CPU Increase"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-text"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Memory Increase"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-text"
+                        }
+                      },
+                      {
+                        "id": "unit",
+                        "value": "bytes"
+                      },
+                      {
+                        "id": "decimals",
+                        "value": 2
+                      },
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "green",
+                              "value": 0
+                            },
+                            {
+                              "color": "blue",
+                              "value": -53687091200
+                            },
+                            {
+                              "color": "dark-green",
+                              "value": -32212254720
+                            },
+                            {
+                              "color": "semi-dark-green",
+                              "value": -16106127360
+                            },
+                            {
+                              "color": "green",
+                              "value": -10737418240
+                            },
+                            {
+                              "color": "light-green",
+                              "value": -10737418240
+                            },
+                            {
+                              "color": "super-light-green",
+                              "value": 0
+                            },
+                            {
+                              "color": "#EAB839",
+                              "value": 10737418240
+                            },
+                            {
+                              "color": "orange",
+                              "value": 16106127360
+                            },
+                            {
+                              "color": "red",
+                              "value": 32212254720
+                            },
+                            {
+                              "color": "dark-red",
+                              "value": 53687091200
+                            },
+                            {
+                              "color": "#ff0000",
+                              "value": 107374182400
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ]
               }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Project"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 106
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Cluster"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 171
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Product"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 106
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Client"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 168
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Env Kind"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 102
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "h": 22,
-        "w": 14,
-        "x": 10,
-        "y": 4
-      },
-      "id": 112,
-      "options": {
-        "cellHeight": "sm",
-        "footer": {
-          "countRows": false,
-          "fields": "",
-          "reducer": [
-            "sum"
-          ],
-          "show": true
-        },
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Increase"
-          }
-        ]
-      },
-      "pluginVersion": "11.5.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "(\n  (\n    kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (cluster, namespace, label_product, label_project, label_client, label_environment_kind)\n\n  (\n    kube_namespace_labels{label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "{{namespace}}",
-          "range": false,
-          "refId": "A"
-        }
-      ],
-      "title": "Request difference between now and $offset ago, avg for one week",
-      "transformations": [
-        {
-          "id": "organize",
-          "options": {
-            "excludeByName": {
-              "Time": true
-            },
-            "includeByName": {},
-            "indexByName": {
-              "Time": 0,
-              "Value": 7,
-              "cluster": 1,
-              "label_client": 4,
-              "label_environment_kind": 5,
-              "label_product": 2,
-              "label_project": 3,
-              "namespace": 6
-            },
-            "renameByName": {
-              "Value": "Increase",
-              "cluster": "Cluster",
-              "label_client": "Client",
-              "label_environment_kind": "Env Kind",
-              "label_product": "Product",
-              "label_project": "Project",
-              "namespace": "Namespace"
             }
           }
         }
-      ],
-      "type": "table"
-    }
-  ],
-  "refresh": "",
-  "schemaVersion": 40,
-  "tags": [],
-  "templating": {
-    "list": [
-      {
-        "current": {},
-        "includeAll": false,
-        "label": "Data Source",
-        "name": "datasource",
-        "options": [],
-        "query": "prometheus",
-        "refresh": 1,
-        "regex": "",
-        "type": "datasource"
       },
-      {
-        "allValue": ".*",
-        "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${datasource}"
-        },
-        "definition": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"}, cluster)",
-        "includeAll": true,
-        "label": "Cluster",
-        "name": "cluster",
-        "options": [],
-        "query": {
-          "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"}, cluster)",
-          "refId": "StandardVariableQuery"
-        },
-        "refresh": 2,
-        "regex": "",
-        "type": "query"
+      "panel-112": {
+        "kind": "Panel",
+        "spec": {
+          "id": 112,
+          "title": "Request difference between now and $offset ago, avg for one week",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "(\n  (\n    kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (cluster, namespace, label_product, label_project, label_client, label_environment_kind)\n\n  (\n    kube_namespace_labels{label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{namespace}}",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "(\n  (\n    kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n      avg_over_time(\n          namespace_memory:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (cluster, namespace, label_product, label_project, label_client, label_environment_kind)\n\n  (\n    kube_namespace_labels{label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_product, label_project, label_client) (\n      avg_over_time(\n          namespace_memory:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{namespace}}",
+                        "range": false
+                      }
+                    },
+                    "refId": "B",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "merge",
+                  "spec": {
+                    "options": {}
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Time": true
+                      },
+                      "includeByName": {},
+                      "indexByName": {
+                        "Time": 0,
+                        "Value #A": 7,
+                        "Value #B": 8,
+                        "cluster": 1,
+                        "label_client": 4,
+                        "label_environment_kind": 5,
+                        "label_product": 2,
+                        "label_project": 3,
+                        "namespace": 6
+                      },
+                      "renameByName": {
+                        "Value #A": "CPU Increase",
+                        "Value #B": "Memory Increase",
+                        "cluster": "Cluster",
+                        "label_client": "Client",
+                        "label_environment_kind": "Env Kind",
+                        "label_product": "Product",
+                        "label_project": "Project",
+                        "namespace": "Namespace"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.1.0",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "CPU Increase"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "cpu",
+                  "decimals": 0,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": -50,
+                        "color": "blue"
+                      },
+                      {
+                        "value": -30,
+                        "color": "dark-green"
+                      },
+                      {
+                        "value": -15,
+                        "color": "semi-dark-green"
+                      },
+                      {
+                        "value": -10,
+                        "color": "green"
+                      },
+                      {
+                        "value": -10,
+                        "color": "light-green"
+                      },
+                      {
+                        "value": 0,
+                        "color": "super-light-green"
+                      },
+                      {
+                        "value": 10,
+                        "color": "#EAB839"
+                      },
+                      {
+                        "value": 15,
+                        "color": "orange"
+                      },
+                      {
+                        "value": 30,
+                        "color": "red"
+                      },
+                      {
+                        "value": 50,
+                        "color": "dark-red"
+                      },
+                      {
+                        "value": 100,
+                        "color": "#ff0000"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "left",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": true,
+                    "footer": {
+                      "reducers": [
+                        "sum"
+                      ]
+                    },
+                    "inspect": false
+                  },
+                  "fieldMinMax": false
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "CPU Increase"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-text"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Memory Increase"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-text"
+                        }
+                      },
+                      {
+                        "id": "unit",
+                        "value": "bytes"
+                      },
+                      {
+                        "id": "decimals",
+                        "value": 2
+                      },
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "green",
+                              "value": 0
+                            },
+                            {
+                              "color": "blue",
+                              "value": -53687091200
+                            },
+                            {
+                              "color": "dark-green",
+                              "value": -32212254720
+                            },
+                            {
+                              "color": "semi-dark-green",
+                              "value": -16106127360
+                            },
+                            {
+                              "color": "green",
+                              "value": -10737418240
+                            },
+                            {
+                              "color": "light-green",
+                              "value": -10737418240
+                            },
+                            {
+                              "color": "super-light-green",
+                              "value": 0
+                            },
+                            {
+                              "color": "#EAB839",
+                              "value": 10737418240
+                            },
+                            {
+                              "color": "orange",
+                              "value": 16106127360
+                            },
+                            {
+                              "color": "red",
+                              "value": 32212254720
+                            },
+                            {
+                              "color": "dark-red",
+                              "value": 53687091200
+                            },
+                            {
+                              "color": "#ff0000",
+                              "value": 107374182400
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Namespace"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 241
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Project"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 106
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Cluster"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 171
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Product"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 106
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Client"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 168
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Env Kind"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.width",
+                        "value": 102
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
-      {
-        "allValue": ".*",
-        "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${datasource}"
-        },
-        "definition": "label_values(kube_namespace_labels,label_product)",
-        "includeAll": true,
-        "label": "Product",
-        "name": "product",
-        "options": [],
-        "query": {
-          "qryType": 1,
-          "query": "label_values(kube_namespace_labels,label_product)",
-          "refId": "PrometheusVariableQueryEditor-VariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "type": "query"
+      "panel-113": {
+        "kind": "Panel",
+        "spec": {
+          "id": 113,
+          "title": "Request difference by product since $offset ago, avg for one week",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "(\n  sum by (label_product) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (label_product)\n\n  sum by (label_product) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)\n",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{namespace}}",
+                        "range": false
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "(\n  sum by (label_product) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_memory:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h]\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n\n  - on (label_product)\n\n  sum by (label_product) (\n    kube_namespace_labels{label_project=~\"$project\", label_product=~\"$product\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"} * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client) (\n      avg_over_time(\n          namespace_memory:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\", namespace=~\"$namespace\"}[$range:1h] offset $offset\n      )\n      or sum by (cluster, namespace, prometheus, prometheus_replica) (kube_namespace_labels{cluster=~\"$cluster\", namespace=~\"$namespace\"} * 0)\n    )\n  )\n)\n",
+                        "format": "table",
+                        "instant": true,
+                        "legendFormat": "{{namespace}}",
+                        "range": false
+                      }
+                    },
+                    "refId": "B",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "merge",
+                  "spec": {
+                    "options": {}
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Time": true
+                      },
+                      "includeByName": {},
+                      "indexByName": {
+                        "Time": 0,
+                        "Value #A": 2,
+                        "Value #B": 3,
+                        "label_product": 1
+                      },
+                      "renameByName": {
+                        "Value #A": "CPU Increase",
+                        "Value #B": "Memory Increase",
+                        "label_product": "Product"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.1.0",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "CPU Increase"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "cpu",
+                  "decimals": 0,
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "value": 0,
+                        "color": "green"
+                      },
+                      {
+                        "value": -50,
+                        "color": "blue"
+                      },
+                      {
+                        "value": -30,
+                        "color": "dark-green"
+                      },
+                      {
+                        "value": -15,
+                        "color": "semi-dark-green"
+                      },
+                      {
+                        "value": -10,
+                        "color": "green"
+                      },
+                      {
+                        "value": -10,
+                        "color": "light-green"
+                      },
+                      {
+                        "value": 0,
+                        "color": "super-light-green"
+                      },
+                      {
+                        "value": 10,
+                        "color": "#EAB839"
+                      },
+                      {
+                        "value": 15,
+                        "color": "orange"
+                      },
+                      {
+                        "value": 30,
+                        "color": "red"
+                      },
+                      {
+                        "value": 50,
+                        "color": "dark-red"
+                      },
+                      {
+                        "value": 100,
+                        "color": "#ff0000"
+                      }
+                    ]
+                  },
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "custom": {
+                    "align": "left",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": false,
+                    "footer": {
+                      "reducers": [
+                        "sum"
+                      ]
+                    },
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "CPU Increase"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-text"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Memory Increase"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-text"
+                        }
+                      },
+                      {
+                        "id": "unit",
+                        "value": "bytes"
+                      },
+                      {
+                        "id": "decimals",
+                        "value": 2
+                      },
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "green",
+                              "value": 0
+                            },
+                            {
+                              "color": "blue",
+                              "value": -53687091200
+                            },
+                            {
+                              "color": "dark-green",
+                              "value": -32212254720
+                            },
+                            {
+                              "color": "semi-dark-green",
+                              "value": -16106127360
+                            },
+                            {
+                              "color": "green",
+                              "value": -10737418240
+                            },
+                            {
+                              "color": "light-green",
+                              "value": -10737418240
+                            },
+                            {
+                              "color": "super-light-green",
+                              "value": 0
+                            },
+                            {
+                              "color": "#EAB839",
+                              "value": 10737418240
+                            },
+                            {
+                              "color": "orange",
+                              "value": 16106127360
+                            },
+                            {
+                              "color": "red",
+                              "value": 32212254720
+                            },
+                            {
+                              "color": "dark-red",
+                              "value": 53687091200
+                            },
+                            {
+                              "color": "#ff0000",
+                              "value": 107374182400
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
       },
-      {
-        "allValue": ".*",
-        "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${datasource}"
-        },
-        "definition": "label_values(kube_namespace_labels,label_project)",
-        "includeAll": true,
-        "label": "Project",
-        "name": "project",
-        "options": [],
-        "query": {
-          "qryType": 1,
-          "query": "label_values(kube_namespace_labels,label_project)",
-          "refId": "PrometheusVariableQueryEditor-VariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "type": "query"
-      },
-      {
-        "allValue": ".*",
-        "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${datasource}"
-        },
-        "definition": "label_values(kube_namespace_labels,label_environment_kind)",
-        "includeAll": true,
-        "label": "Environment Kind",
-        "name": "kind",
-        "options": [],
-        "query": {
-          "qryType": 1,
-          "query": "label_values(kube_namespace_labels,label_environment_kind)",
-          "refId": "PrometheusVariableQueryEditor-VariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "type": "query"
-      },
-      {
-        "current": {},
-        "datasource": {
-          "type": "prometheus",
-          "uid": "${datasource}"
-        },
-        "definition": "label_values(kube_namespace_created{cluster=~\"$cluster\"},namespace)",
-        "description": "",
-        "includeAll": true,
-        "multi": true,
-        "name": "namespace",
-        "options": [],
-        "query": {
-          "qryType": 1,
-          "query": "label_values(kube_namespace_created{cluster=~\"$cluster\"},namespace)",
-          "refId": "PrometheusVariableQueryEditor-VariableQuery"
-        },
-        "refresh": 1,
-        "regex": "",
-        "sort": 1,
-        "type": "query"
-      },
-      {
-        "current": {
-          "text": "4w",
-          "value": "4w"
-        },
-        "description": "Compares current average from \"$offset time ago\" average",
-        "label": "Offset",
-        "name": "offset",
-        "options": [
+      "panel-114": {
+        "kind": "Panel",
+        "spec": {
+          "id": 114,
+          "title": "",
+          "description": "",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "text",
+            "version": "13.1.0",
+            "spec": {
+              "options": {
+                "code": {
+                  "language": "plaintext",
+                  "showLineNumbers": false,
+                  "showMiniMap": false
+                },
+                "content": "This dashboards computes, for both CPU and memory requests:\n- average for the last $range\n- average for $range from ${offset} ago\n- shows the difference.",
+                "mode": "markdown"
+              },
+              "fieldConfig": {
+                "defaults": {},
+                "overrides": []
+              }
+            }
+          }
+        }
+      }
+    },
+    "layout": {
+      "kind": "GridLayout",
+      "spec": {
+        "items": [
           {
-            "selected": true,
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 0,
+              "width": 24,
+              "height": 4,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-114"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 4,
+              "width": 7,
+              "height": 22,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-113"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 7,
+              "y": 4,
+              "width": 9,
+              "height": 22,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-111"
+              }
+            }
+          },
+          {
+            "kind": "GridLayoutItem",
+            "spec": {
+              "x": 0,
+              "y": 26,
+              "width": 24,
+              "height": 22,
+              "element": {
+                "kind": "ElementReference",
+                "name": "panel-112"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "links": [],
+    "liveNow": false,
+    "preload": false,
+    "tags": [],
+    "timeSettings": {
+      "timezone": "browser",
+      "from": "now-24h",
+      "to": "now",
+      "autoRefresh": "",
+      "autoRefreshIntervals": [
+        "5s",
+        "10s",
+        "30s",
+        "1m",
+        "5m",
+        "15m",
+        "30m",
+        "1h",
+        "2h",
+        "1d"
+      ],
+      "hideTimepicker": true,
+      "fiscalYearStartMonth": 0
+    },
+    "title": "FinOps - Cluster CPU & Memory Requests Evolution",
+    "variables": [
+      {
+        "kind": "DatasourceVariable",
+        "spec": {
+          "name": "datasource",
+          "pluginId": "prometheus",
+          "refresh": "onDashboardLoad",
+          "regex": "",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "options": [],
+          "multi": false,
+          "includeAll": false,
+          "label": "Data Source",
+          "hide": "dontHide",
+          "skipUrlSync": false,
+          "allowCustomValue": true
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "cluster",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "label": "Cluster",
+          "hide": "dontHide",
+          "refresh": "onTimeRangeChanged",
+          "skipUrlSync": false,
+          "query": {
+            "kind": "DataQuery",
+            "group": "prometheus",
+            "version": "v0",
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "spec": {
+              "query": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"}, cluster)",
+              "refId": "StandardVariableQuery"
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"}, cluster)",
+          "options": [],
+          "multi": false,
+          "includeAll": true,
+          "allValue": ".*",
+          "allowCustomValue": true
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "product",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "label": "Product",
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "query": {
+            "kind": "DataQuery",
+            "group": "prometheus",
+            "version": "v0",
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "spec": {
+              "qryType": 1,
+              "query": "label_values(kube_namespace_labels,label_product)",
+              "refId": "PrometheusVariableQueryEditor-VariableQuery"
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "label_values(kube_namespace_labels,label_product)",
+          "options": [],
+          "multi": false,
+          "includeAll": true,
+          "allValue": ".*",
+          "allowCustomValue": true
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "project",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "label": "Project",
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "query": {
+            "kind": "DataQuery",
+            "group": "prometheus",
+            "version": "v0",
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "spec": {
+              "qryType": 1,
+              "query": "label_values(kube_namespace_labels,label_project)",
+              "refId": "PrometheusVariableQueryEditor-VariableQuery"
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "label_values(kube_namespace_labels,label_project)",
+          "options": [],
+          "multi": false,
+          "includeAll": true,
+          "allValue": ".*",
+          "allowCustomValue": true
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "kind",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "label": "Environment Kind",
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "query": {
+            "kind": "DataQuery",
+            "group": "prometheus",
+            "version": "v0",
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "spec": {
+              "qryType": 1,
+              "query": "label_values(kube_namespace_labels,label_environment_kind)",
+              "refId": "PrometheusVariableQueryEditor-VariableQuery"
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "disabled",
+          "definition": "label_values(kube_namespace_labels,label_environment_kind)",
+          "options": [],
+          "multi": false,
+          "includeAll": true,
+          "allValue": ".*",
+          "allowCustomValue": true
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "namespace",
+          "current": {
+            "text": "",
+            "value": ""
+          },
+          "hide": "dontHide",
+          "refresh": "onDashboardLoad",
+          "skipUrlSync": false,
+          "query": {
+            "kind": "DataQuery",
+            "group": "prometheus",
+            "version": "v0",
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "spec": {
+              "qryType": 1,
+              "query": "label_values(kube_namespace_created{cluster=~\"$cluster\"},namespace)",
+              "refId": "PrometheusVariableQueryEditor-VariableQuery"
+            }
+          },
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "alphabeticalAsc",
+          "definition": "label_values(kube_namespace_created{cluster=~\"$cluster\"},namespace)",
+          "options": [],
+          "multi": true,
+          "includeAll": true,
+          "allowCustomValue": true
+        }
+      },
+      {
+        "kind": "TextVariable",
+        "spec": {
+          "name": "offset",
+          "current": {
             "text": "4w",
             "value": "4w"
-          }
-        ],
-        "query": "4w",
-        "type": "textbox"
+          },
+          "query": "4w",
+          "label": "Offset",
+          "hide": "dontHide",
+          "skipUrlSync": false,
+          "description": "Compares current average from \"$offset time ago\" average"
+        }
       },
       {
-        "current": {
-          "text": "7d",
-          "value": "7d"
-        },
-        "description": "Window to which calculate the average. Decrease to have more precise value for specific time",
-        "label": "Range",
-        "name": "range",
-        "options": [
-          {
-            "selected": true,
+        "kind": "TextVariable",
+        "spec": {
+          "name": "range",
+          "current": {
             "text": "7d",
             "value": "7d"
-          }
-        ],
-        "query": "7d",
-        "type": "textbox"
+          },
+          "query": "7d",
+          "label": "Range",
+          "hide": "dontHide",
+          "skipUrlSync": false,
+          "description": "Window to which calculate the average. Decrease to have more precise value for specific time"
+        }
       }
     ]
-  },
-  "time": {
-    "from": "now-24h",
-    "to": "now"
-  },
-  "timepicker": {
-    "hidden": true
-  },
-  "timezone": "",
-  "title": "FinOps - Cluster CPU Requests Evolution",
-  "uid": "feh6yl03smfi8b",
-  "version": 18,
-  "weekStart": ""
+  }
 }
