@@ -2126,7 +2126,7 @@
   },
   "time": {
     "from": "now-7d",
-    "to": "now"
+    "to": "now+1d"
   },
   "timepicker": {},
   "timezone": "browser",
