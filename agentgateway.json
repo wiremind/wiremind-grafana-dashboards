@@ -259,7 +259,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (gen_ai_token_type) (increase(agentgateway_gen_ai_client_token_usage_sum{cluster=~\"$cluster\",namespace=~\"$namespace\"}[$__interval]))",
+          "expr": "sum by (gen_ai_token_type) (increase(agentgateway_gen_ai_client_token_usage_sum{cluster=~\"$cluster\",namespace=~\"$namespace\"}[$__interval] offset -$__interval))",
           "legendFormat": "{{gen_ai_token_type}}",
           "range": true,
           "refId": "A"
@@ -353,7 +353,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (namespace) (increase(agentgateway_gen_ai_client_token_usage_sum{cluster=~\"$cluster\",namespace=~\"$namespace\"}[$__interval]))",
+          "expr": "sum by (namespace) (increase(agentgateway_gen_ai_client_token_usage_sum{cluster=~\"$cluster\",namespace=~\"$namespace\"}[$__interval] offset -$__interval))",
           "legendFormat": "{{namespace}}",
           "range": true,
           "refId": "A"
@@ -447,7 +447,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (gen_ai_request_model) (increase(agentgateway_gen_ai_client_token_usage_sum{cluster=~\"$cluster\",namespace=~\"$namespace\"}[$__interval]))",
+          "expr": "sum by (gen_ai_request_model) (increase(agentgateway_gen_ai_client_token_usage_sum{cluster=~\"$cluster\",namespace=~\"$namespace\"}[$__interval] offset -$__interval))",
           "legendFormat": "{{gen_ai_request_model}}",
           "range": true,
           "refId": "A"
@@ -541,7 +541,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (namespace,gen_ai_request_model) (increase(agentgateway_gen_ai_server_request_duration_count{cluster=~\"$cluster\",namespace=~\"$namespace\"}[$__interval]))",
+          "expr": "sum by (namespace,gen_ai_request_model) (increase(agentgateway_gen_ai_server_request_duration_count{cluster=~\"$cluster\",namespace=~\"$namespace\"}[$__interval] offset -$__interval))",
           "legendFormat": "{{namespace}} {{gen_ai_request_model}}",
           "range": true,
           "refId": "A"
@@ -711,7 +711,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sum by (namespace,workflow) (increase(agentgateway_gen_ai_client_token_usage_sum{cluster=~\"$cluster\",namespace=~\"$namespace\"}[$__interval]))",
+          "expr": "sum by (namespace,workflow) (increase(agentgateway_gen_ai_client_token_usage_sum{cluster=~\"$cluster\",namespace=~\"$namespace\"}[$__interval] offset -$__interval))",
           "legendFormat": "{{namespace}} {{workflow}}",
           "range": true,
           "refId": "A"
@@ -2126,7 +2126,7 @@
   },
   "time": {
     "from": "now-7d",
-    "to": "now"
+    "to": "now+1d"
   },
   "timepicker": {},
   "timezone": "browser",
