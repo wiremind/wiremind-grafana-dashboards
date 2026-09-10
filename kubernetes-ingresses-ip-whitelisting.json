@@ -1,0 +1,760 @@
+{
+  "uid": "kubernetes-ingresses-ip-whitelisting",
+  "title": "Kubernetes Ingresses IP whitelisting",
+  "description": "Live inventory of Ingress IP allowlists (ingress-nginx whitelist-source-range and haproxy-ingress allowlist-source-range). Source: kube-state-metrics kube_ingress_annotations (metricAnnotationsAllowList).",
+  "tags": [
+    "kubernetes",
+    "ingress",
+    "security"
+  ],
+  "editable": true,
+  "graphTooltip": 0,
+  "schemaVersion": 39,
+  "version": 1,
+  "style": "dark",
+  "time": {
+    "from": "now-1h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "refresh": "5m",
+  "liveNow": false,
+  "fiscalYearStartMonth": 0,
+  "weekStart": "",
+  "annotations": {
+    "list": []
+  },
+  "links": [
+    {
+      "title": "Ingresses URLs",
+      "type": "dashboards",
+      "tags": [],
+      "url": "/d/ee08jxww78ni8e",
+      "asDropdown": false,
+      "targetBlank": false
+    }
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "datasource",
+        "label": "Datasource",
+        "type": "datasource",
+        "query": "prometheus",
+        "refresh": 1,
+        "current": {},
+        "options": [],
+        "regex": "",
+        "allowCustomValue": false
+      },
+      {
+        "name": "cluster",
+        "label": "Cluster",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(kube_ingress_info, cluster)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_ingress_info, cluster)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "includeAll": true,
+        "multi": true,
+        "allValue": ".*",
+        "current": {},
+        "options": [],
+        "regex": "",
+        "sort": 1
+      },
+      {
+        "name": "namespace",
+        "label": "Namespace",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(kube_ingress_info{cluster=~\"$cluster\"}, namespace)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_ingress_info{cluster=~\"$cluster\"}, namespace)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "includeAll": true,
+        "multi": true,
+        "allValue": ".*",
+        "current": {},
+        "options": [],
+        "regex": "",
+        "sort": 1
+      },
+      {
+        "name": "vpn_ip_1",
+        "label": "VPN IP 1",
+        "type": "textbox",
+        "query": "185.144.24.60",
+        "current": {
+          "text": "185.144.24.60",
+          "value": "185.144.24.60"
+        },
+        "options": [],
+        "description": "Regex fragment. Both VPN IPs must appear in the allowlist for the VPN panel."
+      },
+      {
+        "name": "vpn_ip_2",
+        "label": "VPN IP 2",
+        "type": "textbox",
+        "query": "195.184.253.60",
+        "current": {
+          "text": "195.184.253.60",
+          "value": "195.184.253.60"
+        },
+        "options": [],
+        "description": "Regex fragment. Both VPN IPs must appear in the allowlist for the VPN panel."
+      }
+    ]
+  },
+  "panels": [
+    {
+      "type": "stat",
+      "title": "Ingresses",
+      "description": "All Ingress objects in scope.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 0,
+        "y": 0
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "text"
+          },
+          "unit": "none",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "count(kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"})",
+          "instant": true,
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "id": 1
+    },
+    {
+      "type": "stat",
+      "title": "With IP allowlist",
+      "description": "Ingress with a non-empty whitelist-source-range / allowlist-source-range annotation.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          },
+          "unit": "none",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "count((kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range!=\"\"} or kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range!=\"\"}))",
+          "instant": true,
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "id": 2
+    },
+    {
+      "type": "stat",
+      "title": "Without IP allowlist",
+      "description": "Ingress with no IP allowlist annotation.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 12,
+        "y": 0
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "orange"
+          },
+          "unit": "none",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "count(kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"} unless on(cluster, namespace, ingress) (kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range!=\"\"} or kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range!=\"\"}))",
+          "instant": true,
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "id": 3
+    },
+    {
+      "type": "stat",
+      "title": "Allowlisting the VPN",
+      "description": "Ingress whose allowlist contains both $vpn_ip_1 and $vpn_ip_2.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 4,
+        "w": 6,
+        "x": 18,
+        "y": 0
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "colorMode": "value",
+        "graphMode": "none",
+        "textMode": "value"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          },
+          "unit": "none",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "count((kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range=~\".*(${vpn_ip_1}).*\"} and kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range=~\".*(${vpn_ip_2}).*\"}) or (kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range=~\".*(${vpn_ip_1}).*\"} and kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range=~\".*(${vpn_ip_2}).*\"}))",
+          "instant": true,
+          "range": false,
+          "refId": "A"
+        }
+      ],
+      "id": 4
+    },
+    {
+      "type": "table",
+      "title": "Ingresses allowlisting the VPN ($vpn_ip_1 and $vpn_ip_2)",
+      "description": "Allowlist contains both VPN IPs. It may also contain other IPs: read the allowlist column.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": true,
+          "reducer": [
+            "count"
+          ],
+          "fields": "",
+          "countRows": true
+        },
+        "sortBy": [
+          {
+            "displayName": "Namespace",
+            "desc": false
+          }
+        ]
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "Allowlist.*"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto",
+                  "wrapText": true
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 520
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Class"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 190
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cluster"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 190
+              }
+            ]
+          }
+        ]
+      },
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "__name__": true,
+              "job": true,
+              "instance": true,
+              "container": true,
+              "endpoint": true,
+              "pod": true,
+              "service": true,
+              "prometheus": true,
+              "prometheus_replica": true,
+              "uid": true
+            },
+            "indexByName": {
+              "cluster": 0,
+              "namespace": 1,
+              "ingress": 2,
+              "ingressclass": 3,
+              "host": 4,
+              "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": 5,
+              "annotation_haproxy_ingress_github_io_allowlist_source_range": 6
+            },
+            "renameByName": {
+              "cluster": "Cluster",
+              "namespace": "Namespace",
+              "ingress": "Ingress",
+              "ingressclass": "Class",
+              "host": "Host",
+              "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": "Allowlist (ingress-nginx)",
+              "annotation_haproxy_ingress_github_io_allowlist_source_range": "Allowlist (haproxy-ingress)"
+            }
+          }
+        }
+      ],
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "count by (cluster, namespace, ingress, ingressclass, host, annotation_nginx_ingress_kubernetes_io_whitelist_source_range, annotation_haproxy_ingress_github_io_allowlist_source_range) (kube_ingress_path{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(ingressclass) kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(annotation_nginx_ingress_kubernetes_io_whitelist_source_range, annotation_haproxy_ingress_github_io_allowlist_source_range) ((kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range=~\".*(${vpn_ip_1}).*\"} and kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range=~\".*(${vpn_ip_2}).*\"}) or (kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range=~\".*(${vpn_ip_1}).*\"} and kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range=~\".*(${vpn_ip_2}).*\"})))",
+          "instant": true,
+          "range": false,
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "id": 5
+    },
+    {
+      "type": "table",
+      "title": "Ingresses with an IP allowlist",
+      "description": "One row per host. The allowlist column is the raw annotation value.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 14,
+        "w": 24,
+        "x": 0,
+        "y": 14
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": true,
+          "reducer": [
+            "count"
+          ],
+          "fields": "",
+          "countRows": true
+        },
+        "sortBy": [
+          {
+            "displayName": "Namespace",
+            "desc": false
+          }
+        ]
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "Allowlist.*"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto",
+                  "wrapText": true
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 520
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Class"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 190
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cluster"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 190
+              }
+            ]
+          }
+        ]
+      },
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "__name__": true,
+              "job": true,
+              "instance": true,
+              "container": true,
+              "endpoint": true,
+              "pod": true,
+              "service": true,
+              "prometheus": true,
+              "prometheus_replica": true,
+              "uid": true
+            },
+            "indexByName": {
+              "cluster": 0,
+              "namespace": 1,
+              "ingress": 2,
+              "ingressclass": 3,
+              "host": 4,
+              "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": 5,
+              "annotation_haproxy_ingress_github_io_allowlist_source_range": 6
+            },
+            "renameByName": {
+              "cluster": "Cluster",
+              "namespace": "Namespace",
+              "ingress": "Ingress",
+              "ingressclass": "Class",
+              "host": "Host",
+              "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": "Allowlist (ingress-nginx)",
+              "annotation_haproxy_ingress_github_io_allowlist_source_range": "Allowlist (haproxy-ingress)"
+            }
+          }
+        }
+      ],
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "count by (cluster, namespace, ingress, ingressclass, host, annotation_nginx_ingress_kubernetes_io_whitelist_source_range, annotation_haproxy_ingress_github_io_allowlist_source_range) (kube_ingress_path{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(ingressclass) kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(annotation_nginx_ingress_kubernetes_io_whitelist_source_range, annotation_haproxy_ingress_github_io_allowlist_source_range) ((kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range!=\"\"} or kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range!=\"\"})))",
+          "instant": true,
+          "range": false,
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "id": 6
+    },
+    {
+      "type": "table",
+      "title": "Ingresses without IP allowlist",
+      "description": "One row per host. No whitelist-source-range / allowlist-source-range annotation.",
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "gridPos": {
+        "h": 18,
+        "w": 24,
+        "x": 0,
+        "y": 28
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": true,
+          "reducer": [
+            "count"
+          ],
+          "fields": "",
+          "countRows": true
+        },
+        "sortBy": [
+          {
+            "displayName": "Namespace",
+            "desc": false
+          }
+        ]
+      },
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": true
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byRegexp",
+              "options": "Allowlist.*"
+            },
+            "properties": [
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "auto",
+                  "wrapText": true
+                }
+              },
+              {
+                "id": "custom.width",
+                "value": 520
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Class"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 190
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Cluster"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 190
+              }
+            ]
+          }
+        ]
+      },
+      "transformations": [
+        {
+          "id": "organize",
+          "options": {
+            "excludeByName": {
+              "Time": true,
+              "Value": true,
+              "__name__": true,
+              "job": true,
+              "instance": true,
+              "container": true,
+              "endpoint": true,
+              "pod": true,
+              "service": true,
+              "prometheus": true,
+              "prometheus_replica": true,
+              "uid": true,
+              "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": true,
+              "annotation_haproxy_ingress_github_io_allowlist_source_range": true
+            },
+            "indexByName": {
+              "cluster": 0,
+              "namespace": 1,
+              "ingress": 2,
+              "ingressclass": 3,
+              "host": 4,
+              "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": 5,
+              "annotation_haproxy_ingress_github_io_allowlist_source_range": 6
+            },
+            "renameByName": {
+              "cluster": "Cluster",
+              "namespace": "Namespace",
+              "ingress": "Ingress",
+              "ingressclass": "Class",
+              "host": "Host",
+              "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": "Allowlist (ingress-nginx)",
+              "annotation_haproxy_ingress_github_io_allowlist_source_range": "Allowlist (haproxy-ingress)"
+            }
+          }
+        }
+      ],
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "expr": "count by (cluster, namespace, ingress, ingressclass, host) (kube_ingress_path{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(ingressclass) (kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"} unless on(cluster, namespace, ingress) (kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range!=\"\"} or kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range!=\"\"})))",
+          "instant": true,
+          "range": false,
+          "format": "table",
+          "refId": "A"
+        }
+      ],
+      "id": 7
+    }
+  ]
+}
