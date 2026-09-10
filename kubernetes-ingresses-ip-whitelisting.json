@@ -25,16 +25,7 @@
   "annotations": {
     "list": []
   },
-  "links": [
-    {
-      "title": "Ingresses URLs",
-      "type": "dashboards",
-      "tags": [],
-      "url": "/d/ee08jxww78ni8e",
-      "asDropdown": false,
-      "targetBlank": false
-    }
-  ],
+  "links": [],
   "templating": {
     "list": [
       {
