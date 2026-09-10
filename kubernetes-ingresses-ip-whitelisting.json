@@ -10,7 +10,7 @@
   "editable": true,
   "graphTooltip": 0,
   "schemaVersion": 39,
-  "version": 1,
+  "version": 2,
   "style": "dark",
   "time": {
     "from": "now-1h",
@@ -63,6 +63,98 @@
         "sort": 1
       },
       {
+        "name": "product",
+        "label": "Product",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(kube_namespace_labels{cluster=~\"$cluster\"},label_product)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_labels{cluster=~\"$cluster\"},label_product)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "includeAll": true,
+        "multi": false,
+        "allValue": ".*",
+        "current": {},
+        "options": [],
+        "regex": "",
+        "sort": 1
+      },
+      {
+        "name": "client",
+        "label": "Client",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\"},label_client)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\"},label_client)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "includeAll": true,
+        "multi": true,
+        "allValue": ".*",
+        "current": {},
+        "options": [],
+        "regex": "",
+        "sort": 1
+      },
+      {
+        "name": "project",
+        "label": "Project",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\"},label_project)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\"},label_project)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "includeAll": true,
+        "multi": false,
+        "allValue": ".*",
+        "current": {},
+        "options": [],
+        "regex": "",
+        "sort": 1
+      },
+      {
+        "name": "kind",
+        "label": "Environment Kind",
+        "type": "query",
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(kube_namespace_labels{cluster=~\"$cluster\"},label_environment_kind)",
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_labels{cluster=~\"$cluster\"},label_environment_kind)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "includeAll": true,
+        "multi": false,
+        "allValue": ".*",
+        "current": {},
+        "options": [],
+        "regex": "",
+        "sort": 1
+      },
+      {
         "name": "namespace",
         "label": "Namespace",
         "type": "query",
@@ -70,10 +162,10 @@
           "type": "prometheus",
           "uid": "${datasource}"
         },
-        "definition": "label_values(kube_ingress_info{cluster=~\"$cluster\"}, namespace)",
+        "definition": "label_values(kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_client=~\"$client\", label_project=~\"$project\", label_environment_kind=~\"$kind\"},namespace)",
         "query": {
           "qryType": 1,
-          "query": "label_values(kube_ingress_info{cluster=~\"$cluster\"}, namespace)",
+          "query": "label_values(kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_client=~\"$client\", label_project=~\"$project\", label_environment_kind=~\"$kind\"},namespace)",
           "refId": "PrometheusVariableQueryEditor-VariableQuery"
         },
         "refresh": 2,
@@ -155,7 +247,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "count(kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"})",
+          "expr": "count((kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"}) * on(cluster, namespace) group_left() kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_client=~\"$client\", label_project=~\"$project\", label_environment_kind=~\"$kind\", namespace=~\"$namespace\"})",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -206,7 +298,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "count((kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range!=\"\"} or kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range!=\"\"}))",
+          "expr": "count(((kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range!=\"\"} or kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range!=\"\"})) * on(cluster, namespace) group_left() kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_client=~\"$client\", label_project=~\"$project\", label_environment_kind=~\"$kind\", namespace=~\"$namespace\"})",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -257,7 +349,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "count(kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"} unless on(cluster, namespace, ingress) (kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range!=\"\"} or kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range!=\"\"}))",
+          "expr": "count((kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"} unless on(cluster, namespace, ingress) (kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range!=\"\"} or kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range!=\"\"})) * on(cluster, namespace) group_left() kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_client=~\"$client\", label_project=~\"$project\", label_environment_kind=~\"$kind\", namespace=~\"$namespace\"})",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -308,7 +400,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "count((kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range=~\".*(${vpn_ip_1}).*\"} and kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range=~\".*(${vpn_ip_2}).*\"}) or (kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range=~\".*(${vpn_ip_1}).*\"} and kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range=~\".*(${vpn_ip_2}).*\"}))",
+          "expr": "count(((kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range=~\".*(${vpn_ip_1}).*\"} and kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range=~\".*(${vpn_ip_2}).*\"}) or (kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range=~\".*(${vpn_ip_1}).*\"} and kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range=~\".*(${vpn_ip_2}).*\"})) * on(cluster, namespace) group_left() kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_client=~\"$client\", label_project=~\"$project\", label_environment_kind=~\"$kind\", namespace=~\"$namespace\"})",
           "instant": true,
           "range": false,
           "refId": "A"
@@ -426,11 +518,15 @@
             "indexByName": {
               "cluster": 0,
               "namespace": 1,
-              "ingress": 2,
-              "ingressclass": 3,
-              "host": 4,
-              "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": 5,
-              "annotation_haproxy_ingress_github_io_allowlist_source_range": 6
+              "label_product": 2,
+              "label_project": 3,
+              "label_environment_kind": 4,
+              "label_client": 5,
+              "ingress": 6,
+              "ingressclass": 7,
+              "host": 8,
+              "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": 9,
+              "annotation_haproxy_ingress_github_io_allowlist_source_range": 10
             },
             "renameByName": {
               "cluster": "Cluster",
@@ -439,7 +535,11 @@
               "ingressclass": "Class",
               "host": "Host",
               "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": "Allowlist (ingress-nginx)",
-              "annotation_haproxy_ingress_github_io_allowlist_source_range": "Allowlist (haproxy-ingress)"
+              "annotation_haproxy_ingress_github_io_allowlist_source_range": "Allowlist (haproxy-ingress)",
+              "label_product": "Product",
+              "label_project": "Project",
+              "label_environment_kind": "Env kind",
+              "label_client": "Client"
             }
           }
         }
@@ -450,7 +550,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "count by (cluster, namespace, ingress, ingressclass, host, annotation_nginx_ingress_kubernetes_io_whitelist_source_range, annotation_haproxy_ingress_github_io_allowlist_source_range) (kube_ingress_path{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(ingressclass) kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(annotation_nginx_ingress_kubernetes_io_whitelist_source_range, annotation_haproxy_ingress_github_io_allowlist_source_range) ((kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range=~\".*(${vpn_ip_1}).*\"} and kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range=~\".*(${vpn_ip_2}).*\"}) or (kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range=~\".*(${vpn_ip_1}).*\"} and kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range=~\".*(${vpn_ip_2}).*\"})))",
+          "expr": "count by (cluster, namespace, ingress, ingressclass, host, annotation_nginx_ingress_kubernetes_io_whitelist_source_range, annotation_haproxy_ingress_github_io_allowlist_source_range, label_product, label_project, label_environment_kind, label_client) ((kube_ingress_path{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(ingressclass) kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(annotation_nginx_ingress_kubernetes_io_whitelist_source_range, annotation_haproxy_ingress_github_io_allowlist_source_range) ((kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range=~\".*(${vpn_ip_1}).*\"} and kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range=~\".*(${vpn_ip_2}).*\"}) or (kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range=~\".*(${vpn_ip_1}).*\"} and kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range=~\".*(${vpn_ip_2}).*\"}))) * on(cluster, namespace) group_left(label_product, label_project, label_environment_kind, label_client) kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_client=~\"$client\", label_project=~\"$project\", label_environment_kind=~\"$kind\", namespace=~\"$namespace\"})",
           "instant": true,
           "range": false,
           "format": "table",
@@ -569,11 +669,15 @@
             "indexByName": {
               "cluster": 0,
               "namespace": 1,
-              "ingress": 2,
-              "ingressclass": 3,
-              "host": 4,
-              "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": 5,
-              "annotation_haproxy_ingress_github_io_allowlist_source_range": 6
+              "label_product": 2,
+              "label_project": 3,
+              "label_environment_kind": 4,
+              "label_client": 5,
+              "ingress": 6,
+              "ingressclass": 7,
+              "host": 8,
+              "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": 9,
+              "annotation_haproxy_ingress_github_io_allowlist_source_range": 10
             },
             "renameByName": {
               "cluster": "Cluster",
@@ -582,7 +686,11 @@
               "ingressclass": "Class",
               "host": "Host",
               "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": "Allowlist (ingress-nginx)",
-              "annotation_haproxy_ingress_github_io_allowlist_source_range": "Allowlist (haproxy-ingress)"
+              "annotation_haproxy_ingress_github_io_allowlist_source_range": "Allowlist (haproxy-ingress)",
+              "label_product": "Product",
+              "label_project": "Project",
+              "label_environment_kind": "Env kind",
+              "label_client": "Client"
             }
           }
         }
@@ -593,7 +701,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "count by (cluster, namespace, ingress, ingressclass, host, annotation_nginx_ingress_kubernetes_io_whitelist_source_range, annotation_haproxy_ingress_github_io_allowlist_source_range) (kube_ingress_path{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(ingressclass) kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(annotation_nginx_ingress_kubernetes_io_whitelist_source_range, annotation_haproxy_ingress_github_io_allowlist_source_range) ((kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range!=\"\"} or kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range!=\"\"})))",
+          "expr": "count by (cluster, namespace, ingress, ingressclass, host, annotation_nginx_ingress_kubernetes_io_whitelist_source_range, annotation_haproxy_ingress_github_io_allowlist_source_range, label_product, label_project, label_environment_kind, label_client) ((kube_ingress_path{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(ingressclass) kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(annotation_nginx_ingress_kubernetes_io_whitelist_source_range, annotation_haproxy_ingress_github_io_allowlist_source_range) ((kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range!=\"\"} or kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range!=\"\"}))) * on(cluster, namespace) group_left(label_product, label_project, label_environment_kind, label_client) kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_client=~\"$client\", label_project=~\"$project\", label_environment_kind=~\"$kind\", namespace=~\"$namespace\"})",
           "instant": true,
           "range": false,
           "format": "table",
@@ -714,11 +822,15 @@
             "indexByName": {
               "cluster": 0,
               "namespace": 1,
-              "ingress": 2,
-              "ingressclass": 3,
-              "host": 4,
-              "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": 5,
-              "annotation_haproxy_ingress_github_io_allowlist_source_range": 6
+              "label_product": 2,
+              "label_project": 3,
+              "label_environment_kind": 4,
+              "label_client": 5,
+              "ingress": 6,
+              "ingressclass": 7,
+              "host": 8,
+              "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": 9,
+              "annotation_haproxy_ingress_github_io_allowlist_source_range": 10
             },
             "renameByName": {
               "cluster": "Cluster",
@@ -727,7 +839,11 @@
               "ingressclass": "Class",
               "host": "Host",
               "annotation_nginx_ingress_kubernetes_io_whitelist_source_range": "Allowlist (ingress-nginx)",
-              "annotation_haproxy_ingress_github_io_allowlist_source_range": "Allowlist (haproxy-ingress)"
+              "annotation_haproxy_ingress_github_io_allowlist_source_range": "Allowlist (haproxy-ingress)",
+              "label_product": "Product",
+              "label_project": "Project",
+              "label_environment_kind": "Env kind",
+              "label_client": "Client"
             }
           }
         }
@@ -738,7 +854,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "count by (cluster, namespace, ingress, ingressclass, host) (kube_ingress_path{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(ingressclass) (kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"} unless on(cluster, namespace, ingress) (kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range!=\"\"} or kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range!=\"\"})))",
+          "expr": "count by (cluster, namespace, ingress, ingressclass, host, label_product, label_project, label_environment_kind, label_client) ((kube_ingress_path{cluster=~\"$cluster\", namespace=~\"$namespace\"} * on(cluster, namespace, ingress) group_left(ingressclass) (kube_ingress_info{cluster=~\"$cluster\", namespace=~\"$namespace\"} unless on(cluster, namespace, ingress) (kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_nginx_ingress_kubernetes_io_whitelist_source_range!=\"\"} or kube_ingress_annotations{cluster=~\"$cluster\", namespace=~\"$namespace\", annotation_haproxy_ingress_github_io_allowlist_source_range!=\"\"}))) * on(cluster, namespace) group_left(label_product, label_project, label_environment_kind, label_client) kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_client=~\"$client\", label_project=~\"$project\", label_environment_kind=~\"$kind\", namespace=~\"$namespace\"})",
           "instant": true,
           "range": false,
           "format": "table",
