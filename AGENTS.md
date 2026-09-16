@@ -5,11 +5,18 @@ Dashboards are provisioned onto the Wiremind clusters by kube-prometheus-stack
 (`wiremind-services-configuration`): the Grafana sidecar downloads the raw JSON
 from `master`, so merging here deploys everywhere the dashboard is referenced.
 
-- **Classic v1 schema only** (`schemaVersion` + `panels`/`gridPos`). Grafana's
-  file provisioner rejects the v2 resource format (`elements`/`layout`,
-  `apiVersion: dashboard.grafana.app/v2`). When exporting from the Grafana UI,
-  pick the **Classic** export option, and avoid v2-only features (tabs,
-  conditional panels).
+- **Two JSON formats are accepted, both provisioned the same way**. Grafana
+  13.x (13.2.0 fleet-wide) file-provisions both the classic v1 model
+  (`schemaVersion` + `panels`/`gridPos`) and the v2 resource model
+  (`apiVersion: dashboard.grafana.app/v2`, `kind: Dashboard`,
+  `spec.elements`/`spec.layout`). Grafana stores a v2 file as `storedVersion:
+  v2` with `managedBy: classic-file-provisioning`; seven dashboards in this repo
+  already use it. Export from the UI with **Export as JSON → Kubernetes
+  resource** (v2) or **Classic** (v1); keep the format the file already has.
+  In v2, the stable identifier is `metadata.name` (same role as `uid`), and
+  the datasource reference is `"datasource": {"name": "${datasource}"}`. Strip
+  volatile `metadata` fields (`generation`, `creationTimestamp`, `resourceVersion`)
+  before committing.
 - **Never hardcode a datasource**: declare a `datasource` template variable
   (`type: datasource`, `query: prometheus`) and reference `${datasource}`
   everywhere. Enable the cleanup hook: `git config core.hooksPath .githooks`.
