@@ -135,6 +135,7 @@
         "showHeader": true,
         "sortBy": []
       },
+      "maxDataPoints": 100,
       "pluginVersion": "11.5.2",
       "targets": [
         {
@@ -336,7 +337,7 @@
     }
   ],
   "preload": false,
-  "refresh": "10s",
+  "refresh": "1m",
   "schemaVersion": 40,
   "tags": [
     "rabbitmq-prometheus"
@@ -368,7 +369,7 @@
         },
         "definition": "label_values(up{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\"},cluster)",
         "description": "",
-        "includeAll": true,
+        "includeAll": false,
         "label": "Cluster",
         "name": "cluster",
         "options": [],
@@ -392,7 +393,7 @@
           "uid": "${datasource}"
         },
         "definition": "label_values(rabbitmq_identity_info{cluster=~\"$cluster\"},namespace)",
-        "includeAll": true,
+        "includeAll": false,
         "label": "Namespace",
         "name": "namespace",
         "options": [],
