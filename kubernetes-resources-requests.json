@@ -1165,7 +1165,11 @@
     "links": [],
     "liveNow": false,
     "preload": false,
-    "tags": [],
+    "tags": [
+      "compute",
+      "finops",
+      "state"
+    ],
     "timeSettings": {
       "timezone": "browser",
       "from": "now-24h",
@@ -1185,7 +1189,7 @@
       "hideTimepicker": false,
       "fiscalYearStartMonth": 0
     },
-    "title": "FinOps: Kubernetes Resource Requests",
+    "title": "FinOps - Compute (CPU & RAM) - State",
     "variables": [
       {
         "kind": "DatasourceVariable",

@@ -1080,7 +1080,11 @@
   ],
   "refresh": "",
   "schemaVersion": 40,
-  "tags": [],
+  "tags": [
+    "compute",
+    "finops",
+    "optimization"
+  ],
   "templating": {
     "list": [
       {
@@ -1196,7 +1200,7 @@
     "hidden": true
   },
   "timezone": "browser",
-  "title": "FinOps - Wasted money by namespace - The Tops",
+  "title": "FinOps - Compute (CPU & RAM) - Optimization - Wasted money by namespace",
   "uid": "beib5ip2ep91cd",
   "version": 27,
   "weekStart": ""
