@@ -1093,7 +1093,11 @@
     "links": [],
     "liveNow": false,
     "preload": false,
-    "tags": [],
+    "tags": [
+      "compute",
+      "evolution",
+      "finops"
+    ],
     "timeSettings": {
       "timezone": "browser",
       "from": "now-24h",
@@ -1114,7 +1118,7 @@
       "hideTimepicker": true,
       "fiscalYearStartMonth": 0
     },
-    "title": "FinOps - Cluster CPU & Memory Requests Evolution",
+    "title": "FinOps - Compute (CPU & RAM) - Evolution - Top movers",
     "variables": [
       {
         "kind": "DatasourceVariable",
