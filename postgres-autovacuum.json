@@ -884,7 +884,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum by (relname) (irate(pg_stat_user_tables_n_tup_ins{namespace=\"$namespace\",job=\"$job\",datname=~\"$datname\",relname=~\"$relname\"}[5m]))",
+          "expr": "sum by (relname) (rate(pg_stat_user_tables_n_tup_ins{namespace=\"$namespace\",job=\"$job\",datname=~\"$datname\",relname=~\"$relname\"}[$__rate_interval]))",
           "interval": "",
           "legendFormat": "{{relname}}",
           "refId": "A",
@@ -1008,7 +1008,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum by (relname) (irate(pg_stat_user_tables_n_tup_del{namespace=\"$namespace\",job=\"$job\",datname=\"$datname\",relname=~\"$relname\"}[5m]))",
+          "expr": "sum by (relname) (rate(pg_stat_user_tables_n_tup_del{namespace=\"$namespace\",job=\"$job\",datname=\"$datname\",relname=~\"$relname\"}[$__rate_interval]))",
           "interval": "",
           "legendFormat": "{{relname}}",
           "refId": "A",
@@ -1115,7 +1115,7 @@
       "targets": [
         {
           "exemplar": true,
-          "expr": "sum by (relname) (irate(pg_stat_user_tables_n_tup_upd{namespace=\"$namespace\",job=\"$job\",datname=\"$datname\",relname=~\"$relname\"}[5m]))",
+          "expr": "sum by (relname) (rate(pg_stat_user_tables_n_tup_upd{namespace=\"$namespace\",job=\"$job\",datname=\"$datname\",relname=~\"$relname\"}[$__rate_interval]))",
           "interval": "",
           "legendFormat": "{{relname}}",
           "refId": "A",

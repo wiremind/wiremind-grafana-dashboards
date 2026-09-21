@@ -302,7 +302,7 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"}\n* on (namespace) group_right(label_environment_kind, label_project)\nsum by (namespace) (\n  rate(container_cpu_usage_seconds_total{image!=\"\", container_name!=\"POD\", cluster=\"$cluster\"}[5m])\n)",
+          "expr": "kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=\"$cluster\", namespace=~\"$namespace\"}\n* on (namespace) group_right(label_environment_kind, label_project)\nsum by (namespace) (\n  rate(container_cpu_usage_seconds_total{image!=\"\", container_name!=\"POD\", cluster=\"$cluster\"}[$__rate_interval])\n)",
           "format": "table",
           "hide": false,
           "instant": true,

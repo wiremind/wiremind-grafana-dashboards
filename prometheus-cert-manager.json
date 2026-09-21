@@ -429,7 +429,7 @@
             "steppedLine": false,
             "targets": [
                 {
-                    "expr": "sum(rate(certmanager_http_acme_client_request_count[2m])) BY (status)",
+                    "expr": "sum(rate(certmanager_http_acme_client_request_count[$__rate_interval])) BY (status)",
                     "legendFormat": "{{status}}",
                     "refId": "A"
                 }

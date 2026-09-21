@@ -311,7 +311,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(container_cpu_usage_seconds_total{job=\"kubelet\", cluster=\"$cluster\", namespace=\"$namespace\", image!=\"\", pod=~\"$pod\", container=~\"$container\", container!=\"POD\"}[2m])",
+          "expr": "rate(container_cpu_usage_seconds_total{job=\"kubelet\", cluster=\"$cluster\", namespace=\"$namespace\", image!=\"\", pod=~\"$pod\", container=~\"$container\", container!=\"POD\"}[$__rate_interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 1,
@@ -770,7 +770,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "sort_desc(sum by (pod) (irate(container_network_receive_bytes_total{job=\"kubelet\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[2m])))",
+          "expr": "sort_desc(sum by (pod) (rate(container_network_receive_bytes_total{job=\"kubelet\", cluster=\"$cluster\", namespace=\"$namespace\", pod=~\"$pod\"}[$__rate_interval])))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -783,7 +783,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sort_desc(sum by (pod) (irate(container_network_transmit_bytes_total{job=\"kubelet\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[2m])))",
+          "expr": "sort_desc(sum by (pod) (rate(container_network_transmit_bytes_total{job=\"kubelet\", cluster=\"$cluster\", namespace=\"$namespace\", pod=\"$pod\"}[$__rate_interval])))",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -890,7 +890,7 @@
             "uid": "${datasource}"
           },
           "editorMode": "code",
-          "expr": "irate(container_cpu_cfs_throttled_periods_total{namespace=\"$namespace\", pod=~\"$pod\", container=~\"$container\"}[5m])/irate(container_cpu_cfs_periods_total{namespace=\"$namespace\", pod=~\"$pod\", container=~\"$container\"}[5m])",
+          "expr": "rate(container_cpu_cfs_throttled_periods_total{namespace=\"$namespace\", pod=~\"$pod\", container=~\"$container\"}[$__rate_interval])/rate(container_cpu_cfs_periods_total{namespace=\"$namespace\", pod=~\"$pod\", container=~\"$container\"}[$__rate_interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,

@@ -634,7 +634,7 @@
                         "name": "${datasource}"
                       },
                       "spec": {
-                        "expr": "sum by (pod) (rate(prometheus_rule_evaluations_total{pod=~\"$pod\", cluster=~\"$cluster\"}[2m]))",
+                        "expr": "sum by (pod) (rate(prometheus_rule_evaluations_total{pod=~\"$pod\", cluster=~\"$cluster\"}[$__rate_interval]))",
                         "legendFormat": "{{pod}}"
                       }
                     },
@@ -1193,7 +1193,7 @@
                         "name": "${datasource}"
                       },
                       "spec": {
-                        "expr": "sum by (pod, container) (irate(container_cpu_usage_seconds_total{pod=~\"$pod\", namespace=~\"$namespace\", cluster=~\"$cluster\", container=~\"$container\", container!=\"\"}[2m]))",
+                        "expr": "sum by (pod, container) (rate(container_cpu_usage_seconds_total{pod=~\"$pod\", namespace=~\"$namespace\", cluster=~\"$cluster\", container=~\"$container\", container!=\"\"}[$__rate_interval]))",
                         "legendFormat": "{{pod}}/{{container}}"
                       }
                     },
@@ -1511,7 +1511,7 @@
                         "name": "${datasource}"
                       },
                       "spec": {
-                        "expr": "sum by (pod) (irate(container_network_receive_bytes_total{job=\"kubelet\", cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"$pod\"}[2m]))",
+                        "expr": "sum by (pod) (rate(container_network_receive_bytes_total{job=\"kubelet\", cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"$pod\"}[$__rate_interval]))",
                         "legendFormat": "{{pod}} RX"
                       }
                     },
@@ -1530,7 +1530,7 @@
                         "name": "${datasource}"
                       },
                       "spec": {
-                        "expr": "-sum by (pod) (irate(container_network_transmit_bytes_total{job=\"kubelet\", cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"$pod\"}[2m]))",
+                        "expr": "-sum by (pod) (rate(container_network_transmit_bytes_total{job=\"kubelet\", cluster=~\"$cluster\", namespace=~\"$namespace\", pod=~\"$pod\"}[$__rate_interval]))",
                         "legendFormat": "{{pod}} TX"
                       }
                     },
@@ -1643,7 +1643,7 @@
                         "name": "${datasource}"
                       },
                       "spec": {
-                        "expr": "irate(container_cpu_cfs_throttled_periods_total{namespace=~\"$namespace\", pod=~\"$pod\", container=~\"$container\", container!=\"\", cluster=~\"$cluster\"}[5m]) / irate(container_cpu_cfs_periods_total{namespace=~\"$namespace\", pod=~\"$pod\", container=~\"$container\", container!=\"\", cluster=~\"$cluster\"}[5m])",
+                        "expr": "rate(container_cpu_cfs_throttled_periods_total{namespace=~\"$namespace\", pod=~\"$pod\", container=~\"$container\", container!=\"\", cluster=~\"$cluster\"}[$__rate_interval]) / rate(container_cpu_cfs_periods_total{namespace=~\"$namespace\", pod=~\"$pod\", container=~\"$container\", container!=\"\", cluster=~\"$cluster\"}[$__rate_interval])",
                         "legendFormat": "{{pod}}/{{container}}"
                       }
                     },
@@ -2370,7 +2370,7 @@
                         "name": "${datasource}"
                       },
                       "spec": {
-                        "expr": "sum by (pod) (rate(prometheus_rule_evaluation_failures_total{pod=~\"$pod\", cluster=~\"$cluster\"}[2m]))",
+                        "expr": "sum by (pod) (rate(prometheus_rule_evaluation_failures_total{pod=~\"$pod\", cluster=~\"$cluster\"}[$__rate_interval]))",
                         "legendFormat": "{{pod}}"
                       }
                     },
@@ -2487,7 +2487,7 @@
                         "name": "${datasource}"
                       },
                       "spec": {
-                        "expr": "sum by (pod) (rate(prometheus_rule_group_iterations_missed_total{pod=~\"$pod\", cluster=~\"$cluster\"}[2m]))",
+                        "expr": "sum by (pod) (rate(prometheus_rule_group_iterations_missed_total{pod=~\"$pod\", cluster=~\"$cluster\"}[$__rate_interval]))",
                         "legendFormat": "{{pod}}"
                       }
                     },
@@ -2604,7 +2604,7 @@
                         "name": "${datasource}"
                       },
                       "spec": {
-                        "expr": "sum by (pod) (rate(prometheus_notifications_errors_total{pod=~\"$pod\", cluster=~\"$cluster\"}[2m]))",
+                        "expr": "sum by (pod) (rate(prometheus_notifications_errors_total{pod=~\"$pod\", cluster=~\"$cluster\"}[$__rate_interval]))",
                         "legendFormat": "{{pod}}"
                       }
                     },
@@ -2721,7 +2721,7 @@
                         "name": "${datasource}"
                       },
                       "spec": {
-                        "expr": "sum by (pod) (rate(prometheus_rule_evaluations_total{pod=~\"$pod\", cluster=~\"$cluster\"}[5m]))",
+                        "expr": "sum by (pod) (rate(prometheus_rule_evaluations_total{pod=~\"$pod\", cluster=~\"$cluster\"}[$__rate_interval]))",
                         "instant": true,
                         "legendFormat": "{{pod}}"
                       }
@@ -2915,7 +2915,7 @@
                         "name": "${datasource}"
                       },
                       "spec": {
-                        "expr": "rate(prometheus_tsdb_head_series_created_total{pod=~\"$pod\", cluster=~\"$cluster\"}[5m]) - rate(prometheus_tsdb_head_series_removed_total{pod=~\"$pod\", cluster=~\"$cluster\"}[5m])",
+                        "expr": "rate(prometheus_tsdb_head_series_created_total{pod=~\"$pod\", cluster=~\"$cluster\"}[$__rate_interval]) - rate(prometheus_tsdb_head_series_removed_total{pod=~\"$pod\", cluster=~\"$cluster\"}[$__rate_interval])",
                         "legendFormat": "{{pod}} net churn"
                       }
                     },
@@ -2934,7 +2934,7 @@
                         "name": "${datasource}"
                       },
                       "spec": {
-                        "expr": "rate(prometheus_tsdb_head_series_created_total{pod=~\"$pod\", cluster=~\"$cluster\"}[5m])",
+                        "expr": "rate(prometheus_tsdb_head_series_created_total{pod=~\"$pod\", cluster=~\"$cluster\"}[$__rate_interval])",
                         "legendFormat": "{{pod}} created"
                       }
                     },
@@ -3300,7 +3300,7 @@
                         "name": "${datasource}"
                       },
                       "spec": {
-                        "expr": "rate(prometheus_tsdb_out_of_order_samples_total{pod=~\"$pod\", cluster=~\"$cluster\"}[5m])",
+                        "expr": "rate(prometheus_tsdb_out_of_order_samples_total{pod=~\"$pod\", cluster=~\"$cluster\"}[$__rate_interval])",
                         "legendFormat": "{{pod}}"
                       }
                     },
@@ -3662,7 +3662,7 @@
                         "name": "${datasource}"
                       },
                       "spec": {
-                        "expr": "sum by (pod) (rate(container_fs_reads_bytes_total{pod=~\"$pod\", namespace=~\"$namespace\", cluster=~\"$cluster\", container=~\"$container\", container!=\"\"}[2m]))",
+                        "expr": "sum by (pod) (rate(container_fs_reads_bytes_total{pod=~\"$pod\", namespace=~\"$namespace\", cluster=~\"$cluster\", container=~\"$container\", container!=\"\"}[$__rate_interval]))",
                         "legendFormat": "{{pod}} read"
                       }
                     },
@@ -3682,7 +3682,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum by (pod) (-rate(container_fs_writes_bytes_total{pod=~\"$pod\", namespace=~\"$namespace\", cluster=~\"$cluster\", container=~\"$container\", container!=\"\"}[2m]))",
+                        "expr": "sum by (pod) (-rate(container_fs_writes_bytes_total{pod=~\"$pod\", namespace=~\"$namespace\", cluster=~\"$cluster\", container=~\"$container\", container!=\"\"}[$__rate_interval]))",
                         "legendFormat": "{{pod}} write",
                         "range": true
                       }

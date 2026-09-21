@@ -63,7 +63,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": true,
-                        "expr": "sum (irate(container_cpu_cfs_throttled_periods_total{ pod=~\"${pod_name:raw}.*\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\",namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\"}[5m]))\n/\nsum (irate(container_cpu_cfs_periods_total{ pod=~\"${pod_name:raw}.*\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\"}[5m]))",
+                        "expr": "sum (rate(container_cpu_cfs_throttled_periods_total{ pod=~\"${pod_name:raw}.*\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\",namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\"}[$__rate_interval]))\n/\nsum (rate(container_cpu_cfs_periods_total{ pod=~\"${pod_name:raw}.*\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\"}[$__rate_interval]))",
                         "interval": "",
                         "legendFormat": "Sum",
                         "range": true
@@ -187,7 +187,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": true,
-                        "expr": "rate(container_cpu_usage_seconds_total{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod=~\"${pod_name:raw}\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[5m])",
+                        "expr": "rate(container_cpu_usage_seconds_total{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod=~\"${pod_name:raw}\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[$__rate_interval])",
                         "format": "time_series",
                         "interval": "",
                         "intervalFactor": 4,
@@ -602,7 +602,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": true,
-                        "expr": "(\n  sum by (container) (\n    rate(container_cpu_usage_seconds_total{namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", pod=~\"${pod_name:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod=~\"${pod_name:raw}\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[5m])\n  ) > 0.5\n) \n/\n(\n  sum by (container) (\n    cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", pod=~\"${pod_name:raw}.*\", node=~\"${node_name:raw}\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}\n  )\n) > 1",
+                        "expr": "(\n  sum by (container) (\n    rate(container_cpu_usage_seconds_total{namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", pod=~\"${pod_name:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod=~\"${pod_name:raw}\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[$__rate_interval])\n  ) > 0.5\n) \n/\n(\n  sum by (container) (\n    cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", pod=~\"${pod_name:raw}.*\", node=~\"${node_name:raw}\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}\n  )\n) > 1",
                         "format": "time_series",
                         "instant": false,
                         "interval": "",
@@ -727,7 +727,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "sum by (node) (rate(container_cpu_usage_seconds_total{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[5m]))",
+                        "expr": "sum by (node) (rate(container_cpu_usage_seconds_total{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[$__rate_interval]))",
                         "format": "time_series",
                         "instant": false,
                         "interval": "",
@@ -975,7 +975,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": true,
-                        "expr": "irate(container_cpu_usage_seconds_total{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[5m])",
+                        "expr": "rate(container_cpu_usage_seconds_total{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[$__rate_interval])",
                         "interval": "",
                         "legendFormat": "{{ pod }}",
                         "range": true
@@ -1705,7 +1705,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": true,
-                        "expr": "rate(container_network_receive_bytes_total{ pod=~\"${pod_name:raw}.*\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\"}[5m])",
+                        "expr": "rate(container_network_receive_bytes_total{ pod=~\"${pod_name:raw}.*\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\"}[$__rate_interval])",
                         "format": "time_series",
                         "interval": "",
                         "intervalFactor": 4,
@@ -1834,7 +1834,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": true,
-                        "expr": "rate(container_network_transmit_bytes_total{pod=~\"${pod_name:raw}.*\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", interface!=\"tunl0\"}[5m])",
+                        "expr": "rate(container_network_transmit_bytes_total{pod=~\"${pod_name:raw}.*\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", interface!=\"tunl0\"}[$__rate_interval])",
                         "format": "time_series",
                         "interval": "",
                         "intervalFactor": 4,
@@ -1963,7 +1963,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": true,
-                        "expr": "sum(irate(container_cpu_usage_seconds_total{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[5m]))",
+                        "expr": "sum(rate(container_cpu_usage_seconds_total{pod=~\"${pod_name:raw}\", namespace=~\"${namespace:raw}\", cluster=~\"${cluster:raw}\", node=~\"${node_name:raw}\", image!=\"\", pod!=\"\", container!=\"POD\", container!=\"\", container=~\"${container_name:raw}\"}[$__rate_interval]))",
                         "format": "time_series",
                         "instant": false,
                         "interval": "",
