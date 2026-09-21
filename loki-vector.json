@@ -121,7 +121,7 @@
             "uid": "P5DCFC7561CCDE821"
           },
           "editorMode": "code",
-          "expr": "sum by (pod) (rate(vector_files_added_total{cluster=~\"$cluster\", component_kind=\"source\", component_type=\"kubernetes_logs\"}[5m]))",
+          "expr": "sum by (pod) (rate(vector_files_added_total{cluster=~\"$cluster\", component_kind=\"source\", component_type=\"kubernetes_logs\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -217,7 +217,7 @@
             "uid": "P5DCFC7561CCDE821"
           },
           "editorMode": "code",
-          "expr": "sum by (pod) (rate(vector_files_unwatched_total{cluster=~\"$cluster\", component_kind=\"source\", component_type=\"kubernetes_logs\"}[5m]))",
+          "expr": "sum by (pod) (rate(vector_files_unwatched_total{cluster=~\"$cluster\", component_kind=\"source\", component_type=\"kubernetes_logs\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -409,7 +409,7 @@
             "uid": "P5DCFC7561CCDE821"
           },
           "editorMode": "code",
-          "expr": "sum by (pod) (rate(vector_checksum_errors_total{cluster=~\"$cluster\", component_kind=\"source\", component_type=\"kubernetes_logs\"}[5m]))",
+          "expr": "sum by (pod) (rate(vector_checksum_errors_total{cluster=~\"$cluster\", component_kind=\"source\", component_type=\"kubernetes_logs\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -519,7 +519,7 @@
             "uid": "P5DCFC7561CCDE821"
           },
           "editorMode": "code",
-          "expr": "sum by (component_id) (rate(vector_component_received_events_total{cluster=~\"$cluster\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\", pod=~\"$pod\"}[5m]))",
+          "expr": "sum by (component_id) (rate(vector_component_received_events_total{cluster=~\"$cluster\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\", pod=~\"$pod\"}[$__rate_interval]))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -615,7 +615,7 @@
             "uid": "P5DCFC7561CCDE821"
           },
           "editorMode": "code",
-          "expr": "sum by (component_id) (rate(vector_component_sent_events_total{cluster=~\"$cluster\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\", pod=~\"$pod\"}[5m]))",
+          "expr": "sum by (component_id) (rate(vector_component_sent_events_total{cluster=~\"$cluster\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\", pod=~\"$pod\"}[$__rate_interval]))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -710,7 +710,7 @@
             "uid": "P5DCFC7561CCDE821"
           },
           "editorMode": "code",
-          "expr": "sum by (component_id) (rate(vector_component_errors_total{cluster=~\"$cluster\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\", pod=~\"$pod\"}[5m])) > 0",
+          "expr": "sum by (component_id) (rate(vector_component_errors_total{cluster=~\"$cluster\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\", pod=~\"$pod\"}[$__rate_interval])) > 0",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -806,7 +806,7 @@
             "uid": "P5DCFC7561CCDE821"
           },
           "editorMode": "code",
-          "expr": "sum by (component_id) (rate(vector_component_discarded_events_total{cluster=~\"$cluster\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\", pod=~\"$pod\"}[5m]))",
+          "expr": "sum by (component_id) (rate(vector_component_discarded_events_total{cluster=~\"$cluster\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\", pod=~\"$pod\"}[$__rate_interval]))",
           "instant": false,
           "legendFormat": "__auto",
           "range": true,
@@ -903,7 +903,7 @@
             "uid": "P5DCFC7561CCDE821"
           },
           "editorMode": "code",
-          "expr": "sum by (component_id) (rate(vector_component_received_bytes_total{cluster=~\"$cluster\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\", pod=~\"$pod\"}[5m]))",
+          "expr": "sum by (component_id) (rate(vector_component_received_bytes_total{cluster=~\"$cluster\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\", pod=~\"$pod\"}[$__rate_interval]))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"
@@ -999,7 +999,7 @@
             "uid": "P5DCFC7561CCDE821"
           },
           "editorMode": "code",
-          "expr": "sum by (component_id) (rate(vector_component_sent_bytes_total{cluster=~\"$cluster\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\", pod=~\"$pod\"}[5m]))",
+          "expr": "sum by (component_id) (rate(vector_component_sent_bytes_total{cluster=~\"$cluster\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\", pod=~\"$pod\"}[$__rate_interval]))",
           "legendFormat": "__auto",
           "range": true,
           "refId": "A"

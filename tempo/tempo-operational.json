@@ -1693,7 +1693,7 @@
      "pluginVersion": "9.0.0-d373beebpre",
      "targets": [
       {
-       "expr": "increase(kube_pod_container_status_restarts_total{cluster=\"$cluster\", namespace=\"$namespace\"}[5m]) > 0",
+       "expr": "increase(kube_pod_container_status_restarts_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]) > 0",
        "hide": false,
        "interval": "",
        "legendFormat": "{{pod}}",
@@ -4762,7 +4762,7 @@
      "pluginVersion": "9.0.0-d452322apre",
      "targets": [
       {
-       "expr": "increase(tempo_ingester_failed_flushes_total{cluster=\"$cluster\", namespace=\"$namespace\"}[5m]) > 0",
+       "expr": "increase(tempo_ingester_failed_flushes_total{cluster=\"$cluster\", namespace=\"$namespace\"}[$__rate_interval]) > 0",
        "interval": "",
        "legendFormat": "{{pod}}",
        "refId": "A"
@@ -5176,7 +5176,7 @@
         "uid": "mimir-ops-03"
        },
        "editorMode": "code",
-       "expr": "sum(rate(tempo_distributor_metrics_generator_pushes_failures_total{namespace=~\"$namespace\", cluster=~\"$cluster\"}[1m])) by (namespace, cluster)",
+       "expr": "sum(rate(tempo_distributor_metrics_generator_pushes_failures_total{namespace=~\"$namespace\", cluster=~\"$cluster\"}[$__rate_interval])) by (namespace, cluster)",
        "interval": "",
        "legendFormat": "{{cluster}} {{namespace}}",
        "range": true,
@@ -7349,7 +7349,7 @@
         "uid": "P666011C0B63BDCA4"
        },
        "editorMode": "code",
-       "expr": "sum(increase(tempodb_compaction_blocks_total{cluster=\"$cluster\", namespace=\"$namespace\", job=\"$namespace/compactor\"}[5m])) by (level)",
+       "expr": "sum(increase(tempodb_compaction_blocks_total{cluster=\"$cluster\", namespace=\"$namespace\", job=\"$namespace/compactor\"}[$__rate_interval])) by (level)",
        "interval": "",
        "legendFormat": "__auto",
        "range": true,

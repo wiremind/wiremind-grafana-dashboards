@@ -1428,7 +1428,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_jvm_gc_collection_seconds_count{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_jvm_gc_collection_seconds_count{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -1536,7 +1536,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_jvm_gc_collection_seconds_sum{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_jvm_gc_collection_seconds_sum{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -1651,7 +1651,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_translog_operations{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_translog_operations{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}",
@@ -1750,7 +1750,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_translog_size_in_bytes{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_translog_size_in_bytes{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}",
@@ -2663,7 +2663,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "irate(elasticsearch_transport_tx_size_bytes_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+              "expr": "rate(elasticsearch_transport_tx_size_bytes_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{name}}: sent ",
@@ -2675,7 +2675,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "-irate(elasticsearch_transport_rx_size_bytes_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+              "expr": "-rate(elasticsearch_transport_rx_size_bytes_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
               "format": "time_series",
               "intervalFactor": 2,
               "legendFormat": "{{name}}: received",
@@ -2889,7 +2889,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "irate(elasticsearch_indices_indexing_index_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+              "expr": "rate(elasticsearch_indices_indexing_index_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -2991,7 +2991,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "irate(elasticsearch_indices_docs_deleted{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+              "expr": "rate(elasticsearch_indices_docs_deleted{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -3193,7 +3193,7 @@
                 "type": "prometheus",
                 "uid": "${datasource}"
               },
-              "expr": "irate(elasticsearch_indices_merges_total_size_bytes_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+              "expr": "rate(elasticsearch_indices_merges_total_size_bytes_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
               "format": "time_series",
               "interval": "",
               "intervalFactor": 2,
@@ -3311,7 +3311,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_search_query_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval]) ",
+          "expr": "rate(elasticsearch_indices_search_query_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval]) ",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -3412,7 +3412,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_indexing_index_time_seconds_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_indexing_index_time_seconds_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -3513,7 +3513,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_merges_total_time_seconds_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_merges_total_time_seconds_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -3614,7 +3614,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_store_throttle_time_seconds_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_store_throttle_time_seconds_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -3937,7 +3937,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_indexing_index_time_seconds_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_indexing_index_time_seconds_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "interval": "",
           "intervalFactor": 2,
@@ -3951,7 +3951,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_search_query_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_search_query_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}: query",
@@ -3963,7 +3963,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_search_fetch_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_search_fetch_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}: fetch",
@@ -3975,7 +3975,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_merges_total_time_seconds_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_merges_total_time_seconds_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}: merges",
@@ -3987,7 +3987,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_refresh_time_seconds_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_refresh_time_seconds_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}: refresh",
@@ -3999,7 +3999,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_flush_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_flush_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}: flush",
@@ -4011,7 +4011,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_get_exists_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_get_exists_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}: get_exists",
@@ -4023,7 +4023,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_get_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_get_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}: get_time",
@@ -4035,7 +4035,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_get_missing_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_get_missing_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}: get_missing",
@@ -4047,7 +4047,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_indexing_delete_time_seconds_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_indexing_delete_time_seconds_total{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}: indexing_delete",
@@ -4059,7 +4059,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_indices_get_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_indices_get_time_seconds{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}: get",
@@ -4171,7 +4171,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_thread_pool_rejected_count{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_thread_pool_rejected_count{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}: {{ type }}",
@@ -4468,7 +4468,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_thread_pool_completed_count{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
+          "expr": "rate(elasticsearch_thread_pool_completed_count{cluster=\"$cluster\",name=~\"$name\"}[$interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{name}}: {{ type }}",

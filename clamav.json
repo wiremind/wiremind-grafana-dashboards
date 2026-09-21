@@ -1292,7 +1292,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum by (code) (rate(promhttp_metric_handler_requests_total{cluster=\"$cluster\", container=\"clamav-exporter\"}[1m]))",
+              "expr": "sum by (code) (rate(promhttp_metric_handler_requests_total{cluster=\"$cluster\", container=\"clamav-exporter\"}[$__rate_interval]))",
               "legendFormat": "__auto",
               "range": true,
               "refId": "A"
@@ -1389,7 +1389,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum (rate(process_network_receive_bytes_total{cluster=\"$cluster\", container=\"clamav-exporter\", pod=~\"$pod\"}[1m]))",
+              "expr": "sum (rate(process_network_receive_bytes_total{cluster=\"$cluster\", container=\"clamav-exporter\", pod=~\"$pod\"}[$__rate_interval]))",
               "legendFormat": "Received bytes",
               "range": true,
               "refId": "A"
@@ -1400,7 +1400,7 @@
                 "uid": "${datasource}"
               },
               "editorMode": "code",
-              "expr": "sum (-rate(process_network_transmit_bytes_total{cluster=\"$cluster\", container=\"clamav-exporter\", pod=~\"$pod\"}[1m]))",
+              "expr": "sum (-rate(process_network_transmit_bytes_total{cluster=\"$cluster\", container=\"clamav-exporter\", pod=~\"$pod\"}[$__rate_interval]))",
               "hide": false,
               "legendFormat": "Transimitted bytes",
               "range": true,

@@ -1804,7 +1804,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "rate(elasticsearch_thread_pool_rejected_count{namespace=~\"$cluster\", type!=\"management\"}[5m])",
+          "expr": "rate(elasticsearch_thread_pool_rejected_count{namespace=~\"$cluster\", type!=\"management\"}[$__rate_interval])",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ name }} {{ type }}",
@@ -1912,7 +1912,7 @@
             "uid": "${datasource}"
           },
           "dsType": "elasticsearch",
-          "expr": "avg(irate(node_cpu_seconds_total{namespace=~\"$cluster\"}[60s])) by(mode) *100",
+          "expr": "avg(rate(node_cpu_seconds_total{namespace=~\"$cluster\"}[$__rate_interval])) by(mode) *100",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "{{ mode }}",
@@ -2117,7 +2117,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(elasticsearch_transport_rx_packets_total{namespace=~\"$cluster\"}[5m]))",
+          "expr": "sum(rate(elasticsearch_transport_rx_packets_total{namespace=~\"$cluster\"}[$__rate_interval]))",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "RX",
@@ -2129,7 +2129,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "sum(rate(elasticsearch_transport_tx_packets_total{namespace=~\"$cluster\"}[5m])) * -1",
+          "expr": "sum(rate(elasticsearch_transport_tx_packets_total{namespace=~\"$cluster\"}[$__rate_interval])) * -1",
           "format": "time_series",
           "intervalFactor": 2,
           "legendFormat": "TX",
@@ -2227,7 +2227,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "irate(elasticsearch_jvm_gc_collection_seconds_sum{namespace=~\"$cluster\"}[1m])",
+          "expr": "rate(elasticsearch_jvm_gc_collection_seconds_sum{namespace=~\"$cluster\"}[$__rate_interval])",
           "interval": "",
           "intervalFactor": 2,
           "legendFormat": "{{ name }} {{ gc }}",

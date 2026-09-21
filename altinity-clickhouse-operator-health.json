@@ -395,7 +395,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "increase(clickhouse_operator_pod_delete_events{cluster=~\"$cluster\"}[5m])",
+                        "expr": "increase(clickhouse_operator_pod_delete_events{cluster=~\"$cluster\"}[$__rate_interval])",
                         "legendFormat": "{{cluster}}",
                         "range": true
                       }
@@ -513,7 +513,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "histogram_quantile(0.95, \n  sum by (exported_namespace, namespace, cluster, chi, le, label_product, label_project) (\n    rate(clickhouse_operator_chi_reconciles_timings_bucket{exported_namespace=~\"$namespace\", chi=~\"$chi\", cluster=~\"$cluster\"}[5m])\n    * on(exported_namespace, cluster) group_left(label_product, label_project)\n    label_replace(\n      kube_namespace_labels{\n        label_product=~\"$product\",\n        label_project=~\"$project\"}, \n      \"exported_namespace\", \"$1\", \"namespace\", \"(.*)\"\n    )\n  )\n)",
+                        "expr": "histogram_quantile(0.95, \n  sum by (exported_namespace, namespace, cluster, chi, le, label_product, label_project) (\n    rate(clickhouse_operator_chi_reconciles_timings_bucket{exported_namespace=~\"$namespace\", chi=~\"$chi\", cluster=~\"$cluster\"}[$__rate_interval])\n    * on(exported_namespace, cluster) group_left(label_product, label_project)\n    label_replace(\n      kube_namespace_labels{\n        label_product=~\"$product\",\n        label_project=~\"$project\"}, \n      \"exported_namespace\", \"$1\", \"namespace\", \"(.*)\"\n    )\n  )\n)",
                         "legendFormat": "{{cluster}}/{{chi}}",
                         "range": true
                       }
@@ -629,7 +629,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "increase(clickhouse_operator_chi_auto_recoveries_triggered{chi=~\"$chi\", cluster=~\"$cluster\", exported_namespace=~\"$namespace\"}[5m])",
+                        "expr": "increase(clickhouse_operator_chi_auto_recoveries_triggered{chi=~\"$chi\", cluster=~\"$cluster\", exported_namespace=~\"$namespace\"}[$__rate_interval])",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "__auto",
@@ -748,7 +748,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum by (cluster) (increase(container_cpu_cfs_throttled_periods_total{container=\"altinity-clickhouse-operator\", cluster=~\"$cluster\"}[5m]))/sum by (cluster) (increase(container_cpu_cfs_periods_total{container=\"altinity-clickhouse-operator\", cluster=~\"$cluster\"}[5m]))",
+                        "expr": "sum by (cluster) (increase(container_cpu_cfs_throttled_periods_total{container=\"altinity-clickhouse-operator\", cluster=~\"$cluster\"}[$__rate_interval]))/sum by (cluster) (increase(container_cpu_cfs_periods_total{container=\"altinity-clickhouse-operator\", cluster=~\"$cluster\"}[$__rate_interval]))",
                         "legendFormat": "{{cluster}}",
                         "range": true
                       }
@@ -900,7 +900,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum(rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", container=\"altinity-clickhouse-operator\"}[5m]))",
+                        "expr": "sum(rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", container=\"altinity-clickhouse-operator\"}[$__rate_interval]))",
                         "legendFormat": "actual",
                         "range": true
                       }
@@ -1330,7 +1330,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "sum by (cluster, label_product, label_project) (\n  increase(clickhouse_operator_host_reconciles_errors{cluster=~\"$cluster\"}[5m])\n  * on(exported_namespace, cluster) group_left(label_product, label_project)\n  label_replace(\n    kube_namespace_labels{\n        label_product=~\"$product\",\n        label_project=~\"$project\"}, \n    \"exported_namespace\", \"$1\", \"namespace\", \"(.*)\"\n  )\n)",
+                        "expr": "sum by (cluster, label_product, label_project) (\n  increase(clickhouse_operator_host_reconciles_errors{cluster=~\"$cluster\"}[$__rate_interval])\n  * on(exported_namespace, cluster) group_left(label_product, label_project)\n  label_replace(\n    kube_namespace_labels{\n        label_product=~\"$product\",\n        label_project=~\"$project\"}, \n    \"exported_namespace\", \"$1\", \"namespace\", \"(.*)\"\n  )\n)",
                         "instant": false,
                         "legendFormat": "{{cluster}}/{{label_product}}/{{label_project}}",
                         "range": true
@@ -1668,7 +1668,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "rate(go_gc_duration_seconds_sum{cluster=~\"$cluster\", namespace=\"clickhouse-system\"}[5m])",
+                        "expr": "rate(go_gc_duration_seconds_sum{cluster=~\"$cluster\", namespace=\"clickhouse-system\"}[$__rate_interval])",
                         "legendFormat": "{{cluster}}",
                         "range": true
                       }
@@ -1789,7 +1789,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum by (chi, cluster, label_product, label_project, exported_namespace) (\n  increase(clickhouse_operator_host_reconciles_errors{exported_namespace=~\"$namespace\", chi=~\"$chi\", cluster=~\"$cluster\"}[5m])\n  * on(exported_namespace, cluster) group_left(label_product, label_project)\n  label_replace(\n    kube_namespace_labels{\n        label_product=~\"$product\",\n        label_project=~\"$project\"}, \n    \"exported_namespace\", \"$1\", \"namespace\", \"(.*)\"\n  )\n)",
+                        "expr": "sum by (chi, cluster, label_product, label_project, exported_namespace) (\n  increase(clickhouse_operator_host_reconciles_errors{exported_namespace=~\"$namespace\", chi=~\"$chi\", cluster=~\"$cluster\"}[$__rate_interval])\n  * on(exported_namespace, cluster) group_left(label_product, label_project)\n  label_replace(\n    kube_namespace_labels{\n        label_product=~\"$product\",\n        label_project=~\"$project\"}, \n    \"exported_namespace\", \"$1\", \"namespace\", \"(.*)\"\n  )\n)",
                         "legendFormat": "{{cluster}}/{{chi}}",
                         "range": true
                       }
@@ -1907,7 +1907,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "histogram_quantile(0.95, \n  sum by (cluster, chi, le, label_project, label_product, exported_namespace) (\n    rate(clickhouse_operator_host_reconciles_timings_bucket{exported_namespace=~\"$namespace\", chi=~\"$chi\", cluster=~\"$cluster\"}[5m])\n    * on(exported_namespace, cluster) group_left(label_project, label_product)\n    label_replace(\n      kube_namespace_labels{\n        label_product=~\"$product\",\n        label_project=~\"$project\"}, \n      \"exported_namespace\", \"$1\", \"namespace\", \"(.*)\"\n    )\n  )\n)",
+                        "expr": "histogram_quantile(0.95, \n  sum by (cluster, chi, le, label_project, label_product, exported_namespace) (\n    rate(clickhouse_operator_host_reconciles_timings_bucket{exported_namespace=~\"$namespace\", chi=~\"$chi\", cluster=~\"$cluster\"}[$__rate_interval])\n    * on(exported_namespace, cluster) group_left(label_project, label_product)\n    label_replace(\n      kube_namespace_labels{\n        label_product=~\"$product\",\n        label_project=~\"$project\"}, \n      \"exported_namespace\", \"$1\", \"namespace\", \"(.*)\"\n    )\n  )\n)",
                         "legendFormat": "{{cluster}}/{{chi}}",
                         "range": true
                       }
@@ -2034,7 +2034,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum by (cluster) (increase(clickhouse_operator_pod_add_events{cluster=~\"$cluster\"}[5m]))",
+                        "expr": "sum by (cluster) (increase(clickhouse_operator_pod_add_events{cluster=~\"$cluster\"}[$__rate_interval]))",
                         "legendFormat": "__auto",
                         "range": true
                       }

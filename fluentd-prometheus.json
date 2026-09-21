@@ -438,7 +438,7 @@
             "type": "prometheus",
             "uid": "${datasource}"
           },
-          "expr": "increase(fluentd_status_retry_count[5m])",
+          "expr": "increase(fluentd_status_retry_count[$__rate_interval])",
           "format": "time_series",
           "intervalFactor": 2,
           "metric": "fluentd_retry_count",

@@ -495,7 +495,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum(rate(vector_component_errors_total{component_kind=\"sink\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum(rate(vector_component_errors_total{component_kind=\"sink\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "errors/s",
                                                 "range": true
                                             },
@@ -583,7 +583,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum(rate(vector_component_discarded_events_total{intentional=\"false\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum(rate(vector_component_discarded_events_total{intentional=\"false\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "dropped/s",
                                                 "range": true
                                             },
@@ -855,7 +855,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "histogram_quantile(0.95, sum by (le) (rate(vector_source_lag_time_seconds_bucket{cluster=~\"$cluster\", pod=~\"$pod\", component_type=\"kubernetes_logs\"}[5m])))",
+                                                "expr": "histogram_quantile(0.95, sum by (le) (rate(vector_source_lag_time_seconds_bucket{cluster=~\"$cluster\", pod=~\"$pod\", component_type=\"kubernetes_logs\"}[$__rate_interval])))",
                                                 "legendFormat": "lag p95",
                                                 "range": true
                                             },
@@ -947,7 +947,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum(rate(vector_component_sent_events_total{component_kind=\"sink\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum(rate(vector_component_sent_events_total{component_kind=\"sink\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "events/s",
                                                 "range": true
                                             },
@@ -1031,7 +1031,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (component_id) (rate(vector_component_sent_events_total{component_kind=\"sink\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum by (component_id) (rate(vector_component_sent_events_total{component_kind=\"sink\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "{{ component_id }}",
                                                 "range": true
                                             },
@@ -1114,7 +1114,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (component_id) (rate(vector_component_received_events_total{component_kind=\"transform\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum by (component_id) (rate(vector_component_received_events_total{component_kind=\"transform\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "{{ component_id }}",
                                                 "range": true
                                             },
@@ -1197,7 +1197,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (component_kind, component_id) (rate(vector_component_received_events_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum by (component_kind, component_id) (rate(vector_component_received_events_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "{{ component_kind }}/{{ component_id }} in",
                                                 "range": true
                                             },
@@ -1222,7 +1222,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (component_kind, component_id) (rate(vector_component_sent_events_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum by (component_kind, component_id) (rate(vector_component_sent_events_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "{{ component_kind }}/{{ component_id }} out",
                                                 "range": true
                                             },
@@ -1307,7 +1307,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (component_kind, component_id) (rate(vector_component_received_event_bytes_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum by (component_kind, component_id) (rate(vector_component_received_event_bytes_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "{{ component_kind }}/{{ component_id }} in",
                                                 "range": true
                                             },
@@ -1332,7 +1332,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (component_kind, component_id) (rate(vector_component_sent_event_bytes_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum by (component_kind, component_id) (rate(vector_component_sent_event_bytes_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "{{ component_kind }}/{{ component_id }} out",
                                                 "range": true
                                             },
@@ -1417,7 +1417,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (pod) (rate(vector_component_sent_events_total{component_kind=\"sink\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum by (pod) (rate(vector_component_sent_events_total{component_kind=\"sink\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "{{ pod }}",
                                                 "range": true
                                             },
@@ -1585,7 +1585,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (component_kind, component_id, error_type) (rate(vector_component_errors_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\"}[5m])) > 0",
+                                                "expr": "sum by (component_kind, component_id, error_type) (rate(vector_component_errors_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\"}[$__rate_interval])) > 0",
                                                 "legendFormat": "{{ component_kind }}/{{ component_id }}/{{ error_type }}",
                                                 "range": true
                                             },
@@ -1670,7 +1670,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (component_id, intentional) (rate(vector_component_discarded_events_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\"}[5m])) > 0",
+                                                "expr": "sum by (component_id, intentional) (rate(vector_component_discarded_events_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=~\"$component_kind\", component_type=~\"$component_type\", component_id=~\"$component_id\"}[$__rate_interval])) > 0",
                                                 "legendFormat": "{{ component_id }} intentional={{ intentional }}",
                                                 "range": true
                                             },
@@ -1755,7 +1755,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (component_id, status) (rate(vector_http_client_responses_total{cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum by (component_id, status) (rate(vector_http_client_responses_total{cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "{{ component_id }} {{ status }}",
                                                 "range": true
                                             },
@@ -1840,7 +1840,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "histogram_quantile(0.95, sum by (component_id, le) (rate(vector_http_client_rtt_seconds_bucket{cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[5m])))",
+                                                "expr": "histogram_quantile(0.95, sum by (component_id, le) (rate(vector_http_client_rtt_seconds_bucket{cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[$__rate_interval])))",
                                                 "legendFormat": "{{ component_id }}",
                                                 "range": true
                                             },
@@ -1925,7 +1925,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (component_id) (rate(vector_adaptive_concurrency_limit_sum{cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[5m])) / sum by (component_id) (rate(vector_adaptive_concurrency_limit_count{cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum by (component_id) (rate(vector_adaptive_concurrency_limit_sum{cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[$__rate_interval])) / sum by (component_id) (rate(vector_adaptive_concurrency_limit_count{cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "{{ component_id }} limit",
                                                 "range": true
                                             },
@@ -1950,7 +1950,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (component_id) (rate(vector_adaptive_concurrency_in_flight_sum{cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[5m])) / sum by (component_id) (rate(vector_adaptive_concurrency_in_flight_count{cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum by (component_id) (rate(vector_adaptive_concurrency_in_flight_sum{cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[$__rate_interval])) / sum by (component_id) (rate(vector_adaptive_concurrency_in_flight_count{cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "{{ component_id }} in flight",
                                                 "range": true
                                             },
@@ -2227,7 +2227,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (component_id) (rate(vector_buffer_received_events_total{buffer_type=\"disk\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum by (component_id) (rate(vector_buffer_received_events_total{buffer_type=\"disk\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "{{ component_id }} in",
                                                 "range": true
                                             },
@@ -2252,7 +2252,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (component_id) (rate(vector_buffer_sent_events_total{buffer_type=\"disk\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[5m]))",
+                                                "expr": "sum by (component_id) (rate(vector_buffer_sent_events_total{buffer_type=\"disk\", cluster=~\"$cluster\", pod=~\"$pod\", component_id=~\"$component_id\"}[$__rate_interval]))",
                                                 "legendFormat": "{{ component_id }} out",
                                                 "range": true
                                             },
@@ -2503,7 +2503,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "histogram_quantile(0.50, sum by (le) (rate(vector_source_lag_time_seconds_bucket{cluster=~\"$cluster\", pod=~\"$pod\", component_type=\"kubernetes_logs\"}[5m])))",
+                                                "expr": "histogram_quantile(0.50, sum by (le) (rate(vector_source_lag_time_seconds_bucket{cluster=~\"$cluster\", pod=~\"$pod\", component_type=\"kubernetes_logs\"}[$__rate_interval])))",
                                                 "legendFormat": "p50",
                                                 "range": true
                                             },
@@ -2528,7 +2528,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "histogram_quantile(0.95, sum by (le) (rate(vector_source_lag_time_seconds_bucket{cluster=~\"$cluster\", pod=~\"$pod\", component_type=\"kubernetes_logs\"}[5m])))",
+                                                "expr": "histogram_quantile(0.95, sum by (le) (rate(vector_source_lag_time_seconds_bucket{cluster=~\"$cluster\", pod=~\"$pod\", component_type=\"kubernetes_logs\"}[$__rate_interval])))",
                                                 "legendFormat": "p95",
                                                 "range": true
                                             },
@@ -2613,7 +2613,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "histogram_quantile(0.95, sum by (pod, le) (rate(vector_source_lag_time_seconds_bucket{cluster=~\"$cluster\", pod=~\"$pod\", component_type=\"kubernetes_logs\"}[5m])))",
+                                                "expr": "histogram_quantile(0.95, sum by (pod, le) (rate(vector_source_lag_time_seconds_bucket{cluster=~\"$cluster\", pod=~\"$pod\", component_type=\"kubernetes_logs\"}[$__rate_interval])))",
                                                 "legendFormat": "{{ pod }}",
                                                 "range": true
                                             },
@@ -2775,7 +2775,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum(rate(vector_files_added_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=\"source\", component_type=\"kubernetes_logs\"}[5m]))",
+                                                "expr": "sum(rate(vector_files_added_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=\"source\", component_type=\"kubernetes_logs\"}[$__rate_interval]))",
                                                 "legendFormat": "added",
                                                 "range": true
                                             },
@@ -2800,7 +2800,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum(rate(vector_files_unwatched_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=\"source\", component_type=\"kubernetes_logs\"}[5m]))",
+                                                "expr": "sum(rate(vector_files_unwatched_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=\"source\", component_type=\"kubernetes_logs\"}[$__rate_interval]))",
                                                 "legendFormat": "unwatched",
                                                 "range": true
                                             },
@@ -2885,7 +2885,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (pod) (rate(vector_checksum_errors_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=\"source\", component_type=\"kubernetes_logs\"}[5m])) > 0",
+                                                "expr": "sum by (pod) (rate(vector_checksum_errors_total{cluster=~\"$cluster\", pod=~\"$pod\", component_kind=\"source\", component_type=\"kubernetes_logs\"}[$__rate_interval])) > 0",
                                                 "legendFormat": "{{ pod }}",
                                                 "range": true
                                             },
@@ -2966,7 +2966,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (pod) (rate(vector_checkpoints_total{cluster=~\"$cluster\", pod=~\"$pod\"}[5m]))",
+                                                "expr": "sum by (pod) (rate(vector_checkpoints_total{cluster=~\"$cluster\", pod=~\"$pod\"}[$__rate_interval]))",
                                                 "legendFormat": "{{ pod }}",
                                                 "range": true
                                             },
@@ -3183,7 +3183,7 @@
                                             },
                                             "spec": {
                                                 "editorMode": "code",
-                                                "expr": "sum by (pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", container=\"vector\", pod=~\"$pod\"}[5m]))",
+                                                "expr": "sum by (pod) (rate(container_cpu_usage_seconds_total{cluster=~\"$cluster\", container=\"vector\", pod=~\"$pod\"}[$__rate_interval]))",
                                                 "legendFormat": "{{ pod }}",
                                                 "range": true
                                             },
