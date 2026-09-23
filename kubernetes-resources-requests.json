@@ -1189,7 +1189,7 @@
       "hideTimepicker": false,
       "fiscalYearStartMonth": 0
     },
-    "title": "FinOps - Compute (CPU & RAM) - State",
+    "title": "FinOps - Compute (CPU & RAM) - State - Node capacity",
     "variables": [
       {
         "kind": "DatasourceVariable",
