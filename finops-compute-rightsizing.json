@@ -2,7 +2,7 @@
   "apiVersion": "dashboard.grafana.app/v2",
   "kind": "Dashboard",
   "metadata": {
-    "name": "finops-storage-state"
+    "name": "12141241231232"
   },
   "spec": {
     "annotations": [
@@ -35,15 +35,15 @@
       }
     ],
     "cursorSync": "Crosshair",
-    "description": "Instant view of how much block storage is provisioned, how much of it is actually written, and which volumes are close to full.",
+    "description": "Where compute is sized wrong in either direction: namespaces being throttled or OOM-killed because they reserved too little, and a suggested request for every namespace based on its observed 7-day peak.",
     "editable": true,
     "elements": {
       "panel-1": {
         "kind": "Panel",
         "spec": {
           "id": 1,
-          "title": "Provisioned",
-          "description": "Total PVC capacity we are paying for, across the selected scope.",
+          "title": "CPU throttling",
+          "description": "Share of CPU scheduling periods in which containers were throttled. Anything sustained above a few percent means the namespace is capped below what it wants, and its requests or limits are too low. This is the counterweight to Shrink candidates: cut here and you make it worse.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -62,10 +62,10 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "sum(sum by (cluster) (\n  clamp_max(\n    topk(1,\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_product!=\"\"} * 2\n      or\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    ) by (cluster, namespace)\n    , 1)\n  * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client)\n  sum by (cluster, namespace) (pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"})\n))",
-                        "instant": true,
-                        "legendFormat": "",
-                        "range": false
+                        "expr": "topk($max_shown,\n  sum by (cluster, namespace) (rate(container_cpu_cfs_throttled_periods_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", cluster=~\"$cluster\", namespace=~\"$namespace\"}[$__rate_interval]))\n  /\n  sum by (cluster, namespace) (rate(container_cpu_cfs_periods_total{job=\"kubelet\", metrics_path=\"/metrics/cadvisor\", container!=\"\", cluster=~\"$cluster\", namespace=~\"$namespace\"}[$__rate_interval]))\n)\n",
+                        "instant": false,
+                        "legendFormat": "{{cluster}} / {{namespace}}",
+                        "range": true
                       },
                       "labels": {
                         "grafana.app/export-label": "prometheus-1",
@@ -78,396 +78,40 @@
                 }
               ],
               "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "stat",
-            "version": "13.1.1",
-            "spec": {
-              "options": {
-                "colorMode": "value",
-                "graphMode": "none",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showPercentChange": false,
-                "textMode": "auto",
-                "wideLayout": true
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "unit": "bytes",
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "green",
-                        "value": 0
-                      }
-                    ]
-                  },
-                  "decimals": 1
-                },
-                "overrides": []
+              "queryOptions": {
+                "maxDataPoints": 800,
+                "interval": "5m"
               }
             }
-          }
-        }
-      },
-      "panel-2": {
-        "kind": "Panel",
-        "spec": {
-          "id": 2,
-          "title": "Actually used",
-          "description": "Bytes actually written inside those volumes.",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": false,
-                        "expr": "sum(sum by (cluster) (\n  clamp_max(\n    topk(1,\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_product!=\"\"} * 2\n      or\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    ) by (cluster, namespace)\n    , 1)\n  * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client)\n  sum by (cluster, namespace) (kubelet_volume_stats_used_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\"})\n))",
-                        "instant": true,
-                        "legendFormat": "",
-                        "range": false
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "prometheus-1",
-                        "grafana.app/export-datasource-name": "${datasource}"
-                      }
-                    },
-                    "refId": "A",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
           },
           "vizConfig": {
             "kind": "VizConfig",
-            "group": "stat",
+            "group": "timeseries",
             "version": "13.1.1",
             "spec": {
               "options": {
-                "colorMode": "value",
-                "graphMode": "none",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showPercentChange": false,
-                "textMode": "auto",
-                "wideLayout": true
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "unit": "bytes",
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "green",
-                        "value": 0
-                      }
-                    ]
-                  },
-                  "decimals": 1
-                },
-                "overrides": []
-              }
-            }
-          }
-        }
-      },
-      "panel-3": {
-        "kind": "Panel",
-        "spec": {
-          "id": 3,
-          "title": "Utilisation",
-          "description": "Used over provisioned. Block storage is billed on provisioned size, so the gap is money spent on empty space.",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": false,
-                        "expr": "sum(sum by (cluster) (\n  clamp_max(\n    topk(1,\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_product!=\"\"} * 2\n      or\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    ) by (cluster, namespace)\n    , 1)\n  * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client)\n  sum by (cluster, namespace) (kubelet_volume_stats_used_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\"})\n))\n/\nsum(sum by (cluster) (\n  clamp_max(\n    topk(1,\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_product!=\"\"} * 2\n      or\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    ) by (cluster, namespace)\n    , 1)\n  * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client)\n  sum by (cluster, namespace) (pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"})\n))",
-                        "instant": true,
-                        "legendFormat": "",
-                        "range": false
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "prometheus-1",
-                        "grafana.app/export-datasource-name": "${datasource}"
-                      }
-                    },
-                    "refId": "A",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "stat",
-            "version": "13.1.1",
-            "spec": {
-              "options": {
-                "colorMode": "value",
-                "graphMode": "none",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showPercentChange": false,
-                "textMode": "auto",
-                "wideLayout": true
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "unit": "percentunit",
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "green",
-                        "value": 0
-                      }
-                    ]
-                  },
-                  "decimals": 1,
-                  "max": 1
-                },
-                "overrides": []
-              }
-            }
-          }
-        }
-      },
-      "panel-4": {
-        "kind": "Panel",
-        "spec": {
-          "id": 4,
-          "title": "Volumes",
-          "description": "Number of PVCs in scope.",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": false,
-                        "expr": "count(pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"})",
-                        "instant": true,
-                        "legendFormat": "",
-                        "range": false
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "prometheus-1",
-                        "grafana.app/export-datasource-name": "${datasource}"
-                      }
-                    },
-                    "refId": "A",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "stat",
-            "version": "13.1.1",
-            "spec": {
-              "options": {
-                "colorMode": "value",
-                "graphMode": "none",
-                "justifyMode": "auto",
-                "orientation": "auto",
-                "percentChangeColorMode": "standard",
-                "reduceOptions": {
-                  "calcs": [
-                    "lastNotNull"
-                  ],
-                  "fields": "",
-                  "values": false
-                },
-                "showPercentChange": false,
-                "textMode": "auto",
-                "wideLayout": true
-              },
-              "fieldConfig": {
-                "defaults": {
-                  "unit": "short",
-                  "color": {
-                    "mode": "thresholds"
-                  },
-                  "thresholds": {
-                    "mode": "absolute",
-                    "steps": [
-                      {
-                        "color": "green",
-                        "value": 0
-                      }
-                    ]
-                  },
-                  "decimals": 0
-                },
-                "overrides": []
-              }
-            }
-          }
-        }
-      },
-      "panel-5": {
-        "kind": "Panel",
-        "spec": {
-          "id": 5,
-          "title": "Provisioned against used, by cluster",
-          "description": "Provisioned capacity per cluster with the portion actually written. The remainder is paid-for empty space.",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "exemplar": false,
-                        "expr": "sum by (cluster) (\n  clamp_max(\n    topk(1,\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_product!=\"\"} * 2\n      or\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    ) by (cluster, namespace)\n    , 1)\n  * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client)\n  sum by (cluster, namespace) (kubelet_volume_stats_used_bytes{cluster=~\"$cluster\", namespace=~\"$namespace\"})\n)\n/\nsum by (cluster) (\n  clamp_max(\n    topk(1,\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_product!=\"\"} * 2\n      or\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    ) by (cluster, namespace)\n    , 1)\n  * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client)\n  sum by (cluster, namespace) (pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"})\n)",
-                        "instant": true,
-                        "legendFormat": "{{cluster}}",
-                        "range": false
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "prometheus-1",
-                        "grafana.app/export-datasource-name": "${datasource}"
-                      }
-                    },
-                    "refId": "A",
-                    "hidden": false
-                  }
-                }
-              ],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "bargauge",
-            "version": "13.1.1",
-            "spec": {
-              "options": {
-                "displayMode": "gradient",
                 "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
-                "reduceOptions": {
                   "calcs": [
+                    "max",
                     "lastNotNull"
                   ],
-                  "fields": "",
-                  "values": false
+                  "displayMode": "table",
+                  "placement": "bottom",
+                  "showLegend": true,
+                  "sortBy": "Mean",
+                  "sortDesc": true
                 },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "text"
+                "tooltip": {
+                  "hideZeros": true,
+                  "mode": "multi",
+                  "sort": "desc"
+                }
               },
               "fieldConfig": {
                 "defaults": {
                   "unit": "percentunit",
                   "color": {
-                    "mode": "thresholds"
+                    "mode": "palette-classic"
                   },
                   "thresholds": {
                     "mode": "absolute",
@@ -480,53 +124,54 @@
                   },
                   "decimals": 1,
                   "min": 0,
-                  "max": 1
-                },
-                "overrides": [
-                  {
-                    "matcher": {
-                      "id": "byType",
-                      "options": "number"
+                  "max": 1,
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisPlacement": "auto",
+                    "axisSoftMin": 0,
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
                     },
-                    "properties": [
-                      {
-                        "id": "thresholds",
-                        "value": {
-                          "mode": "absolute",
-                          "steps": [
-                            {
-                              "color": "red",
-                              "value": 0
-                            },
-                            {
-                              "color": "orange",
-                              "value": 0.3
-                            },
-                            {
-                              "color": "#EAB839",
-                              "value": 0.5
-                            },
-                            {
-                              "color": "green",
-                              "value": 0.7
-                            }
-                          ]
-                        }
-                      }
-                    ]
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "showValues": false,
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
                   }
-                ]
+                },
+                "overrides": []
               }
             }
           }
         }
       },
-      "panel-6": {
+      "panel-2": {
         "kind": "Panel",
         "spec": {
-          "id": 6,
-          "title": "Volumes closest to full",
-          "description": "Per-PVC fill ratio, highest first. These are an operational risk rather than a cost one: a volume at 100% takes its workload down.",
+          "id": 2,
+          "title": "Containers last killed for running out of memory",
+          "description": "Containers whose most recent termination was an OOM kill. A namespace appearing here has memory limits or requests set below what it actually needs.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -545,7 +190,134 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "topk($max_shown, pvc:utilization_ratio{cluster=~\"$cluster\", namespace=~\"$namespace\"})",
+                        "expr": "topk($max_shown,\n  sum by (cluster, namespace) (kube_pod_container_status_last_terminated_reason{reason=\"OOMKilled\", cluster=~\"$cluster\", namespace=~\"$namespace\"})\n)\n",
+                        "instant": false,
+                        "legendFormat": "{{cluster}} / {{namespace}}",
+                        "range": true
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "${datasource}"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {
+                "maxDataPoints": 800,
+                "interval": "5m"
+              }
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "timeseries",
+            "version": "13.1.1",
+            "spec": {
+              "options": {
+                "legend": {
+                  "calcs": [
+                    "max",
+                    "lastNotNull"
+                  ],
+                  "displayMode": "table",
+                  "placement": "bottom",
+                  "showLegend": true,
+                  "sortBy": "Mean",
+                  "sortDesc": true
+                },
+                "tooltip": {
+                  "hideZeros": true,
+                  "mode": "multi",
+                  "sort": "desc"
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "short",
+                  "color": {
+                    "mode": "palette-classic"
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "decimals": 0,
+                  "min": 0,
+                  "custom": {
+                    "axisBorderShow": false,
+                    "axisCenteredZero": false,
+                    "axisColorMode": "text",
+                    "axisPlacement": "auto",
+                    "axisSoftMin": 0,
+                    "barAlignment": 0,
+                    "barWidthFactor": 0.6,
+                    "drawStyle": "line",
+                    "fillOpacity": 0,
+                    "gradientMode": "none",
+                    "hideFrom": {
+                      "legend": false,
+                      "tooltip": false,
+                      "viz": false
+                    },
+                    "insertNulls": false,
+                    "lineInterpolation": "linear",
+                    "lineWidth": 1,
+                    "pointSize": 5,
+                    "scaleDistribution": {
+                      "type": "linear"
+                    },
+                    "showPoints": "never",
+                    "showValues": false,
+                    "spanNulls": false,
+                    "stacking": {
+                      "group": "A",
+                      "mode": "none"
+                    },
+                    "thresholdsStyle": {
+                      "mode": "off"
+                    }
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-3": {
+        "kind": "Panel",
+        "spec": {
+          "id": 3,
+          "title": "CPU: requested against observed peak",
+          "description": "What each namespace reserves, the most it actually used in the last 7 days, and a suggested request of that peak times the headroom factor. Grounded in observed behaviour, not in the current request — so it stays honest even for a namespace that is already badly sized.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "topk($max_shown,\n  sum by (cluster, namespace, label_product, label_project) (\n    clamp_max(\n      topk(1,\n          kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_product!=\"\"} * 2\n        or\n          kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"}\n      ) by (cluster, namespace)\n      , 1)\n    * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client)\n    finops:namespace_cpu_requests:current{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n  )\n)\n",
                         "instant": true,
                         "legendFormat": "",
                         "range": false,
@@ -559,9 +331,72 @@
                     "refId": "A",
                     "hidden": false
                   }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "sum by (cluster, namespace, label_product, label_project) (\n  clamp_max(\n    topk(1,\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_product!=\"\"} * 2\n      or\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    ) by (cluster, namespace)\n    , 1)\n  * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client)\n  finops:namespace_cpu_usage:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n)\n",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false,
+                        "format": "table"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "${datasource}"
+                      }
+                    },
+                    "refId": "B",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "sum by (cluster, namespace, label_product, label_project) (\n  clamp_max(\n    topk(1,\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_product!=\"\"} * 2\n      or\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    ) by (cluster, namespace)\n    , 1)\n  * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client)\n  finops:namespace_cpu_usage:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"} * $headroom\n)\n",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false,
+                        "format": "table"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "${datasource}"
+                      }
+                    },
+                    "refId": "C",
+                    "hidden": false
+                  }
                 }
               ],
               "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "merge",
+                  "spec": {
+                    "options": {}
+                  }
+                },
                 {
                   "kind": "Transformation",
                   "group": "organize",
@@ -571,16 +406,22 @@
                         "Time": true
                       },
                       "indexByName": {
-                        "cluster": 0,
-                        "namespace": 1,
-                        "persistentvolumeclaim": 2,
-                        "Value": 3
+                        "label_product": 0,
+                        "label_project": 1,
+                        "cluster": 2,
+                        "namespace": 3,
+                        "Value #A": 4,
+                        "Value #B": 5,
+                        "Value #C": 6
                       },
                       "renameByName": {
+                        "label_product": "Product",
+                        "label_project": "Project",
                         "cluster": "Cluster",
                         "namespace": "Namespace",
-                        "persistentvolumeclaim": "Volume",
-                        "Value": "Full"
+                        "Value #A": "Requested now",
+                        "Value #B": "Observed peak (7d)",
+                        "Value #C": "Suggested request"
                       }
                     }
                   }
@@ -600,13 +441,13 @@
                 "sortBy": [
                   {
                     "desc": true,
-                    "displayName": "Full"
+                    "displayName": "Requested now"
                   }
                 ]
               },
               "fieldConfig": {
                 "defaults": {
-                  "unit": "percentunit",
+                  "unit": "cpu",
                   "color": {
                     "mode": "thresholds"
                   },
@@ -626,44 +467,242 @@
                       "type": "auto"
                     },
                     "filterable": true,
-                    "inspect": false
+                    "inspect": false,
+                    "footer": {
+                      "reducers": [
+                        "sum"
+                      ]
+                    }
                   }
                 },
                 "overrides": [
                   {
                     "matcher": {
                       "id": "byName",
-                      "options": "Full"
+                      "options": "Suggested request"
                     },
                     "properties": [
                       {
                         "id": "custom.cellOptions",
                         "value": {
-                          "type": "color-background"
+                          "type": "color-text"
                         }
                       },
                       {
-                        "id": "thresholds",
+                        "id": "color",
                         "value": {
-                          "mode": "absolute",
-                          "steps": [
-                            {
-                              "color": "green",
-                              "value": 0
-                            },
-                            {
-                              "color": "#EAB839",
-                              "value": 0.8
-                            },
-                            {
-                              "color": "orange",
-                              "value": 0.9
-                            },
-                            {
-                              "color": "red",
-                              "value": 0.95
-                            }
-                          ]
+                          "mode": "fixed",
+                          "fixedColor": "green"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-4": {
+        "kind": "Panel",
+        "spec": {
+          "id": 4,
+          "title": "Memory: requested against observed peak",
+          "description": "Same for memory. Treat the suggestion as a starting point, not a target: a namespace with spiky traffic needs more headroom than the default factor gives it.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "topk($max_shown,\n  sum by (cluster, namespace, label_product, label_project) (\n    clamp_max(\n      topk(1,\n          kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_product!=\"\"} * 2\n        or\n          kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"}\n      ) by (cluster, namespace)\n      , 1)\n    * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client)\n    finops:namespace_memory_requests:current{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n  )\n)\n",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false,
+                        "format": "table"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "${datasource}"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "sum by (cluster, namespace, label_product, label_project) (\n  clamp_max(\n    topk(1,\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_product!=\"\"} * 2\n      or\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    ) by (cluster, namespace)\n    , 1)\n  * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client)\n  finops:namespace_memory_usage:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n)\n",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false,
+                        "format": "table"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "${datasource}"
+                      }
+                    },
+                    "refId": "B",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "sum by (cluster, namespace, label_product, label_project) (\n  clamp_max(\n    topk(1,\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\", label_product!=\"\"} * 2\n      or\n        kube_namespace_labels{label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    ) by (cluster, namespace)\n    , 1)\n  * on (cluster, namespace) group_right(label_environment_kind, label_project, label_product, label_client)\n  finops:namespace_memory_usage:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"} * $headroom\n)\n",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false,
+                        "format": "table"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "${datasource}"
+                      }
+                    },
+                    "refId": "C",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "merge",
+                  "spec": {
+                    "options": {}
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Time": true
+                      },
+                      "indexByName": {
+                        "label_product": 0,
+                        "label_project": 1,
+                        "cluster": 2,
+                        "namespace": 3,
+                        "Value #A": 4,
+                        "Value #B": 5,
+                        "Value #C": 6
+                      },
+                      "renameByName": {
+                        "label_product": "Product",
+                        "label_project": "Project",
+                        "cluster": "Cluster",
+                        "namespace": "Namespace",
+                        "Value #A": "Requested now",
+                        "Value #B": "Observed peak (7d)",
+                        "Value #C": "Suggested request"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.1.1",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "Requested now"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "bytes",
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "decimals": 2,
+                  "custom": {
+                    "align": "left",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": true,
+                    "inspect": false,
+                    "footer": {
+                      "reducers": [
+                        "sum"
+                      ]
+                    }
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Suggested request"
+                    },
+                    "properties": [
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "color-text"
+                        }
+                      },
+                      {
+                        "id": "color",
+                        "value": {
+                          "mode": "fixed",
+                          "fixedColor": "green"
                         }
                       }
                     ]
@@ -682,7 +721,7 @@
           {
             "kind": "RowsLayoutRow",
             "spec": {
-              "title": "Fleet",
+              "title": "Pressure — where we already cut too far",
               "collapse": false,
               "layout": {
                 "kind": "GridLayout",
@@ -693,8 +732,8 @@
                       "spec": {
                         "x": 0,
                         "y": 0,
-                        "width": 6,
-                        "height": 4,
+                        "width": 12,
+                        "height": 9,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-1"
@@ -704,41 +743,15 @@
                     {
                       "kind": "GridLayoutItem",
                       "spec": {
-                        "x": 6,
+                        "x": 12,
                         "y": 0,
-                        "width": 6,
-                        "height": 4,
+                        "width": 12,
+                        "height": 9,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-2"
                         }
                       }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 12,
-                        "y": 0,
-                        "width": 6,
-                        "height": 4,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-3"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 18,
-                        "y": 0,
-                        "width": 6,
-                        "height": 4,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-4"
-                        }
-                      }
                     }
                   ]
                 }
@@ -748,34 +761,7 @@
           {
             "kind": "RowsLayoutRow",
             "spec": {
-              "title": "By cluster",
-              "collapse": false,
-              "layout": {
-                "kind": "GridLayout",
-                "spec": {
-                  "items": [
-                    {
-                      "kind": "GridLayoutItem",
-                      "spec": {
-                        "x": 0,
-                        "y": 0,
-                        "width": 24,
-                        "height": 8,
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-5"
-                        }
-                      }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          {
-            "kind": "RowsLayoutRow",
-            "spec": {
-              "title": "Operational risk",
+              "title": "Rightsizing",
               "collapse": false,
               "layout": {
                 "kind": "GridLayout",
@@ -790,7 +776,20 @@
                         "height": 12,
                         "element": {
                           "kind": "ElementReference",
-                          "name": "panel-6"
+                          "name": "panel-3"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 12,
+                        "width": 24,
+                        "height": 12,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-4"
                         }
                       }
                     }
@@ -804,11 +803,11 @@
     },
     "links": [
       {
-        "title": "Evolution - Trends",
+        "title": "Optimization - Shrink candidates",
         "type": "link",
         "icon": "dashboard",
         "tooltip": "",
-        "url": "/d/finops-storage-evolution/",
+        "url": "/d/finops-compute-shrink/",
         "tags": [],
         "asDropdown": false,
         "targetBlank": false,
@@ -816,11 +815,11 @@
         "keepTime": true
       },
       {
-        "title": "Optimization - Shrink candidates",
+        "title": "State - Headroom",
         "type": "link",
         "icon": "dashboard",
         "tooltip": "",
-        "url": "/d/pvc-waste-by-project/",
+        "url": "/d/finops-compute-state/",
         "tags": [],
         "asDropdown": false,
         "targetBlank": false,
@@ -831,13 +830,13 @@
     "liveNow": false,
     "preload": false,
     "tags": [
+      "compute",
       "finops",
-      "state",
-      "storage"
+      "optimization"
     ],
     "timeSettings": {
       "timezone": "browser",
-      "from": "now-6h",
+      "from": "now-7d",
       "to": "now",
       "autoRefresh": "",
       "autoRefreshIntervals": [
@@ -851,7 +850,7 @@
       "hideTimepicker": false,
       "fiscalYearStartMonth": 0
     },
-    "title": "FinOps - Storage (PVC) - State",
+    "title": "FinOps - Compute (CPU & RAM) - Optimization - Rightsizing detail",
     "variables": [
       {
         "kind": "DatasourceVariable",
@@ -1084,9 +1083,24 @@
       {
         "kind": "TextVariable",
         "spec": {
+          "name": "headroom",
+          "label": "Headroom factor",
+          "description": "Multiplier applied to the observed 7-day peak to produce a suggested request.",
+          "query": "1.3",
+          "current": {
+            "text": "1.3",
+            "value": "1.3"
+          },
+          "hide": "dontHide",
+          "skipUrlSync": false
+        }
+      },
+      {
+        "kind": "TextVariable",
+        "spec": {
           "name": "max_shown",
-          "label": "Max volumes shown",
-          "description": "How many PVCs the table lists, fullest first.",
+          "label": "Max namespaces shown",
+          "description": "How many namespaces each panel draws.",
           "query": "20",
           "current": {
             "text": "20",

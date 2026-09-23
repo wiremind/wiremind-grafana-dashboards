@@ -53,7 +53,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum(\n  (\n    pvc:capacity_bytes:current{cluster=~\"$cluster\"}\n    -\n    pvc:used_bytes:max_7d{cluster=~\"$cluster\"}\n  )\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:utilization_ratio:max_7d{cluster=~\"$cluster\"} < 0.20)\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:capacity_bytes:current{cluster=~\"$cluster\"} > 15 * 1024^3)\n)",
+                        "expr": "sum(\n  (\n    pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    -\n    pvc:used_bytes:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n  )\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:utilization_ratio:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"} < 0.20)\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"} > 15 * 1024^3)\n)",
                         "range": true
                       }
                     },
@@ -160,7 +160,7 @@
         "spec": {
           "id": 104,
           "title": "Wasted capacity over time",
-          "description": "",
+          "description": "Reclaimable bytes over the selected range. Flat means nobody is acting on it; a step down is a volume actually being shrunk.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -178,7 +178,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum(\n  (\n    pvc:capacity_bytes:current{cluster=~\"$cluster\"}\n    -\n    pvc:used_bytes:max_7d{cluster=~\"$cluster\"}\n  )\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:utilization_ratio:max_7d{cluster=~\"$cluster\"} < 0.20)\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:capacity_bytes:current{cluster=~\"$cluster\"} > 15 * 1024^3)\n)",
+                        "expr": "sum(\n  (\n    pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    -\n    pvc:used_bytes:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n  )\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:utilization_ratio:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"} < 0.20)\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"} > 15 * 1024^3)\n)",
                         "legendFormat": "__auto",
                         "range": true
                       }
@@ -297,7 +297,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "count(\n  pvc:utilization_ratio:max_7d{cluster=~\"$cluster\"} < 0.20\n  and on (cluster, namespace, persistentvolumeclaim)\n  pvc:capacity_bytes:current{cluster=~\"$cluster\"} > 15 * 1024^3\n)"
+                        "expr": "count(\n  pvc:utilization_ratio:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"} < 0.20\n  and on (cluster, namespace, persistentvolumeclaim)\n  pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"} > 15 * 1024^3\n)"
                       }
                     },
                     "refId": "A",
@@ -384,7 +384,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum(\n  pvc:capacity_bytes:current{cluster=~\"$cluster\"}\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:utilization_ratio:max_7d{cluster=~\"$cluster\"} < 0.20)\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:capacity_bytes:current{cluster=~\"$cluster\"} > 15 * 1024^3)\n)"
+                        "expr": "sum(\n  pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:utilization_ratio:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"} < 0.20)\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"} > 15 * 1024^3)\n)"
                       }
                     },
                     "refId": "A",
@@ -463,7 +463,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum(\n  (pvc:capacity_bytes:current{cluster=~\"$cluster\"} - pvc:used_bytes:max_7d{cluster=~\"$cluster\"})\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:utilization_ratio:max_7d{cluster=~\"$cluster\"} < 0.20)\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:capacity_bytes:current{cluster=~\"$cluster\"} > 15 * 1024^3)\n)\n/\nsum(pvc:capacity_bytes:current{cluster=~\"$cluster\"})"
+                        "expr": "sum(\n  (pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"} - pvc:used_bytes:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"})\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:utilization_ratio:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"} < 0.20)\n  and on (cluster, namespace, persistentvolumeclaim)\n  (pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"} > 15 * 1024^3)\n)\n/\nsum(pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"})"
                       }
                     },
                     "refId": "A",
@@ -552,7 +552,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum by (label_project) (\n  (\n    (pvc:capacity_bytes:current{cluster=~\"$cluster\"} - pvc:used_bytes:max_7d{cluster=~\"$cluster\"})\n    and on (cluster, namespace, persistentvolumeclaim)\n    (pvc:utilization_ratio:max_7d{cluster=~\"$cluster\"} < 0.20)\n    and on (cluster, namespace, persistentvolumeclaim)\n    (pvc:capacity_bytes:current{cluster=~\"$cluster\"} > 15 * 1024^3)\n  )\n  * on (cluster, namespace) group_left(label_project)\n  max by (cluster, namespace, label_project) (kube_namespace_labels{cluster=~\"$cluster\"})\n)",
+                        "expr": "sum by (label_project) (\n  (\n    (pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"} - pvc:used_bytes:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"})\n    and on (cluster, namespace, persistentvolumeclaim)\n    (pvc:utilization_ratio:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"} < 0.20)\n    and on (cluster, namespace, persistentvolumeclaim)\n    (pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"} > 15 * 1024^3)\n  )\n  * on (cluster, namespace) group_left(label_project)\n  max by (cluster, namespace, label_project) (kube_namespace_labels{cluster=~\"$cluster\"})\n)",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "__auto"
@@ -574,7 +574,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "sum by (label_project) (\n  pvc:capacity_bytes:current{cluster=~\"$cluster\"}\n  * on (cluster, namespace) group_left(label_project)\n  max by (cluster, namespace, label_project) (kube_namespace_labels{cluster=~\"$cluster\"})\n)",
+                        "expr": "sum by (label_project) (\n  pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n  * on (cluster, namespace) group_left(label_project)\n  max by (cluster, namespace, label_project) (kube_namespace_labels{cluster=~\"$cluster\"})\n)",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "__auto"
@@ -596,7 +596,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "count by (label_project) (\n  (\n    (pvc:utilization_ratio:max_7d{cluster=~\"$cluster\"} < 0.20)\n    and on (cluster, namespace, persistentvolumeclaim)\n    (pvc:capacity_bytes:current{cluster=~\"$cluster\"} > 15 * 1024^3)\n  )\n  * on (cluster, namespace) group_left(label_project)\n  max by (cluster, namespace, label_project) (kube_namespace_labels{cluster=~\"$cluster\"})\n)",
+                        "expr": "count by (label_project) (\n  (\n    (pvc:utilization_ratio:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"} < 0.20)\n    and on (cluster, namespace, persistentvolumeclaim)\n    (pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"} > 15 * 1024^3)\n  )\n  * on (cluster, namespace) group_left(label_project)\n  max by (cluster, namespace, label_project) (kube_namespace_labels{cluster=~\"$cluster\"})\n)",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "__auto"
@@ -875,7 +875,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "(\n  pvc:capacity_bytes:current{cluster=~\"$cluster\"}\n  * on (cluster, namespace) group_left(label_project) max by (cluster, namespace, label_project) (kube_namespace_labels{cluster=~\"$cluster\", label_project=~\"$project\"})\n)\nand on (cluster, namespace, persistentvolumeclaim)\n(pvc:utilization_ratio:max_7d{cluster=~\"$cluster\"} < 0.20)\nand on (cluster, namespace, persistentvolumeclaim)\n(pvc:capacity_bytes:current{cluster=~\"$cluster\"} > 15 * 1024^3)",
+                        "expr": "(\n  pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n  * on (cluster, namespace) group_left(label_project) max by (cluster, namespace, label_project) (kube_namespace_labels{cluster=~\"$cluster\", label_project=~\"$project\"})\n)\nand on (cluster, namespace, persistentvolumeclaim)\n(pvc:utilization_ratio:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"} < 0.20)\nand on (cluster, namespace, persistentvolumeclaim)\n(pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"} > 15 * 1024^3)",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "__auto"
@@ -897,7 +897,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "pvc:used_bytes:max_7d{cluster=~\"$cluster\"}\nand on (cluster, namespace, persistentvolumeclaim)\n(pvc:utilization_ratio:max_7d{cluster=~\"$cluster\"} < 0.20)\nand on (cluster, namespace, persistentvolumeclaim)\n(pvc:capacity_bytes:current{cluster=~\"$cluster\"} > 15 * 1024^3)\nand on (cluster, namespace)\n(max by (cluster, namespace) (kube_namespace_labels{cluster=~\"$cluster\", label_project=~\"$project\"}))",
+                        "expr": "pvc:used_bytes:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"}\nand on (cluster, namespace, persistentvolumeclaim)\n(pvc:utilization_ratio:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"} < 0.20)\nand on (cluster, namespace, persistentvolumeclaim)\n(pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"} > 15 * 1024^3)\nand on (cluster, namespace)\n(max by (cluster, namespace) (kube_namespace_labels{cluster=~\"$cluster\", label_project=~\"$project\"}))",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "__auto"
@@ -919,7 +919,7 @@
                       },
                       "spec": {
                         "editorMode": "code",
-                        "expr": "pvc:utilization_ratio:max_7d{cluster=~\"$cluster\"}\nand on (cluster, namespace, persistentvolumeclaim)\n(pvc:utilization_ratio:max_7d{cluster=~\"$cluster\"} < 0.20)\nand on (cluster, namespace, persistentvolumeclaim)\n(pvc:capacity_bytes:current{cluster=~\"$cluster\"} > 15 * 1024^3)\nand on (cluster, namespace)\n(max by (cluster, namespace) (kube_namespace_labels{cluster=~\"$cluster\", label_project=~\"$project\"}))",
+                        "expr": "pvc:utilization_ratio:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"}\nand on (cluster, namespace, persistentvolumeclaim)\n(pvc:utilization_ratio:max_7d{cluster=~\"$cluster\", namespace=~\"$namespace\"} < 0.20)\nand on (cluster, namespace, persistentvolumeclaim)\n(pvc:capacity_bytes:current{cluster=~\"$cluster\", namespace=~\"$namespace\"} > 15 * 1024^3)\nand on (cluster, namespace)\n(max by (cluster, namespace) (kube_namespace_labels{cluster=~\"$cluster\", label_project=~\"$project\"}))",
                         "format": "table",
                         "instant": true,
                         "legendFormat": "__auto"
@@ -1317,21 +1317,42 @@
         ]
       }
     },
-    "links": [],
+    "links": [
+      {
+        "title": "State",
+        "type": "link",
+        "icon": "dashboard",
+        "tooltip": "",
+        "url": "/d/finops-storage-state/",
+        "tags": [],
+        "asDropdown": false,
+        "targetBlank": false,
+        "includeVars": true,
+        "keepTime": true
+      },
+      {
+        "title": "Evolution - Trends",
+        "type": "link",
+        "icon": "dashboard",
+        "tooltip": "",
+        "url": "/d/finops-storage-evolution/",
+        "tags": [],
+        "asDropdown": false,
+        "targetBlank": false,
+        "includeVars": true,
+        "keepTime": true
+      }
+    ],
     "liveNow": false,
     "preload": false,
     "tags": [
-      "capacity-planning",
-      "cost",
       "finops",
-      "kubernetes",
       "optimization",
-      "pvc",
       "storage"
     ],
     "timeSettings": {
       "timezone": "browser",
-      "from": "now-5m",
+      "from": "now-7d",
       "to": "now",
       "autoRefresh": "",
       "autoRefreshIntervals": [
@@ -1405,6 +1426,50 @@
           "multi": true,
           "includeAll": true,
           "allowCustomValue": true
+        }
+      },
+      {
+        "kind": "QueryVariable",
+        "spec": {
+          "name": "namespace",
+          "label": "Namespace",
+          "query": {
+            "kind": "DataQuery",
+            "group": "prometheus",
+            "version": "v0",
+            "datasource": {
+              "name": "${datasource}"
+            },
+            "spec": {
+              "qryType": 1,
+              "query": "label_values(kube_namespace_created{cluster=~\"$cluster\"},namespace)",
+              "refId": "PrometheusVariableQueryEditor-VariableQuery"
+            },
+            "labels": {
+              "grafana.app/export-label": "prometheus-1",
+              "grafana.app/export-datasource-name": "${datasource}"
+            }
+          },
+          "definition": "label_values(kube_namespace_created{cluster=~\"$cluster\"},namespace)",
+          "current": {
+            "text": [
+              "All"
+            ],
+            "value": [
+              "$__all"
+            ]
+          },
+          "options": [],
+          "refresh": "onDashboardLoad",
+          "multi": true,
+          "includeAll": true,
+          "allValue": ".*",
+          "allowCustomValue": true,
+          "hide": "dontHide",
+          "skipUrlSync": false,
+          "regex": "",
+          "regexApplyTo": "value",
+          "sort": "alphabeticalAsc"
         }
       },
       {
