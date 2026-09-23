@@ -43,7 +43,7 @@
         "spec": {
           "id": 111,
           "title": "Request difference by project since $offset ago, avg for one week",
-          "description": "",
+          "description": "Same comparison one level down, per project. Namespaces with no product label are excluded here.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -349,7 +349,7 @@
         "spec": {
           "id": 112,
           "title": "Request difference between now and $offset ago, avg for one week",
-          "description": "",
+          "description": "Namespace-by-namespace detail behind the two roll-ups above. Sortable and filterable; use it to find which namespace drove a product's change.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -715,7 +715,7 @@
         "spec": {
           "id": 113,
           "title": "Request difference by product since $offset ago, avg for one week",
-          "description": "",
+          "description": "Change in reserved CPU and memory per product between now and $offset ago, each side averaged over $range. Positive means the product grew its reservation. For when it grew rather than by how much, see Evolution - Trends.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -992,43 +992,6 @@
             }
           }
         }
-      },
-      "panel-114": {
-        "kind": "Panel",
-        "spec": {
-          "id": 114,
-          "title": "",
-          "description": "",
-          "links": [],
-          "data": {
-            "kind": "QueryGroup",
-            "spec": {
-              "queries": [],
-              "transformations": [],
-              "queryOptions": {}
-            }
-          },
-          "vizConfig": {
-            "kind": "VizConfig",
-            "group": "text",
-            "version": "13.1.0",
-            "spec": {
-              "options": {
-                "code": {
-                  "language": "plaintext",
-                  "showLineNumbers": false,
-                  "showMiniMap": false
-                },
-                "content": "This dashboards computes, for both CPU and memory requests:\n- average for the last $range\n- average for $range from ${offset} ago\n- shows the difference.",
-                "mode": "markdown"
-              },
-              "fieldConfig": {
-                "defaults": {},
-                "overrides": []
-              }
-            }
-          }
-        }
       }
     },
     "layout": {
@@ -1040,19 +1003,6 @@
             "spec": {
               "x": 0,
               "y": 0,
-              "width": 24,
-              "height": 4,
-              "element": {
-                "kind": "ElementReference",
-                "name": "panel-114"
-              }
-            }
-          },
-          {
-            "kind": "GridLayoutItem",
-            "spec": {
-              "x": 0,
-              "y": 4,
               "width": 7,
               "height": 22,
               "element": {
@@ -1065,7 +1015,7 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 7,
-              "y": 4,
+              "y": 0,
               "width": 9,
               "height": 22,
               "element": {
@@ -1078,7 +1028,7 @@
             "kind": "GridLayoutItem",
             "spec": {
               "x": 0,
-              "y": 26,
+              "y": 22,
               "width": 24,
               "height": 22,
               "element": {
@@ -1090,7 +1040,32 @@
         ]
       }
     },
-    "links": [],
+    "links": [
+      {
+        "title": "Evolution - Trends",
+        "type": "link",
+        "icon": "dashboard",
+        "tooltip": "",
+        "url": "/d/nch6jn2/",
+        "tags": [],
+        "asDropdown": false,
+        "targetBlank": false,
+        "includeVars": true,
+        "keepTime": true
+      },
+      {
+        "title": "State - Headroom",
+        "type": "link",
+        "icon": "dashboard",
+        "tooltip": "",
+        "url": "/d/finops-compute-state/",
+        "tags": [],
+        "asDropdown": false,
+        "targetBlank": false,
+        "includeVars": true,
+        "keepTime": true
+      }
+    ],
     "liveNow": false,
     "preload": false,
     "tags": [
@@ -1115,7 +1090,7 @@
         "2h",
         "1d"
       ],
-      "hideTimepicker": true,
+      "hideTimepicker": false,
       "fiscalYearStartMonth": 0
     },
     "title": "FinOps - Compute (CPU & RAM) - Evolution - Top movers",

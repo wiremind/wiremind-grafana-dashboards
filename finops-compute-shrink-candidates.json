@@ -1096,6 +1096,18 @@
     },
     "links": [
       {
+        "title": "Optimization - Rightsizing detail",
+        "type": "link",
+        "icon": "dashboard",
+        "tooltip": "",
+        "url": "/d/12141241231232/",
+        "tags": [],
+        "asDropdown": false,
+        "targetBlank": false,
+        "includeVars": true,
+        "keepTime": true
+      },
+      {
         "title": "State - Headroom",
         "type": "link",
         "icon": "dashboard",
@@ -1117,7 +1129,7 @@
     ],
     "timeSettings": {
       "timezone": "browser",
-      "from": "now-30d",
+      "from": "now-7d",
       "to": "now",
       "autoRefresh": "",
       "autoRefreshIntervals": [

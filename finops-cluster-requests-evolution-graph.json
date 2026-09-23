@@ -1340,11 +1340,23 @@
     },
     "links": [
       {
-        "title": "Top movers (delta between two points in time)",
+        "title": "Evolution - Top movers",
         "type": "link",
         "icon": "dashboard",
         "tooltip": "",
-        "url": "/d/feh6yl03smfi8b/finops-cluster-cpu-and-memory-requests-evolution",
+        "url": "/d/feh6yl03smfi8b/",
+        "tags": [],
+        "asDropdown": false,
+        "targetBlank": false,
+        "includeVars": true,
+        "keepTime": true
+      },
+      {
+        "title": "State - Headroom",
+        "type": "link",
+        "icon": "dashboard",
+        "tooltip": "",
+        "url": "/d/finops-compute-state/",
         "tags": [],
         "asDropdown": false,
         "targetBlank": false,
@@ -1357,9 +1369,7 @@
     "tags": [
       "compute",
       "evolution",
-      "finops",
-      "kubernetes",
-      "requests"
+      "finops"
     ],
     "timeSettings": {
       "timezone": "browser",

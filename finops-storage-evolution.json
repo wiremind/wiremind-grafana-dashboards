@@ -1242,6 +1242,18 @@
         "targetBlank": false,
         "includeVars": true,
         "keepTime": true
+      },
+      {
+        "title": "Optimization - Shrink candidates",
+        "type": "link",
+        "icon": "dashboard",
+        "tooltip": "",
+        "url": "/d/pvc-waste-by-project/",
+        "tags": [],
+        "asDropdown": false,
+        "targetBlank": false,
+        "includeVars": true,
+        "keepTime": true
       }
     ],
     "liveNow": false,

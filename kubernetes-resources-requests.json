@@ -39,7 +39,7 @@
       }
     ],
     "cursorSync": "Off",
-    "description": "Kubernetes Resource Requests",
+    "description": "Node-level view of how much of each cluster's schedulable CPU and memory is committed. Scoped by node and priority class rather than by product or project, which is why it carries no product/project filter: see State - Headroom for the namespace-attributed view.",
     "editable": true,
     "elements": {
       "panel-1": {
@@ -111,32 +111,6 @@
                     },
                     "refId": "B",
                     "hidden": false
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "sum by (cluster) (\n  sum by (cluster, namespace, node, pod) (\n    cluster:namespace:pod_cpu:active:kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    * on (node) group_left()\n    kube_node_labels{cluster=~\"$cluster\", $node_selector}\n  )\n  * on (pod, namespace, node) group_left()\n    kube_pod_info{cluster=~\"$cluster\", namespace=~\"$namespace\", ${priority_class_selector:raw}}\n)",
-                        "instant": false,
-                        "legendFormat": "Requested pod CPUs (filtered by node label, namespace and pod priority class)",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "prometheus-1",
-                        "grafana.app/export-datasource-name": "Thanos"
-                      }
-                    },
-                    "refId": "C",
-                    "hidden": true
                   }
                 }
               ],
@@ -390,7 +364,8 @@
                 "overrides": []
               }
             }
-          }
+          },
+          "description": "Requested CPU against allocatable for the selected nodes. The gauge is the committed share; the chart below it is the same figure over time."
         }
       },
       "panel-3": {
@@ -462,32 +437,6 @@
                     },
                     "refId": "B",
                     "hidden": false
-                  }
-                },
-                {
-                  "kind": "PanelQuery",
-                  "spec": {
-                    "query": {
-                      "kind": "DataQuery",
-                      "group": "prometheus",
-                      "version": "v0",
-                      "datasource": {
-                        "name": "${datasource}"
-                      },
-                      "spec": {
-                        "editorMode": "code",
-                        "expr": "sum by (cluster) (\n  sum by (cluster, namespace, node, pod) (\n    cluster:namespace:pod_memory:active:kube_pod_container_resource_requests{cluster=~\"$cluster\", namespace=~\"$namespace\"}\n    * on (node) group_left()\n    kube_node_labels{cluster=~\"$cluster\", $node_selector}\n  )\n  * on (pod, namespace, node) group_left()\n    kube_pod_info{cluster=~\"$cluster\", namespace=~\"$namespace\", ${priority_class_selector:raw}}\n)",
-                        "instant": false,
-                        "legendFormat": "Requested pod memory (filtered by node label, namespace and pod priority class)",
-                        "range": true
-                      },
-                      "labels": {
-                        "grafana.app/export-label": "prometheus-1",
-                        "grafana.app/export-datasource-name": "Thanos"
-                      }
-                    },
-                    "refId": "C",
-                    "hidden": true
                   }
                 }
               ],
@@ -705,7 +654,8 @@
                 "overrides": []
               }
             }
-          }
+          },
+          "description": "Requested memory against allocatable for the selected nodes."
         }
       },
       "panel-6": {
@@ -1162,7 +1112,32 @@
         ]
       }
     },
-    "links": [],
+    "links": [
+      {
+        "title": "State - Headroom",
+        "type": "link",
+        "icon": "dashboard",
+        "tooltip": "",
+        "url": "/d/finops-compute-state/",
+        "tags": [],
+        "asDropdown": false,
+        "targetBlank": false,
+        "includeVars": true,
+        "keepTime": true
+      },
+      {
+        "title": "Evolution - Trends",
+        "type": "link",
+        "icon": "dashboard",
+        "tooltip": "",
+        "url": "/d/nch6jn2/",
+        "tags": [],
+        "asDropdown": false,
+        "targetBlank": false,
+        "includeVars": true,
+        "keepTime": true
+      }
+    ],
     "liveNow": false,
     "preload": false,
     "tags": [
@@ -1172,7 +1147,7 @@
     ],
     "timeSettings": {
       "timezone": "browser",
-      "from": "now-24h",
+      "from": "now-6h",
       "to": "now",
       "autoRefresh": "",
       "autoRefreshIntervals": [
