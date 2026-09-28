@@ -62,7 +62,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "max(\n  (\n  sum by (cluster, node) (kube_node_status_allocatable{resource=\"cpu\", cluster=~\"$cluster\"})\n  -\n  (\n    sum by (cluster, node) (kube_pod_container_resource_requests{resource=\"cpu\", node!=\"\", cluster=~\"$cluster\"})\n    or\n    sum by (cluster, node) (kube_node_status_allocatable{resource=\"cpu\", cluster=~\"$cluster\"}) * 0\n  )\n)\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  ${pool} (\n    (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n    and group by (cluster, node) (\n      kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n      or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n    )\n  )\n)\n)\n",
+                        "expr": "max(\n  finops:node_cpu_free:sum{cluster=~\"$cluster\"}\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  ${pool} (\n    (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n    and group by (cluster, node) (\n      kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n      or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n    )\n  )\n)\n)\n",
                         "instant": true,
                         "legendFormat": "",
                         "range": false
@@ -150,7 +150,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "max(\n  (\n  sum by (cluster, node) (kube_node_status_allocatable{resource=\"memory\", cluster=~\"$cluster\"})\n  -\n  (\n    sum by (cluster, node) (kube_pod_container_resource_requests{resource=\"memory\", node!=\"\", cluster=~\"$cluster\"})\n    or\n    sum by (cluster, node) (kube_node_status_allocatable{resource=\"memory\", cluster=~\"$cluster\"}) * 0\n  )\n)\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  ${pool} (\n    (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n    and group by (cluster, node) (\n      kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n      or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n    )\n  )\n)\n)\n",
+                        "expr": "max(\n  finops:node_memory_free:sum{cluster=~\"$cluster\"}\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  ${pool} (\n    (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n    and group by (cluster, node) (\n      kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n      or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n    )\n  )\n)\n)\n",
                         "instant": true,
                         "legendFormat": "",
                         "range": false
@@ -238,7 +238,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "max(\n  sum by (cluster, node) (topolvm_volumegroup_available_bytes{cluster=~\"$cluster\"})\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  ${pool} (\n    (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n    and group by (cluster, node) (\n      kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n      or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n    )\n  )\n)\n)\n",
+                        "expr": "max(\n  finops:node_volume_available:sum{cluster=~\"$cluster\"}\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  ${pool} (\n    (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n    and group by (cluster, node) (\n      kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n      or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n    )\n  )\n)\n)\n",
                         "instant": true,
                         "legendFormat": "",
                         "range": false
@@ -326,7 +326,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "count(\n  (\n    (\n  sum by (cluster, node) (kube_node_status_allocatable{resource=\"cpu\", cluster=~\"$cluster\"})\n  -\n  (\n    sum by (cluster, node) (kube_pod_container_resource_requests{resource=\"cpu\", node!=\"\", cluster=~\"$cluster\"})\n    or\n    sum by (cluster, node) (kube_node_status_allocatable{resource=\"cpu\", cluster=~\"$cluster\"}) * 0\n  )\n) >= $fit_cpu\n  )\n  and on (cluster, node) (\n    (\n  sum by (cluster, node) (kube_node_status_allocatable{resource=\"memory\", cluster=~\"$cluster\"})\n  -\n  (\n    sum by (cluster, node) (kube_pod_container_resource_requests{resource=\"memory\", node!=\"\", cluster=~\"$cluster\"})\n    or\n    sum by (cluster, node) (kube_node_status_allocatable{resource=\"memory\", cluster=~\"$cluster\"}) * 0\n  )\n) >= ($fit_gib * 1073741824)\n  )\n  and on (cluster, node) (\n    sum by (cluster, node) (topolvm_volumegroup_available_bytes{cluster=~\"$cluster\"}) >= ($fit_tib * 1099511627776)\n  )\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  ${pool} (\n    (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n    and group by (cluster, node) (\n      kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n      or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n    )\n  )\n)\n)\n",
+                        "expr": "count(\n  (\n    finops:node_cpu_free:sum{cluster=~\"$cluster\"} >= $fit_cpu\n  )\n  and on (cluster, node) (\n    finops:node_memory_free:sum{cluster=~\"$cluster\"} >= ($fit_gib * 1073741824)\n  )\n  and on (cluster, node) (\n    finops:node_volume_available:sum{cluster=~\"$cluster\"} >= ($fit_tib * 1099511627776)\n  )\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  ${pool} (\n    (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n    and group by (cluster, node) (\n      kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n      or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n    )\n  )\n)\n)\n",
                         "instant": true,
                         "legendFormat": "Nodes that fit",
                         "range": false
@@ -347,22 +347,15 @@
           },
           "vizConfig": {
             "kind": "VizConfig",
-            "group": "bargauge",
+            "group": "stat",
             "version": "13.1.1",
             "spec": {
               "options": {
-                "displayMode": "gradient",
-                "legend": {
-                  "calcs": [],
-                  "displayMode": "list",
-                  "placement": "bottom",
-                  "showLegend": false
-                },
-                "maxVizHeight": 300,
-                "minVizHeight": 16,
-                "minVizWidth": 8,
-                "namePlacement": "auto",
-                "orientation": "horizontal",
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
                 "reduceOptions": {
                   "calcs": [
                     "lastNotNull"
@@ -370,9 +363,9 @@
                   "fields": "",
                   "values": false
                 },
-                "showUnfilled": true,
-                "sizing": "auto",
-                "valueMode": "text"
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
               },
               "fieldConfig": {
                 "defaults": {
@@ -389,8 +382,7 @@
                       }
                     ]
                   },
-                  "decimals": 0,
-                  "min": 0
+                  "decimals": 0
                 },
                 "overrides": [
                   {
@@ -455,7 +447,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "sum by (cluster) (\n  (\n  sum by (cluster, node) (kube_node_status_allocatable{resource=\"cpu\", cluster=~\"$cluster\"})\n  -\n  (\n    sum by (cluster, node) (kube_pod_container_resource_requests{resource=\"cpu\", node!=\"\", cluster=~\"$cluster\"})\n    or\n    sum by (cluster, node) (kube_node_status_allocatable{resource=\"cpu\", cluster=~\"$cluster\"}) * 0\n  )\n)\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  ${pool} (\n    (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n    and group by (cluster, node) (\n      kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n      or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n    )\n  )\n)\n)\n",
+                        "expr": "sum by (cluster) (\n  finops:node_cpu_free:sum{cluster=~\"$cluster\"}\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  ${pool} (\n    (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n    and group by (cluster, node) (\n      kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n      or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n    )\n  )\n)\n)\n",
                         "instant": false,
                         "legendFormat": "{{cluster}}",
                         "range": true
@@ -583,7 +575,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "sum by (cluster) (\n  (\n  sum by (cluster, node) (kube_node_status_allocatable{resource=\"memory\", cluster=~\"$cluster\"})\n  -\n  (\n    sum by (cluster, node) (kube_pod_container_resource_requests{resource=\"memory\", node!=\"\", cluster=~\"$cluster\"})\n    or\n    sum by (cluster, node) (kube_node_status_allocatable{resource=\"memory\", cluster=~\"$cluster\"}) * 0\n  )\n)\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  ${pool} (\n    (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n    and group by (cluster, node) (\n      kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n      or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n    )\n  )\n)\n)\n",
+                        "expr": "sum by (cluster) (\n  finops:node_memory_free:sum{cluster=~\"$cluster\"}\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  ${pool} (\n    (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n    and group by (cluster, node) (\n      kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n      or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n    )\n  )\n)\n)\n",
                         "instant": false,
                         "legendFormat": "{{cluster}}",
                         "range": true
@@ -711,7 +703,7 @@
                       "spec": {
                         "editorMode": "code",
                         "exemplar": false,
-                        "expr": "sum by (cluster) (\n  sum by (cluster, node) (topolvm_volumegroup_available_bytes{cluster=~\"$cluster\"})\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  ${pool} (\n    (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n    and group by (cluster, node) (\n      kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n      or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n    )\n  )\n)\n)\n",
+                        "expr": "sum by (cluster) (\n  finops:node_volume_available:sum{cluster=~\"$cluster\"}\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  ${pool} (\n    (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n    and group by (cluster, node) (\n      kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n      or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n    )\n  )\n)\n)\n",
                         "instant": false,
                         "legendFormat": "{{cluster}}",
                         "range": true
