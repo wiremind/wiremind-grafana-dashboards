@@ -673,6 +673,524 @@
             }
           }
         }
+      },
+      "panel-fit-1": {
+        "kind": "Panel",
+        "spec": {
+          "id": 7,
+          "title": "Largest volume that fits, production",
+          "description": "Free space on the single emptiest production node. A volume must fit on one node, so this is the largest one we could create right now — not the pool total.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "max(\n  sum by (cluster, node) (topolvm_volumegroup_available_bytes{cluster=~\"$cluster\"})\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  and group by (cluster, node) (\n    kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n    or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n  )\n)\n)\n",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "${datasource}"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.1.1",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "bytes",
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "decimals": 1
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-fit-2": {
+        "kind": "Panel",
+        "spec": {
+          "id": 8,
+          "title": "Largest volume that fits, non-production",
+          "description": "Same for nodes without the production role.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "max(\n  sum by (cluster, node) (topolvm_volumegroup_available_bytes{cluster=~\"$cluster\"})\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  unless group by (cluster, node) (\n    kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n    or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n  )\n)\n)\n",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "${datasource}"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.1.1",
+            "spec": {
+              "options": {
+                "colorMode": "value",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "orientation": "auto",
+                "percentChangeColorMode": "standard",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showPercentChange": false,
+                "textMode": "auto",
+                "wideLayout": true
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "bytes",
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "decimals": 1
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-fit-3": {
+        "kind": "Panel",
+        "spec": {
+          "id": 9,
+          "title": "Nodes that could take a $fit_tib TiB volume",
+          "description": "Schedulable nodes with at least $fit_tib TiB free, by pool. Zero means the volume cannot be created at all, however much free space the pool reports in total.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "count(\n  (\n    sum by (cluster, node) (topolvm_volumegroup_available_bytes{cluster=~\"$cluster\"}) >= ($fit_tib * 1099511627776)\n  )\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  and group by (cluster, node) (\n    kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n    or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n  )\n)\n)\n",
+                        "instant": true,
+                        "legendFormat": "Production",
+                        "range": false
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "${datasource}"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "count(\n  (\n    sum by (cluster, node) (topolvm_volumegroup_available_bytes{cluster=~\"$cluster\"}) >= ($fit_tib * 1099511627776)\n  )\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  unless group by (cluster, node) (\n    kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n    or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n  )\n)\n)\n",
+                        "instant": true,
+                        "legendFormat": "Non-production",
+                        "range": false
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "${datasource}"
+                      }
+                    },
+                    "refId": "B",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "bargauge",
+            "version": "13.1.1",
+            "spec": {
+              "options": {
+                "displayMode": "gradient",
+                "legend": {
+                  "calcs": [],
+                  "displayMode": "list",
+                  "placement": "bottom",
+                  "showLegend": false
+                },
+                "maxVizHeight": 300,
+                "minVizHeight": 16,
+                "minVizWidth": 8,
+                "namePlacement": "auto",
+                "orientation": "horizontal",
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "showUnfilled": true,
+                "sizing": "auto",
+                "valueMode": "text"
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "short",
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "decimals": 0,
+                  "min": 0
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byType",
+                      "options": "number"
+                    },
+                    "properties": [
+                      {
+                        "id": "thresholds",
+                        "value": {
+                          "mode": "absolute",
+                          "steps": [
+                            {
+                              "color": "red",
+                              "value": 0
+                            },
+                            {
+                              "color": "orange",
+                              "value": 1
+                            },
+                            {
+                              "color": "#EAB839",
+                              "value": 2
+                            },
+                            {
+                              "color": "green",
+                              "value": 3
+                            }
+                          ]
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
+      },
+      "panel-fit-4": {
+        "kind": "Panel",
+        "spec": {
+          "id": 10,
+          "title": "Free volume space per node",
+          "description": "Every schedulable node with local storage, emptiest first. Use it to see whether the pool total is spread thin or sitting on one node.",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "sum by (cluster, node) (topolvm_volumegroup_available_bytes{cluster=~\"$cluster\"})\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  and group by (cluster, node) (\n    kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n    or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n  )\n)\n",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false,
+                        "format": "table"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "${datasource}"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                },
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "prometheus",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "${datasource}"
+                      },
+                      "spec": {
+                        "editorMode": "code",
+                        "exemplar": false,
+                        "expr": "sum by (cluster, node) (topolvm_volumegroup_available_bytes{cluster=~\"$cluster\"})\n  and on (cluster, node) (\n  (\n    group by (cluster, node) (kube_node_spec_unschedulable{cluster=~\"$cluster\"} == 0)\n    unless group by (cluster, node) (kube_node_role{role=\"control-plane\", cluster=~\"$cluster\"})\n  )\n  unless group by (cluster, node) (\n    kube_node_labels{label_node_role_wiremind_io_production=\"true\", cluster=~\"$cluster\"}\n    or kube_node_labels{label_node_role_kubernetes_io_production=\"true\", cluster=~\"$cluster\"}\n  )\n)\n",
+                        "instant": true,
+                        "legendFormat": "",
+                        "range": false,
+                        "format": "table"
+                      },
+                      "labels": {
+                        "grafana.app/export-label": "prometheus-1",
+                        "grafana.app/export-datasource-name": "${datasource}"
+                      }
+                    },
+                    "refId": "B",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [
+                {
+                  "kind": "Transformation",
+                  "group": "merge",
+                  "spec": {
+                    "options": {}
+                  }
+                },
+                {
+                  "kind": "Transformation",
+                  "group": "organize",
+                  "spec": {
+                    "options": {
+                      "excludeByName": {
+                        "Time": true
+                      },
+                      "indexByName": {
+                        "Value #A": 2,
+                        "Value #B": 3,
+                        "cluster": 0,
+                        "node": 1
+                      },
+                      "renameByName": {
+                        "Value #A": "Free (production)",
+                        "Value #B": "Free (non-production)",
+                        "cluster": "Cluster",
+                        "node": "Node"
+                      }
+                    }
+                  }
+                }
+              ],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "table",
+            "version": "13.1.1",
+            "spec": {
+              "options": {
+                "cellHeight": "sm",
+                "showHeader": true,
+                "sortBy": [
+                  {
+                    "desc": true,
+                    "displayName": "Free (production)"
+                  }
+                ]
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "short",
+                  "color": {
+                    "mode": "thresholds"
+                  },
+                  "thresholds": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      }
+                    ]
+                  },
+                  "decimals": 2,
+                  "custom": {
+                    "align": "left",
+                    "cellOptions": {
+                      "type": "auto"
+                    },
+                    "filterable": true,
+                    "inspect": false
+                  }
+                },
+                "overrides": [
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Free (production)"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "bytes"
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "gradient-gauge"
+                        }
+                      }
+                    ]
+                  },
+                  {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Free (non-production)"
+                    },
+                    "properties": [
+                      {
+                        "id": "unit",
+                        "value": "bytes"
+                      },
+                      {
+                        "id": "custom.cellOptions",
+                        "value": {
+                          "type": "gradient-gauge"
+                        }
+                      }
+                    ]
+                  }
+                ]
+              }
+            }
+          }
+        }
       }
     },
     "layout": {
@@ -791,6 +1309,72 @@
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-6"
+                        }
+                      }
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          {
+            "kind": "RowsLayoutRow",
+            "spec": {
+              "title": "Will it fit?",
+              "collapse": false,
+              "layout": {
+                "kind": "GridLayout",
+                "spec": {
+                  "items": [
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 6,
+                        "height": 4,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-fit-1"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 6,
+                        "y": 0,
+                        "width": 6,
+                        "height": 4,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-fit-2"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 12,
+                        "y": 0,
+                        "width": 12,
+                        "height": 4,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-fit-3"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 0,
+                        "y": 4,
+                        "width": 24,
+                        "height": 10,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-fit-4"
                         }
                       }
                     }
@@ -1091,6 +1675,21 @@
           "current": {
             "text": "20",
             "value": "20"
+          },
+          "hide": "dontHide",
+          "skipUrlSync": false
+        }
+      },
+      {
+        "kind": "TextVariable",
+        "spec": {
+          "name": "fit_tib",
+          "label": "Volume size to fit (TiB)",
+          "description": "Size of the volume you want to create. The bar gauge counts nodes with at least this much free.",
+          "query": "5",
+          "current": {
+            "text": "5",
+            "value": "5"
           },
           "hide": "dontHide",
           "skipUrlSync": false
