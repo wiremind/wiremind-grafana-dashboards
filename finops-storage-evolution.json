@@ -1232,11 +1232,11 @@
     },
     "links": [
       {
-        "title": "State",
+        "title": "Capacity - By cluster",
         "type": "link",
         "icon": "dashboard",
         "tooltip": "",
-        "url": "/d/finops-storage-state/",
+        "url": "/d/finops-capacity-cluster/",
         "tags": [],
         "asDropdown": false,
         "targetBlank": false,

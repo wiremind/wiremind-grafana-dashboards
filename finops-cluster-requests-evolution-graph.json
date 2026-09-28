@@ -1352,11 +1352,11 @@
         "keepTime": true
       },
       {
-        "title": "State - Headroom",
+        "title": "Capacity - By cluster",
         "type": "link",
         "icon": "dashboard",
         "tooltip": "",
-        "url": "/d/finops-compute-state/",
+        "url": "/d/finops-capacity-cluster/",
         "tags": [],
         "asDropdown": false,
         "targetBlank": false,
