@@ -1229,7 +1229,7 @@
         "kind": "CustomVariable",
         "spec": {
           "name": "node_selector",
-          "query": "label_node_role_kubernetes_io_production!=\"true\", label_node_role_kubernetes_io_production=\"true\"",
+          "query": "label_node_role_wiremind_io_production!=\"true\", label_node_role_wiremind_io_production=\"true\"",
           "current": {
             "text": "$__all",
             "value": "$__all"
@@ -1237,13 +1237,13 @@
           "options": [
             {
               "selected": false,
-              "text": "label_node_role_kubernetes_io_production!=\"true\"",
-              "value": "label_node_role_kubernetes_io_production!=\"true\""
+              "text": "label_node_role_wiremind_io_production!=\"true\"",
+              "value": "label_node_role_wiremind_io_production!=\"true\""
             },
             {
               "selected": false,
-              "text": "label_node_role_kubernetes_io_production=\"true\"",
-              "value": "label_node_role_kubernetes_io_production=\"true\""
+              "text": "label_node_role_wiremind_io_production=\"true\"",
+              "value": "label_node_role_wiremind_io_production=\"true\""
             }
           ],
           "multi": false,
