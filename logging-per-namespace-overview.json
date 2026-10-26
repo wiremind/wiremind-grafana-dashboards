@@ -19,7 +19,30 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": 4970,
-  "links": [],
+  "links": [
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Vector",
+      "type": "link",
+      "url": "/d/b53eb95c-9822-4267-9caa-f49915866092"
+    },
+    {
+      "asDropdown": false,
+      "icon": "dashboard",
+      "includeVars": false,
+      "keepTime": true,
+      "tags": [],
+      "targetBlank": true,
+      "title": "Elasticsearch",
+      "type": "link",
+      "url": "/d/n_nxrE_mkz?var-cluster=logging"
+    }
+  ],
   "panels": [
     {
       "fieldConfig": {
@@ -27,7 +50,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 4,
+        "h": 3,
         "w": 24,
         "x": 0,
         "y": 0
@@ -39,7 +62,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "This dashboard helps you vizualizing:\n- Namespace exceeding amount of logs per day agreed upon\n- Namespaces exceeding absolute value putting infrastructure in danger\nGreen is ok, red and orange is not ok.",
+        "content": "**Live**: who is logging the most right now, and how it compares with the same time yesterday. **Capacity**: whether Vector and the logging Elasticsearch keep up (filtered on cluster only). **History**: namespaces above the agreed volume over 3 hours and 7 days.\nPlatform namespaces have no client or environment kind: keep those filters on All to see them.",
         "mode": "markdown"
       },
       "pluginVersion": "12.3.2",
@@ -47,92 +70,80 @@
       "type": "text"
     },
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "id": 1,
+      "panels": [],
+      "title": "Live",
+      "type": "row"
+    },
+    {
       "datasource": {
-        "name": "${datasource}",
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "",
+      "description": "All namespaces of the cluster, as counted by Vector.",
       "fieldConfig": {
         "defaults": {
           "color": {
-            "mode": "thresholds"
+            "mode": "palette-classic"
           },
           "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "series",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisSoftMax": 110000000,
-            "axisSoftMin": 0,
-            "barAlignment": 0,
-            "barWidthFactor": 0.6,
             "drawStyle": "line",
             "fillOpacity": 0,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "insertNulls": false,
-            "lineInterpolation": "linear",
             "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
             "showPoints": "never",
-            "showValues": false,
             "spanNulls": false,
             "stacking": {
               "group": "A",
               "mode": "none"
             },
             "thresholdsStyle": {
-              "mode": "dashed"
+              "mode": "off"
             }
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": 0
-              },
-              {
-                "color": "red",
-                "value": 100000000
               }
             ]
-          }
+          },
+          "unit": "short"
         },
         "overrides": []
       },
       "gridPos": {
-        "h": 11,
-        "w": 24,
+        "h": 8,
+        "w": 12,
         "x": 0,
         "y": 4
       },
-      "id": 3,
-      "interval": "3h",
+      "id": 10,
       "options": {
         "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": false
+          "calcs": [
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
         },
         "tooltip": {
-          "hideZeros": false,
-          "mode": "single",
-          "sort": "none"
+          "mode": "multi",
+          "sort": "desc"
         }
       },
-      "pluginVersion": "12.3.2",
       "targets": [
         {
           "datasource": {
@@ -141,25 +152,266 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "label_replace(\n  sum by (exported_namespace) (\n    increase(vector_log_counter[3h])\n  ), \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\"\n) > 10000000",
+          "expr": "sum by (cluster) (rate(vector_log_counter{cluster=~\"$cluster\"}[$__rate_interval]))",
           "format": "time_series",
-          "hide": false,
           "instant": false,
-          "legendFormat": "{{namespace}}",
+          "legendFormat": "{{cluster}}",
           "range": true,
           "refId": "A"
         }
       ],
-      "title": "Logging amount, per 3 hours: absolute limit reached",
+      "title": "Log lines/s per cluster",
       "type": "timeseries"
     },
     {
       "datasource": {
-        "default": false,
         "type": "prometheus",
         "uid": "${datasource}"
       },
-      "description": "",
+      "description": "All namespaces of the cluster, message bytes as counted by Vector.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineWidth": 1,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "Bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 4
+      },
+      "id": 11,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (cluster) (rate(vector_message_len_bytes_sum{cluster=~\"$cluster\"}[$__rate_interval]))",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "{{cluster}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Log bytes/s per cluster",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "The ten namespaces with the most lines at each point in time.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineWidth": 1,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 0,
+        "y": 12
+      },
+      "id": 12,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "topk(10,\nsum by (cluster, namespace) (\n  label_replace(\n    sum by (cluster, exported_namespace) (rate(vector_log_counter{cluster=~\"$cluster\"}[$__rate_interval]))\n  , \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\")\n  * on (cluster, namespace) group_left ()\n  max by (cluster, namespace) (kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", label_client=~\"$client\", namespace=~\"$namespace\"})\n)\n)",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "{{namespace}} ({{cluster}})",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 namespaces, lines/s",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "The ten namespaces with the most bytes at each point in time.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineWidth": 1,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "Bps"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 9,
+        "w": 12,
+        "x": 12,
+        "y": 12
+      },
+      "id": 13,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "topk(10,\nsum by (cluster, namespace) (\n  label_replace(\n    sum by (cluster, exported_namespace) (rate(vector_message_len_bytes_sum{cluster=~\"$cluster\"}[$__rate_interval]))\n  , \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\")\n  * on (cluster, namespace) group_left ()\n  max by (cluster, namespace) (kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", label_client=~\"$client\", namespace=~\"$namespace\"})\n)\n)",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "{{namespace}} ({{cluster}})",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Top 10 namespaces, bytes/s",
+      "type": "timeseries"
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "Namespaces logging more than 10 lines/s over the last 5 minutes of the time range, against the same 5 minutes one day earlier. A high ratio names a namespace that started flooding.",
       "fieldConfig": {
         "defaults": {
           "custom": {
@@ -167,27 +419,14 @@
             "cellOptions": {
               "type": "auto"
             },
-            "filterable": false,
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
+            "filterable": true
           },
-          "mappings": [],
           "thresholds": {
             "mode": "absolute",
             "steps": [
               {
                 "color": "green",
                 "value": 0
-              },
-              {
-                "color": "yellow",
-                "value": 1
-              },
-              {
-                "color": "dark-red",
-                "value": 1.5
               }
             ]
           }
@@ -196,41 +435,97 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "Value #Logs"
+              "options": "Value #now"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Logs"
+                "value": "Lines/s"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 0
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Value #CPUs"
+              "options": "Value #yesterday"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "CPUs"
+                "value": "Lines/s yesterday"
+              },
+              {
+                "id": "unit",
+                "value": "short"
+              },
+              {
+                "id": "decimals",
+                "value": 0
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "Logs per CPU / 1000000"
+              "options": "Value #bytes"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Bytes/s"
+              },
+              {
+                "id": "unit",
+                "value": "Bps"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Ratio to yesterday"
             },
             "properties": [
               {
                 "id": "unit",
-                "value": ""
+                "value": "x"
+              },
+              {
+                "id": "decimals",
+                "value": 1
               },
               {
                 "id": "custom.cellOptions",
                 "value": {
-                  "type": "color-text"
+                  "type": "color-background"
+                }
+              },
+              {
+                "id": "thresholds",
+                "value": {
+                  "mode": "absolute",
+                  "steps": [
+                    {
+                      "color": "transparent",
+                      "value": 0
+                    },
+                    {
+                      "color": "orange",
+                      "value": 2
+                    },
+                    {
+                      "color": "red",
+                      "value": 5
+                    }
+                  ]
                 }
               }
             ]
@@ -238,76 +533,46 @@
           {
             "matcher": {
               "id": "byName",
-              "options": "label_project"
+              "options": "cluster"
             },
             "properties": [
               {
                 "id": "displayName",
-                "value": "Project"
-              },
-              {
-                "id": "custom.filterable",
-                "value": true
+                "value": "Cluster"
               }
             ]
           },
           {
             "matcher": {
               "id": "byName",
-              "options": "CPUs"
+              "options": "namespace"
             },
             "properties": [
               {
-                "id": "custom.width",
-                "value": 88
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Logs"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 127
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Project"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 175
+                "id": "displayName",
+                "value": "Namespace"
               }
             ]
           }
         ]
       },
       "gridPos": {
-        "h": 22,
-        "w": 13,
+        "h": 12,
+        "w": 24,
         "x": 0,
-        "y": 15
+        "y": 21
       },
-      "id": 2,
+      "id": 14,
       "options": {
         "cellHeight": "sm",
-        "enablePagination": false,
         "showHeader": true,
         "sortBy": [
           {
             "desc": true,
-            "displayName": "Logs"
+            "displayName": "Lines/s"
           }
         ]
       },
-      "pluginVersion": "12.3.3",
       "targets": [
         {
           "datasource": {
@@ -316,13 +581,12 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max by (namespace, label_project) (\n  kube_namespace_labels\n)",
+          "expr": "sum by (cluster, namespace) (\n  label_replace(\n    sum by (cluster, exported_namespace) (rate(vector_log_counter{cluster=~\"$cluster\"}[5m]))\n  , \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\")\n  * on (cluster, namespace) group_left ()\n  max by (cluster, namespace) (kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", label_client=~\"$client\", namespace=~\"$namespace\"})\n) > 10",
           "format": "table",
-          "hide": false,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "namespace_label"
+          "refId": "now"
         },
         {
           "datasource": {
@@ -331,13 +595,12 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (namespace) (\n  label_replace(\n    rate(vector_log_counter[$__range])\n  , \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\"\n  )\n) * 86400 > 0",
+          "expr": "sum by (cluster, namespace) (\n  label_replace(\n    sum by (cluster, exported_namespace) (rate(vector_log_counter{cluster=~\"$cluster\"}[5m] offset 1d))\n  , \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\")\n  * on (cluster, namespace) group_left ()\n  max by (cluster, namespace) (kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", label_client=~\"$client\", namespace=~\"$namespace\"})\n)",
           "format": "table",
-          "hide": false,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "Logs"
+          "refId": "yesterday"
         },
         {
           "datasource": {
@@ -346,46 +609,19 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "sum by (namespace) (\n  avg_over_time(\n    namespace_cpu:kube_pod_container_resource_requests:sum[$__range]\n  )\n) > 0",
+          "expr": "sum by (cluster, namespace) (\n  label_replace(\n    sum by (cluster, exported_namespace) (rate(vector_message_len_bytes_sum{cluster=~\"$cluster\"}[5m]))\n  , \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\")\n  * on (cluster, namespace) group_left ()\n  max by (cluster, namespace) (kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", label_client=~\"$client\", namespace=~\"$namespace\"})\n)",
           "format": "table",
-          "hide": false,
           "instant": true,
           "legendFormat": "__auto",
           "range": false,
-          "refId": "CPUs"
+          "refId": "bytes"
         }
       ],
-      "title": "Logging amount, per day, per cpu, 7-days average",
+      "title": "Namespaces now vs same time yesterday",
       "transformations": [
         {
           "id": "merge",
           "options": {}
-        },
-        {
-          "id": "calculateField",
-          "options": {
-            "alias": "Logs per CPU",
-            "binary": {
-              "left": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Value #Logs"
-                }
-              },
-              "operator": "/",
-              "right": {
-                "matcher": {
-                  "id": "byName",
-                  "options": "Value #CPUs"
-                }
-              }
-            },
-            "mode": "binary",
-            "reduce": {
-              "reducer": "sum"
-            },
-            "replaceFields": false
-          }
         },
         {
           "id": "filterByValue",
@@ -393,21 +629,10 @@
             "filters": [
               {
                 "config": {
-                  "id": "equal",
-                  "options": {
-                    "value": ""
-                  }
+                  "id": "isNull",
+                  "options": {}
                 },
-                "fieldName": "label_project"
-              },
-              {
-                "config": {
-                  "id": "lower",
-                  "options": {
-                    "value": "$cpu_threshold"
-                  }
-                },
-                "fieldName": "Value #CPUs"
+                "fieldName": "Value #now"
               }
             ],
             "match": "any",
@@ -417,16 +642,20 @@
         {
           "id": "calculateField",
           "options": {
+            "alias": "Ratio to yesterday",
             "binary": {
               "left": {
                 "matcher": {
                   "id": "byName",
-                  "options": "Logs per CPU"
+                  "options": "Value #now"
                 }
               },
               "operator": "/",
               "right": {
-                "fixed": "1000000"
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #yesterday"
+                }
               }
             },
             "mode": "binary",
@@ -436,16 +665,18 @@
           }
         },
         {
-          "id": "filterFieldsByName",
+          "id": "organize",
           "options": {
-            "include": {
-              "names": [
-                "label_project",
-                "namespace",
-                "Value #Logs",
-                "Value #CPUs",
-                "Logs per CPU / 1000000"
-              ]
+            "excludeByName": {
+              "Time": true
+            },
+            "indexByName": {
+              "cluster": 0,
+              "namespace": 1,
+              "Value #now": 2,
+              "Value #yesterday": 3,
+              "Ratio to yesterday": 4,
+              "Value #bytes": 5
             }
           }
         }
@@ -453,25 +684,43 @@
       "type": "table"
     },
     {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 33
+      },
+      "id": 20,
+      "panels": [],
+      "title": "Capacity",
+      "type": "row"
+    },
+    {
       "datasource": {
-        "default": false,
         "type": "prometheus",
         "uid": "${datasource}"
       },
+      "description": "Fullest Vector disk buffer of the cluster. At 100 % Vector drops or blocks new logs.",
       "fieldConfig": {
         "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "filterable": false,
-            "footer": {
-              "reducers": []
-            },
-            "inspect": false
+          "color": {
+            "mode": "palette-classic"
           },
-          "mappings": [],
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineWidth": 1,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
           "thresholds": {
             "mode": "absolute",
             "steps": [
@@ -481,112 +730,37 @@
               },
               {
                 "color": "red",
-                "value": 10000
+                "value": 0.9
               }
             ]
           },
-          "unit": "decbytes"
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value #Size"
-            },
-            "properties": [
-              {
-                "id": "custom.cellOptions",
-                "value": {
-                  "type": "color-text"
-                }
-              },
-              {
-                "id": "displayName",
-                "value": "Size"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "label_project"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Project"
-              },
-              {
-                "id": "custom.filterable",
-                "value": true
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value #Logs"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Logs"
-              },
-              {
-                "id": "unit",
-                "value": "Logs"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Value #CPUs"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "CPUs"
-              },
-              {
-                "id": "unit",
-                "value": "CPUs"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Project"
-            },
-            "properties": [
-              {
-                "id": "custom.width",
-                "value": 134
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
-        "h": 22,
-        "w": 11,
-        "x": 13,
-        "y": 15
+        "h": 8,
+        "w": 6,
+        "x": 0,
+        "y": 34
       },
-      "id": 7,
+      "id": 21,
       "options": {
-        "cellHeight": "sm",
-        "enablePagination": false,
-        "showHeader": true,
-        "sortBy": [
-          {
-            "desc": true,
-            "displayName": "Size"
-          }
-        ]
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
       },
-      "pluginVersion": "12.3.2",
       "targets": [
         {
           "datasource": {
@@ -595,100 +769,1138 @@
           },
           "editorMode": "code",
           "exemplar": false,
-          "expr": "max by (namespace, label_project) (\n  kube_namespace_labels\n)",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "namespace_label"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "sum by (namespace) (\n  avg_over_time(\n    namespace_cpu:kube_pod_container_resource_requests:sum[$__range]\n  )\n) > 0",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "CPUs"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "sum by (namespace) (\n  label_replace(\n    increase(vector_log_counter[$__range])\n  , \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\"\n  )\n) > 0",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "Logs"
-        },
-        {
-          "datasource": {
-            "type": "prometheus",
-            "uid": "${datasource}"
-          },
-          "editorMode": "code",
-          "exemplar": false,
-          "expr": "label_replace(\n  sum by (exported_namespace) (\n      increase(vector_message_len_bytes_sum[1d])\n  )\n  / on (exported_namespace) (\n    sum by (exported_namespace) (\n      increase(vector_log_counter[1d])\n    ) > 100000\n  )\n, \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\")\n> 0",
-          "format": "table",
-          "hide": false,
-          "instant": true,
-          "legendFormat": "__auto",
-          "range": false,
-          "refId": "Size"
+          "expr": "max by (cluster) (vector_buffer_size_bytes{buffer_type=\"disk\", cluster=~\"$cluster\"} / vector_buffer_max_size_bytes{buffer_type=\"disk\", cluster=~\"$cluster\"})",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "{{cluster}}",
+          "range": true,
+          "refId": "A"
         }
       ],
-      "title": "Average size of logs, 7-days average",
-      "transformations": [
+      "title": "Vector disk buffer fill (max over pods)",
+      "type": "timeseries",
+      "links": [
         {
-          "id": "filterFieldsByName",
-          "options": {
-            "include": {
-              "names": [
-                "label_project",
-                "namespace",
-                "Value #Logs",
-                "Value #Size",
-                "Value #CPUs"
-              ]
+          "title": "Vector",
+          "url": "/d/b53eb95c-9822-4267-9caa-f49915866092?${cluster:queryparam}&${__url_time_range}",
+          "targetBlank": true
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "Number of Vector pods whose fullest disk buffer is above 90 %.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineWidth": 1,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
             }
-          }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
         },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 34
+      },
+      "id": 22,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
         {
-          "id": "merge",
-          "options": {}
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (cluster) (max by (cluster, pod) (vector_buffer_size_bytes{buffer_type=\"disk\", cluster=~\"$cluster\"} / vector_buffer_max_size_bytes{buffer_type=\"disk\", cluster=~\"$cluster\"}) > bool 0.9)",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "{{cluster}}",
+          "range": true,
+          "refId": "A"
         }
       ],
-      "type": "table"
+      "title": "Vector pods with a buffer above 90 %",
+      "type": "timeseries",
+      "links": [
+        {
+          "title": "Vector",
+          "url": "/d/b53eb95c-9822-4267-9caa-f49915866092?${cluster:queryparam}&${__url_time_range}",
+          "targetBlank": true
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "Events written into the disk buffers against events sent to the sinks. In above out means the buffers are growing.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineWidth": 1,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 12,
+        "y": 34
+      },
+      "id": 23,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (cluster) (rate(vector_buffer_received_events_total{buffer_type=\"disk\", cluster=~\"$cluster\"}[$__rate_interval]))",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "in {{cluster}}",
+          "range": true,
+          "refId": "in"
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (cluster) (rate(vector_buffer_sent_events_total{buffer_type=\"disk\", cluster=~\"$cluster\"}[$__rate_interval]))",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "out {{cluster}}",
+          "range": true,
+          "refId": "out"
+        }
+      ],
+      "title": "Vector disk buffer in vs out",
+      "type": "timeseries",
+      "links": [
+        {
+          "title": "Vector",
+          "url": "/d/b53eb95c-9822-4267-9caa-f49915866092?${cluster:queryparam}&${__url_time_range}",
+          "targetBlank": true
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "Age of container log lines when Vector reads them (kubernetes_logs source). It climbs when Vector cannot keep up with what pods write.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineWidth": 1,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 60
+              },
+              {
+                "color": "red",
+                "value": 300
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 18,
+        "y": 34
+      },
+      "id": 26,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "histogram_quantile(0.99, sum by (cluster, le) (rate(vector_source_lag_time_seconds_bucket{component_type=\"kubernetes_logs\", cluster=~\"$cluster\"}[$__rate_interval])))",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "{{cluster}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Vector read lag p99",
+      "type": "timeseries",
+      "links": [
+        {
+          "title": "Vector",
+          "url": "/d/b53eb95c-9822-4267-9caa-f49915866092?${cluster:queryparam}&${__url_time_range}",
+          "targetBlank": true
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "Fullest data node of each tier. Dashed lines: 90 % (ESDiskLowWatermark alert) and 95 % (high watermark).",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineWidth": 1,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "dashed"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "orange",
+                "value": 0.9
+              },
+              {
+                "color": "red",
+                "value": 0.95
+              }
+            ]
+          },
+          "unit": "percentunit",
+          "min": 0,
+          "max": 1
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 42
+      },
+      "id": 24,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "max by (cluster, tier) (\n  label_replace(\n    1 - elasticsearch_filesystem_data_available_bytes{namespace=\"logging\", cluster=~\"$cluster\", name=~\".*-data-(hot|warm|cold)-.*\"} / elasticsearch_filesystem_data_size_bytes{namespace=\"logging\", cluster=~\"$cluster\", name=~\".*-data-(hot|warm|cold)-.*\"}\n  , \"tier\", \"$1\", \"name\", \".*-data-(hot|warm|cold)-.*\")\n)",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "{{tier}} {{cluster}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Elasticsearch logging disk usage per tier (max over nodes)",
+      "type": "timeseries",
+      "links": [
+        {
+          "title": "Elasticsearch",
+          "url": "/d/n_nxrE_mkz?var-cluster=logging&${__url_time_range}",
+          "targetBlank": true
+        }
+      ]
+    },
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "${datasource}"
+      },
+      "description": "Documents indexed per second by the logging cluster. Per-node counters drop when shards move away, so each node's slope is floored at zero instead of read as a counter reset.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "lineWidth": 1,
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 12,
+        "y": 42
+      },
+      "id": 25,
+      "options": {
+        "legend": {
+          "calcs": [
+            "max",
+            "lastNotNull"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true,
+          "sortBy": "Max",
+          "sortDesc": true
+        },
+        "tooltip": {
+          "mode": "multi",
+          "sort": "desc"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "editorMode": "code",
+          "exemplar": false,
+          "expr": "sum by (cluster) (clamp_min(deriv(elasticsearch_indices_indexing_index_total{namespace=\"logging\", cluster=~\"$cluster\"}[$__rate_interval]), 0))",
+          "format": "time_series",
+          "instant": false,
+          "legendFormat": "{{cluster}}",
+          "range": true,
+          "refId": "A"
+        }
+      ],
+      "title": "Elasticsearch logging indexing rate",
+      "type": "timeseries",
+      "links": [
+        {
+          "title": "Elasticsearch",
+          "url": "/d/n_nxrE_mkz?var-cluster=logging&${__url_time_range}",
+          "targetBlank": true
+        }
+      ]
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 50
+      },
+      "id": 30,
+      "panels": [
+        {
+          "datasource": {
+            "name": "${datasource}",
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "custom": {
+                "axisBorderShow": false,
+                "axisCenteredZero": false,
+                "axisColorMode": "series",
+                "axisLabel": "",
+                "axisPlacement": "auto",
+                "axisSoftMax": 110000000,
+                "axisSoftMin": 0,
+                "barAlignment": 0,
+                "barWidthFactor": 0.6,
+                "drawStyle": "line",
+                "fillOpacity": 0,
+                "gradientMode": "none",
+                "hideFrom": {
+                  "legend": false,
+                  "tooltip": false,
+                  "viz": false
+                },
+                "insertNulls": false,
+                "lineInterpolation": "linear",
+                "lineWidth": 1,
+                "pointSize": 5,
+                "scaleDistribution": {
+                  "type": "linear"
+                },
+                "showPoints": "never",
+                "showValues": false,
+                "spanNulls": false,
+                "stacking": {
+                  "group": "A",
+                  "mode": "none"
+                },
+                "thresholdsStyle": {
+                  "mode": "dashed"
+                }
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 100000000
+                  }
+                ]
+              }
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 11,
+            "w": 24,
+            "x": 0,
+            "y": 51
+          },
+          "id": 3,
+          "interval": "3h",
+          "options": {
+            "legend": {
+              "calcs": [],
+              "displayMode": "list",
+              "placement": "bottom",
+              "showLegend": false
+            },
+            "tooltip": {
+              "hideZeros": false,
+              "mode": "single",
+              "sort": "none"
+            }
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "label_replace(\n  sum by (exported_namespace) (\n    increase(vector_log_counter{cluster=~\"$cluster\"}[3h])\n  ), \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\"\n) > 10000000",
+              "format": "time_series",
+              "hide": false,
+              "instant": false,
+              "legendFormat": "{{namespace}}",
+              "range": true,
+              "refId": "A"
+            }
+          ],
+          "title": "Logging amount, per 3 hours: absolute limit reached",
+          "type": "timeseries"
+        },
+        {
+          "datasource": {
+            "default": false,
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "description": "",
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": false,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "yellow",
+                    "value": 1
+                  },
+                  {
+                    "color": "dark-red",
+                    "value": 1.5
+                  }
+                ]
+              }
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #Logs"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Logs"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #CPUs"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "CPUs"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Logs per CPU / 1000000"
+                },
+                "properties": [
+                  {
+                    "id": "unit",
+                    "value": ""
+                  },
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "label_project"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Project"
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "CPUs"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 88
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Logs"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 127
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Project"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 175
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 22,
+            "w": 13,
+            "x": 0,
+            "y": 62
+          },
+          "id": 2,
+          "options": {
+            "cellHeight": "sm",
+            "enablePagination": false,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Logs"
+              }
+            ]
+          },
+          "pluginVersion": "12.3.3",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "max by (namespace, label_project) (\n  kube_namespace_labels{cluster=~\"$cluster\"}\n)",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "namespace_label"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum by (namespace) (\n  label_replace(\n    avg_over_time(sum by (cluster, exported_namespace) (rate(vector_log_counter{cluster=~\"$cluster\"}[1h]))[7d:1h])\n  , \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\"\n  )\n) * 86400 > 0",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "Logs"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum by (namespace) (\n  avg_over_time(\n    namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\"}[7d]\n  )\n) > 0",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "CPUs"
+            }
+          ],
+          "title": "Logging amount, per day, per cpu, 7-days average",
+          "transformations": [
+            {
+              "id": "merge",
+              "options": {}
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "alias": "Logs per CPU",
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Value #Logs"
+                    }
+                  },
+                  "operator": "/",
+                  "right": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Value #CPUs"
+                    }
+                  }
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                },
+                "replaceFields": false
+              }
+            },
+            {
+              "id": "filterByValue",
+              "options": {
+                "filters": [
+                  {
+                    "config": {
+                      "id": "equal",
+                      "options": {
+                        "value": ""
+                      }
+                    },
+                    "fieldName": "label_project"
+                  },
+                  {
+                    "config": {
+                      "id": "lower",
+                      "options": {
+                        "value": "$cpu_threshold"
+                      }
+                    },
+                    "fieldName": "Value #CPUs"
+                  }
+                ],
+                "match": "any",
+                "type": "exclude"
+              }
+            },
+            {
+              "id": "calculateField",
+              "options": {
+                "binary": {
+                  "left": {
+                    "matcher": {
+                      "id": "byName",
+                      "options": "Logs per CPU"
+                    }
+                  },
+                  "operator": "/",
+                  "right": {
+                    "fixed": "1000000"
+                  }
+                },
+                "mode": "binary",
+                "reduce": {
+                  "reducer": "sum"
+                }
+              }
+            },
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "label_project",
+                    "namespace",
+                    "Value #Logs",
+                    "Value #CPUs",
+                    "Logs per CPU / 1000000"
+                  ]
+                }
+              }
+            }
+          ],
+          "type": "table"
+        },
+        {
+          "datasource": {
+            "default": false,
+            "type": "prometheus",
+            "uid": "${datasource}"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "custom": {
+                "align": "auto",
+                "cellOptions": {
+                  "type": "auto"
+                },
+                "filterable": false,
+                "footer": {
+                  "reducers": []
+                },
+                "inspect": false
+              },
+              "mappings": [],
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 10000
+                  }
+                ]
+              },
+              "unit": "decbytes"
+            },
+            "overrides": [
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #Size"
+                },
+                "properties": [
+                  {
+                    "id": "custom.cellOptions",
+                    "value": {
+                      "type": "color-text"
+                    }
+                  },
+                  {
+                    "id": "displayName",
+                    "value": "Size"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "label_project"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Project"
+                  },
+                  {
+                    "id": "custom.filterable",
+                    "value": true
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #Logs"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "Logs"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "Logs"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Value #CPUs"
+                },
+                "properties": [
+                  {
+                    "id": "displayName",
+                    "value": "CPUs"
+                  },
+                  {
+                    "id": "unit",
+                    "value": "CPUs"
+                  }
+                ]
+              },
+              {
+                "matcher": {
+                  "id": "byName",
+                  "options": "Project"
+                },
+                "properties": [
+                  {
+                    "id": "custom.width",
+                    "value": 134
+                  }
+                ]
+              }
+            ]
+          },
+          "gridPos": {
+            "h": 22,
+            "w": 11,
+            "x": 13,
+            "y": 62
+          },
+          "id": 7,
+          "options": {
+            "cellHeight": "sm",
+            "enablePagination": false,
+            "showHeader": true,
+            "sortBy": [
+              {
+                "desc": true,
+                "displayName": "Size"
+              }
+            ]
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "max by (namespace, label_project) (\n  kube_namespace_labels{cluster=~\"$cluster\"}\n)",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "namespace_label"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum by (namespace) (\n  avg_over_time(\n    namespace_cpu:kube_pod_container_resource_requests:sum{cluster=~\"$cluster\"}[7d]\n  )\n) > 0",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "CPUs"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "sum by (namespace) (\n  label_replace(\n    avg_over_time(sum by (cluster, exported_namespace) (rate(vector_log_counter{cluster=~\"$cluster\"}[1h]))[7d:1h]) * 604800\n  , \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\"\n  )\n) > 0",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "Logs"
+            },
+            {
+              "datasource": {
+                "type": "prometheus",
+                "uid": "${datasource}"
+              },
+              "editorMode": "code",
+              "exemplar": false,
+              "expr": "label_replace(\n  sum by (exported_namespace) (\n      increase(vector_message_len_bytes_sum{cluster=~\"$cluster\"}[1d])\n  )\n  / on (exported_namespace) (\n    sum by (exported_namespace) (\n      increase(vector_log_counter{cluster=~\"$cluster\"}[1d])\n    ) > 100000\n  )\n, \"namespace\", \"$1\", \"exported_namespace\", \"(.*)\")\n> 0",
+              "format": "table",
+              "hide": false,
+              "instant": true,
+              "legendFormat": "__auto",
+              "range": false,
+              "refId": "Size"
+            }
+          ],
+          "title": "Average size of logs, 7-days average",
+          "transformations": [
+            {
+              "id": "filterFieldsByName",
+              "options": {
+                "include": {
+                  "names": [
+                    "label_project",
+                    "namespace",
+                    "Value #Logs",
+                    "Value #Size",
+                    "Value #CPUs"
+                  ]
+                }
+              }
+            },
+            {
+              "id": "merge",
+              "options": {}
+            }
+          ],
+          "type": "table"
+        }
+      ],
+      "title": "History",
+      "type": "row"
     }
   ],
   "preload": false,
-  "refresh": "",
+  "refresh": "5m",
   "schemaVersion": 42,
-  "tags": [],
+  "tags": [
+    "logging",
+    "vector",
+    "elasticsearch"
+  ],
   "templating": {
     "list": [
-      {
-        "baseFilters": [],
-        "datasource": {
-          "type": "prometheus",
-          "uid": "P5DCFC7561CCDE821"
-        },
-        "filters": [],
-        "name": "Filters",
-        "type": "adhoc"
-      },
       {
         "allowCustomValue": false,
         "current": {},
@@ -703,11 +1915,173 @@
         "type": "datasource"
       },
       {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(vector_log_counter, cluster)",
+        "description": "Cluster",
+        "includeAll": true,
+        "label": "Cluster",
+        "multi": true,
+        "name": "cluster",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(vector_log_counter, cluster)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(kube_namespace_labels{cluster=~\"$cluster\"}, label_product)",
+        "description": "Namespace label product",
+        "includeAll": true,
+        "label": "Product",
+        "multi": true,
+        "name": "product",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_labels{cluster=~\"$cluster\"}, label_product)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\"}, label_project)",
+        "description": "Namespace label project",
+        "includeAll": true,
+        "label": "Project",
+        "multi": true,
+        "name": "project",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\"}, label_project)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_project=~\"$project\"}, label_environment_kind)",
+        "description": "Namespace label environment_kind",
+        "includeAll": true,
+        "label": "Environment kind",
+        "multi": true,
+        "name": "kind",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_project=~\"$project\"}, label_environment_kind)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\"}, label_client)",
+        "description": "Namespace label client",
+        "includeAll": true,
+        "label": "Client",
+        "multi": true,
+        "name": "client",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\"}, label_client)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
+        "allValue": ".*",
+        "current": {
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "prometheus",
+          "uid": "${datasource}"
+        },
+        "definition": "label_values(kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", label_client=~\"$client\"}, namespace)",
+        "description": "Namespace",
+        "includeAll": true,
+        "label": "Namespace",
+        "multi": true,
+        "name": "namespace",
+        "options": [],
+        "query": {
+          "qryType": 1,
+          "query": "label_values(kube_namespace_labels{cluster=~\"$cluster\", label_product=~\"$product\", label_project=~\"$project\", label_environment_kind=~\"$kind\", label_client=~\"$client\"}, namespace)",
+          "refId": "PrometheusVariableQueryEditor-VariableQuery"
+        },
+        "refresh": 2,
+        "regex": "",
+        "sort": 1,
+        "type": "query"
+      },
+      {
         "current": {
           "text": "5",
           "value": "5"
         },
-        "description": "Allows to exclude namespaces smaller than this value",
+        "description": "History row: excludes namespaces requesting fewer CPUs than this value",
         "includeAll": false,
         "label": "CPU Amount Threshold",
         "name": "cpu_threshold",
@@ -739,7 +2113,7 @@
     ]
   },
   "time": {
-    "from": "now-7d",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
