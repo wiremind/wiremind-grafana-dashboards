@@ -1,12 +1,10 @@
 # wiremind-grafana-dashboards
 
-This is a set of useful Grafana Dashboards used and maintained at Wiremind, which we think will be useful for other people.
+> [!WARNING]
+> This repository is no longer maintained and is being archived. Wiremind does not use these
+> dashboards from here anymore, so they will not receive updates, and issues and pull requests
+> will not be answered.
 
-## Contribute
-
-To export an existing Grafana dashboard:
-
-- Export from Grafana UI using the "Export the dashboard to use in another instance" toggle
-- Please add the pre-commit hook before committing so that datasources are automatically cleaned-up:
-
-`git config core.hooksPath .githooks`
+This is a set of Grafana dashboards that were used and maintained at Wiremind, shared in the hope
+that they are useful to other people. They remain available as-is: import any JSON file through
+the Grafana UI.
